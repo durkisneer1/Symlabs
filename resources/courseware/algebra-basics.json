@@ -1,0 +1,120 @@
+{
+  "id": "algebra-basics",
+  "title": "Algebra Basics",
+  "version": "2026.05.12",
+  "chapters": [
+    {
+      "id": "linear-equations",
+      "title": "Linear Equations",
+      "description": "Solving one-variable equations with integer arithmetic.",
+      "items": [
+        {
+          "type": "lesson",
+          "id": "linear-equations-intro"
+        },
+        {
+          "type": "homework",
+          "id": "linear-equations-practice"
+        },
+        {
+          "type": "quiz",
+          "id": "linear-equations-quiz"
+        }
+      ]
+    }
+  ],
+  "lessons": {
+    "linear-equations-intro": {
+      "title": "Solving Linear Equations",
+      "description": "Learn how to isolate a variable by undoing operations in reverse order.",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "The goal"
+        },
+        {
+          "type": "paragraph",
+          "text": "A linear equation asks for the value that makes both sides equal. To solve it, keep the equation balanced while isolating the variable."
+        },
+        {
+          "type": "example",
+          "title": "Example",
+          "body": "Solve 3x + 4 = 19. Subtract 4 from both sides to get 3x = 15, then divide by 3 to get x = 5."
+        }
+      ]
+    }
+  },
+  "homeworks": {
+    "linear-equations-practice": {
+      "title": "Linear Equations Practice",
+      "description": "Procedural practice. Each attempt uses new numbers and can be retried without limit.",
+      "problems": [
+        {
+          "id": "solve-linear-1",
+          "type": "linear_equation",
+          "points": 1,
+          "variables": {
+            "a": [2, 9],
+            "b": [-12, 12],
+            "x": [-8, 12]
+          }
+        },
+        {
+          "id": "solve-linear-2",
+          "type": "linear_equation",
+          "points": 1,
+          "variables": {
+            "a": [3, 11],
+            "b": [-20, 20],
+            "x": [-10, 10]
+          }
+        },
+        {
+          "id": "solve-linear-3",
+          "type": "linear_equation",
+          "points": 1,
+          "variables": {
+            "a": [2, 12],
+            "b": [-15, 15],
+            "x": [-12, 12]
+          }
+        }
+      ]
+    }
+  },
+  "quizzes": {
+    "linear-equations-quiz": {
+      "title": "Linear Equations Quiz",
+      "description": "Ten questions selected from a larger bank. Questions are selected and graded on the server.",
+      "question_count": 10,
+      "time_limit_minutes": 30,
+      "questions": [
+        { "id": "q01", "topic": "solve", "difficulty": "easy", "prompt": "Solve: x + 7 = 12", "options": ["3", "4", "5", "6"], "answer": "5" },
+        { "id": "q02", "topic": "solve", "difficulty": "easy", "prompt": "Solve: x - 9 = 2", "options": ["7", "9", "11", "13"], "answer": "11" },
+        { "id": "q03", "topic": "solve", "difficulty": "easy", "prompt": "Solve: 4x = 28", "options": ["6", "7", "8", "9"], "answer": "7" },
+        { "id": "q04", "topic": "solve", "difficulty": "easy", "prompt": "Solve: x / 5 = 3", "options": ["8", "10", "15", "20"], "answer": "15" },
+        { "id": "q05", "topic": "solve", "difficulty": "medium", "prompt": "Solve: 2x + 3 = 13", "options": ["4", "5", "6", "8"], "answer": "5" },
+        { "id": "q06", "topic": "solve", "difficulty": "medium", "prompt": "Solve: 3x - 4 = 17", "options": ["5", "6", "7", "8"], "answer": "7" },
+        { "id": "q07", "topic": "solve", "difficulty": "medium", "prompt": "Solve: 5x + 1 = 31", "options": ["5", "6", "7", "8"], "answer": "6" },
+        { "id": "q08", "topic": "solve", "difficulty": "medium", "prompt": "Solve: 6x - 8 = 16", "options": ["2", "3", "4", "5"], "answer": "4" },
+        { "id": "q09", "topic": "solve", "difficulty": "hard", "prompt": "Solve: 7x + 5 = 3x + 29", "options": ["4", "5", "6", "7"], "answer": "6" },
+        { "id": "q10", "topic": "solve", "difficulty": "hard", "prompt": "Solve: 9x - 2 = 4x + 33", "options": ["5", "6", "7", "8"], "answer": "7" },
+        { "id": "q11", "topic": "balance", "difficulty": "easy", "prompt": "What operation undoes adding 8?", "options": ["Add 8", "Subtract 8", "Multiply by 8", "Divide by 8"], "answer": "Subtract 8" },
+        { "id": "q12", "topic": "balance", "difficulty": "easy", "prompt": "What operation undoes multiplying by 6?", "options": ["Add 6", "Subtract 6", "Multiply by 6", "Divide by 6"], "answer": "Divide by 6" },
+        { "id": "q13", "topic": "balance", "difficulty": "medium", "prompt": "In 4x + 9 = 25, what should you do first?", "options": ["Divide by 4", "Subtract 9", "Add 9", "Multiply by 4"], "answer": "Subtract 9" },
+        { "id": "q14", "topic": "balance", "difficulty": "medium", "prompt": "In 5x - 6 = 19, what should you do first?", "options": ["Subtract 6", "Add 6", "Divide by 5", "Multiply by 5"], "answer": "Add 6" },
+        { "id": "q15", "topic": "balance", "difficulty": "hard", "prompt": "Which equation is equivalent to 2x + 4 = 18 after subtracting 4?", "options": ["2x = 14", "2x = 18", "x = 14", "x = 7"], "answer": "2x = 14" },
+        { "id": "q16", "topic": "interpret", "difficulty": "easy", "prompt": "If x = 4, what is 3x + 2?", "options": ["10", "12", "14", "16"], "answer": "14" },
+        { "id": "q17", "topic": "interpret", "difficulty": "easy", "prompt": "If x = -2, what is x + 9?", "options": ["-11", "-7", "7", "11"], "answer": "7" },
+        { "id": "q18", "topic": "interpret", "difficulty": "medium", "prompt": "Which value makes 2x + 1 = 9 true?", "options": ["3", "4", "5", "6"], "answer": "4" },
+        { "id": "q19", "topic": "interpret", "difficulty": "medium", "prompt": "Which value makes 4x - 3 = 13 true?", "options": ["3", "4", "5", "6"], "answer": "4" },
+        { "id": "q20", "topic": "interpret", "difficulty": "hard", "prompt": "Which value makes 2x + 6 = x + 14 true?", "options": ["6", "7", "8", "9"], "answer": "8" },
+        { "id": "q21", "topic": "equivalence", "difficulty": "easy", "prompt": "Which expression equals x + x + x?", "options": ["x3", "3x", "x + 3", "x / 3"], "answer": "3x" },
+        { "id": "q22", "topic": "equivalence", "difficulty": "easy", "prompt": "Which expression equals 5 times x?", "options": ["5x", "x + 5", "x / 5", "x - 5"], "answer": "5x" },
+        { "id": "q23", "topic": "equivalence", "difficulty": "medium", "prompt": "Which equation has solution x = 3?", "options": ["x + 4 = 8", "2x + 1 = 7", "3x = 12", "x - 1 = 1"], "answer": "2x + 1 = 7" },
+        { "id": "q24", "topic": "equivalence", "difficulty": "medium", "prompt": "Which equation has solution x = 10?", "options": ["x + 2 = 10", "x - 3 = 7", "2x = 10", "x / 2 = 10"], "answer": "x - 3 = 7" },
+        { "id": "q25", "topic": "equivalence", "difficulty": "hard", "prompt": "Which equation is equivalent to 3x + 6 = 21?", "options": ["3x = 15", "3x = 27", "x + 6 = 7", "x = 15"], "answer": "3x = 15" }
+      ]
+    }
+  }
+}

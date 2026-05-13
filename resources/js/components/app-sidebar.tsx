@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { BookOpen, FolderGit2, GraduationCap, LayoutGrid } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -28,6 +28,13 @@ export function AppSidebar() {
             title: 'Dashboard',
             href: dashboardUrl,
             icon: LayoutGrid,
+        },
+        {
+            title: 'Courseware',
+            href: page.props.currentTeam
+                ? `/${page.props.currentTeam.slug}/courseware`
+                : '/',
+            icon: GraduationCap,
         },
     ];
 
