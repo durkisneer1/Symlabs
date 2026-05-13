@@ -203,21 +203,13 @@ php artisan migrate
 
 ## Running the App
 
-Use two terminals.
-
-Terminal 1, start Laravel:
+Start the local dev stack in a terminal:
 
 ```bash
-php artisan serve
+composer run dev
 ```
 
-Terminal 2, start Vite:
-
-```bash
-pnpm dev
-```
-
-Open:
+That runs Laravel, the queue listener, Laravel Pail logs, and Vite. Open:
 
 ```txt
 http://127.0.0.1:8000
@@ -229,8 +221,6 @@ usually open:
 ```txt
 http://inkbooks.test
 ```
-
-You still need Vite running with `pnpm dev` while developing the frontend.
 
 ## Where Things Go
 
