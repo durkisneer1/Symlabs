@@ -1,0 +1,118 @@
+{
+  "id": "intro-to-html",
+  "title": "Introduction to HTML",
+  "version": "2026.05.15",
+  "chapters": [
+    {
+      "id": "the-hypertext-markup-language",
+      "title": "The HyperText Markup Language",
+      "description": "Learn how elements, tags, attributes, and document structure define a webpage.",
+      "items": [
+        {
+          "type": "lesson",
+          "id": "markup-lang-intro"
+        },
+        {
+          "type": "homework",
+          "id": "markup-lang-practice"
+        },
+        {
+          "type": "quiz",
+          "id": "markup-lang-quiz"
+        }
+      ]
+    }
+  ],
+  "lessons": {
+    "markup-lang-intro": {
+      "title": "How are web pages written?",
+      "description": "Learn how to identify tags and structure an HTML document.",
+      "blocks": [
+        {
+          "type": "heading",
+          "text": "The goal"
+        },
+        {
+          "type": "paragraph",
+          "text": "HTML gives web pages their structure. A browser reads HTML elements and turns them into headings, paragraphs, links, images, forms, lists, and other parts of a document."
+        },
+        {
+          "type": "paragraph",
+          "text": "Most elements are written with an opening tag, content, and a closing tag. For example, <p>Hello</p> creates a paragraph whose text content is Hello."
+        },
+        {
+          "type": "example",
+          "title": "Example",
+          "body": "<article><h1>Course Notes</h1><p>HTML describes the meaning and structure of page content.</p></article>"
+        },
+        {
+          "type": "heading",
+          "text": "Elements, tags, and attributes"
+        },
+        {
+          "type": "paragraph",
+          "text": "An element is the complete piece of markup. Tags mark where the element begins and ends. Attributes add extra information to an opening tag, such as the destination of a link or alternate text for an image."
+        },
+        {
+          "type": "example",
+          "title": "Example",
+          "body": "<a href=\"/courses/html\">Start the HTML course</a> uses an href attribute to tell the browser where the link goes."
+        }
+      ]
+    }
+  },
+  "homeworks": {
+    "markup-lang-practice": {
+      "title": "Elements and Tags Practice",
+      "description": "Practice reading and writing basic HTML elements. Each problem focuses on page structure, semantics, or attributes.",
+      "problems": [
+        {
+          "id": "identify-heading-element",
+          "type": "multiple_choice",
+          "points": 1,
+          "prompt": "Which element should be used for the main heading of a page?",
+          "options": ["<h1>", "<p>", "<section>", "<br>"],
+          "answer": "<h1>"
+        },
+        {
+          "id": "write-anchor",
+          "type": "short_answer",
+          "points": 1,
+          "prompt": "Write an anchor element that links to /about with the visible text About.",
+          "accepted_answers": ["<a href=\"/about\">About</a>"]
+        },
+        {
+          "id": "image-alt-purpose",
+          "type": "multiple_choice",
+          "points": 1,
+          "prompt": "What is the main purpose of the alt attribute on an image?",
+          "options": [
+            "To provide text for people or tools that cannot use the image",
+            "To make the image load faster",
+            "To resize the image",
+            "To turn the image into a link"
+          ],
+          "answer": "To provide text for people or tools that cannot use the image"
+        },
+        {
+          "id": "semantic-article",
+          "type": "multiple_choice",
+          "points": 1,
+          "prompt": "Which element best represents a self-contained post, story, or entry?",
+          "options": ["<article>", "<span>", "<br>", "<strong>"],
+          "answer": "<article>"
+        },
+        {
+          "id": "fix-list-structure",
+          "type": "short_answer",
+          "points": 1,
+          "prompt": "Write an unordered list with one item whose text is HTML.",
+          "accepted_answers": ["<ul><li>HTML</li></ul>"]
+        }
+      ]
+    }
+  },
+  "quizzes": [
+    "markup-lang-quiz"
+  ]
+}
