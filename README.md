@@ -60,15 +60,16 @@ corepack prepare pnpm@11.1.1 --activate
 If using Herd, clone this repo into Herd's sites folder:
 
 ```powershell
+# Unix
+cd ~/Herd
+
+# Windows PS
 cd $HOME\Herd
+
 git clone https://github.com/durkisneer1/InkBooks.git inkbooks && cd inkbooks
 ```
 
-Otherwise, clone the repo wherever and enter it:
-
-```bash
-git clone https://github.com/durkisneer1/InkBooks.git && cd inkbooks
-```
+Otherwise, you may clone the repo wherever.
 
 ### Setup
 
