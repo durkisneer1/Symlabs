@@ -43,7 +43,7 @@ trait HasTeams
             'id',
             'id',
             'team_id',
-        )->where('team_members.role', TeamRole::Owner->value);
+        )->where('team_members.role', TeamRole::Admin->value);
     }
 
     /**
@@ -114,7 +114,15 @@ trait HasTeams
      */
     public function ownsTeam(Team $team): bool
     {
-        return $this->teamRole($team) === TeamRole::Owner;
+        return $this->teamRole($team) === TeamRole::Admin;
+    }
+
+    /**
+     * Determine if the user is the admin of the given classroom/team.
+     */
+    public function administersTeam(Team $team): bool
+    {
+        return $this->ownsTeam($team);
     }
 
     /**
@@ -157,6 +165,7 @@ trait HasTeams
             role: $role?->value,
             roleLabel: $role?->label(),
             isCurrent: $this->isCurrentTeam($team),
+            viewModes: $role?->viewModes() ?? [],
         );
     }
 
@@ -175,6 +184,11 @@ trait HasTeams
             canRemoveMember: $role?->hasPermission(TeamPermission::RemoveMember) ?? false,
             canCreateInvitation: $role?->hasPermission(TeamPermission::CreateInvitation) ?? false,
             canCancelInvitation: $role?->hasPermission(TeamPermission::CancelInvitation) ?? false,
+            canAssignCoursework: $role?->hasPermission(TeamPermission::AssignCoursework) ?? false,
+            canViewStudentProgress: $role?->hasPermission(TeamPermission::ViewStudentProgress) ?? false,
+            canTakeAssignments: $role?->hasPermission(TeamPermission::TakeAssignments) ?? false,
+            canViewAsTeacher: $role?->hasPermission(TeamPermission::ViewAsTeacher) ?? false,
+            canViewAsStudent: $role?->hasPermission(TeamPermission::ViewAsStudent) ?? false,
         );
     }
 

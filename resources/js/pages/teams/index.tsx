@@ -62,7 +62,7 @@ export default function TeamsIndex({ teams }: Props) {
 
               <TooltipProvider>
                 <div className="flex items-center gap-2">
-                  {team.role === 'member' ? (
+                  {team.role === 'student' ? (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button

@@ -1,4 +1,4 @@
-export type TeamRole = 'owner' | 'admin' | 'member';
+export type TeamRole = 'admin' | 'teacher' | 'student';
 
 export type Team = {
   id: number;
@@ -8,6 +8,7 @@ export type Team = {
   role?: TeamRole;
   roleLabel?: string;
   isCurrent?: boolean;
+  viewModes?: RoleOption[];
 };
 
 export type TeamMember = {
@@ -35,6 +36,11 @@ export type TeamPermissions = {
   canRemoveMember: boolean;
   canCreateInvitation: boolean;
   canCancelInvitation: boolean;
+  canAssignCoursework: boolean;
+  canViewStudentProgress: boolean;
+  canTakeAssignments: boolean;
+  canViewAsTeacher: boolean;
+  canViewAsStudent: boolean;
 };
 
 export type RoleOption = {

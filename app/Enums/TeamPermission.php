@@ -13,4 +13,10 @@ enum TeamPermission: string
 
     case CreateInvitation = 'invitation:create';
     case CancelInvitation = 'invitation:cancel';
+
+    case AssignCoursework = 'coursework:assign';
+    case ViewStudentProgress = 'progress:view-students';
+    case TakeAssignments = 'assignments:take';
+    case ViewAsTeacher = 'view-as:teacher';
+    case ViewAsStudent = 'view-as:student';
 }

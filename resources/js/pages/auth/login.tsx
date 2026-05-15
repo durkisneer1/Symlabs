@@ -97,6 +97,6 @@ export default function Login({ status, canResetPassword }: Props) {
 }
 
 Login.layout = {
-  title: 'Student login',
-  description: 'Enter the email and password provided by your teacher',
+  title: 'Log in to your account',
+  description: 'Enter your email and password below to log in',
 };

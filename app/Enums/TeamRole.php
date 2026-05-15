@@ -4,16 +4,20 @@ namespace App\Enums;
 
 enum TeamRole: string
 {
-    case Owner = 'owner';
     case Admin = 'admin';
-    case Member = 'member';
+    case Teacher = 'teacher';
+    case Student = 'student';
 
     /**
      * Get the display label for the role.
      */
     public function label(): string
     {
-        return ucfirst($this->value);
+        return match ($this) {
+            self::Admin => 'Admin',
+            self::Teacher => 'Teacher',
+            self::Student => 'Student',
+        };
     }
 
     /**
@@ -24,13 +28,21 @@ enum TeamRole: string
     public function permissions(): array
     {
         return match ($this) {
-            self::Owner => TeamPermission::cases(),
-            self::Admin => [
+            self::Admin => TeamPermission::cases(),
+            self::Teacher => [
                 TeamPermission::UpdateTeam,
+                TeamPermission::AddMember,
+                TeamPermission::UpdateMember,
+                TeamPermission::RemoveMember,
                 TeamPermission::CreateInvitation,
                 TeamPermission::CancelInvitation,
+                TeamPermission::AssignCoursework,
+                TeamPermission::ViewStudentProgress,
+                TeamPermission::ViewAsStudent,
             ],
-            self::Member => [],
+            self::Student => [
+                TeamPermission::TakeAssignments,
+            ],
         };
     }
 
@@ -49,9 +61,9 @@ enum TeamRole: string
     public function level(): int
     {
         return match ($this) {
-            self::Owner => 3,
-            self::Admin => 2,
-            self::Member => 1,
+            self::Admin => 3,
+            self::Teacher => 2,
+            self::Student => 1,
         };
     }
 
@@ -64,16 +76,38 @@ enum TeamRole: string
     }
 
     /**
-     * Get the roles that can be assigned to team members (excludes Owner).
+     * Get the roles that can be assigned to classroom members (excludes Admin).
      *
      * @return array<array{value: string, label: string}>
      */
     public static function assignable(): array
     {
         return collect(self::cases())
-            ->filter(fn (self $role) => $role !== self::Owner)
+            ->filter(fn (self $role) => $role !== self::Admin)
             ->map(fn (self $role) => ['value' => $role->value, 'label' => $role->label()])
             ->values()
             ->toArray();
+    }
+
+    /**
+     * Get the roles this role can temporarily view as.
+     *
+     * @return array<array{value: string, label: string}>
+     */
+    public function viewModes(): array
+    {
+        return collect(self::cases())
+            ->filter(fn (self $role) => $this->isAtLeast($role))
+            ->map(fn (self $role) => ['value' => $role->value, 'label' => $role->label()])
+            ->values()
+            ->toArray();
+    }
+
+    /**
+     * Determine if this role may temporarily view the classroom as another role.
+     */
+    public function canViewAs(self $role): bool
+    {
+        return $this !== self::Student && $this->isAtLeast($role);
     }
 }

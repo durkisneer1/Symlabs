@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Courseware;
+namespace App\Models\Quizzes;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;

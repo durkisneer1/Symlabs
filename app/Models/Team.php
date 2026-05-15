@@ -39,13 +39,21 @@ class Team extends Model
     }
 
     /**
+     * Get the classroom admin.
+     */
+    public function admin(): ?Model
+    {
+        return $this->members()
+            ->wherePivot('role', TeamRole::Admin->value)
+            ->first();
+    }
+
+    /**
      * Get the team owner.
      */
     public function owner(): ?Model
     {
-        return $this->members()
-            ->wherePivot('role', TeamRole::Owner->value)
-            ->first();
+        return $this->admin();
     }
 
     /**
