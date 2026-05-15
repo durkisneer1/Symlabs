@@ -1,17 +1,17 @@
 import { Head } from '@inertiajs/react';
 
-export default function HtmlCourse() {
+export default function CssCourse() {
   return (
     <>
-      <Head title="HTML Course" />
+      <Head title="CSS Course" />
 
       <section className="mx-auto flex w-full max-w-5xl flex-col gap-6 py-16">
         <div className="space-y-3">
           <p className="text-sm font-medium text-muted-foreground">Course</p>
-          <h1 className="text-4xl font-semibold tracking-tight">HTML</h1>
+          <h1 className="text-4xl font-semibold tracking-tight">CSS</h1>
           <p className="max-w-2xl text-muted-foreground">
-            Learn the structure of web pages: Elements, attributes, semantic
-            markup, forms, and accessible document flow.
+            Learn how to style web pages with selectors, layout, spacing, color,
+            responsive design, and reusable visual systems.
           </p>
         </div>
       </section>

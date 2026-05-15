@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
 Route::inertia('/courses/html', 'courses/html-course')->name('courses.html');
+Route::inertia('/courses/css', 'courses/css-course')->name('courses.css');
+Route::inertia('/courses/php', 'courses/php-course')->name('courses.php');
+Route::inertia('/courses/mysql', 'courses/mysql-course')->name('courses.mysql');
 
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])

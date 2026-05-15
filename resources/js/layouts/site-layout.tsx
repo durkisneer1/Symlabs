@@ -21,7 +21,10 @@ export default function SiteLayout({
   return (
     <div className="flex min-h-screen flex-col items-center bg-background p-6 text-foreground lg:p-8">
       <header className="w-full">
-        <NavigationMenu className="flex w-full max-w-none items-center justify-between">
+        <NavigationMenu
+          viewport={false}
+          className="flex w-full max-w-none items-center justify-between"
+        >
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuLink
@@ -37,9 +40,15 @@ export default function SiteLayout({
                 <NavigationMenuLink asChild>
                   <Link href="/courses/html">HTML</Link>
                 </NavigationMenuLink>
-                <NavigationMenuLink>CSS</NavigationMenuLink>
-                <NavigationMenuLink>PHP</NavigationMenuLink>
-                <NavigationMenuLink>MySQL</NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link href="/courses/css">CSS</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link href="/courses/php">PHP</Link>
+                </NavigationMenuLink>
+                <NavigationMenuLink asChild>
+                  <Link href="/courses/mysql">MySQL</Link>
+                </NavigationMenuLink>
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>
