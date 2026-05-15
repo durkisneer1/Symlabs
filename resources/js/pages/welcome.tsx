@@ -17,7 +17,7 @@ export default function Welcome() {
   return (
     <>
       <Head title="Home" />
-      <div className="flex min-h-svh flex-col items-center bg-background p-6 text-foreground lg:justify-center lg:p-8">
+      <div className="flex flex-col items-center bg-background p-6 text-foreground lg:justify-center lg:p-8">
         <header className="w-full">
           <NavigationMenu className="flex w-full max-w-none items-center justify-between">
             <NavigationMenuList>
