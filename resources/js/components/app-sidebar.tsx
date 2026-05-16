@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid } from 'lucide-react';
+import { LayoutGrid, LibraryBig } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -18,9 +18,11 @@ import type { NavItem } from '@/types';
 
 export function AppSidebar() {
   const page = usePage();
-  const dashboardUrl = page.props.currentTeam
-    ? dashboard(page.props.currentTeam.slug)
-    : '/';
+  const currentTeam = page.props.currentTeam;
+  const userRole = page.props.auth.user.role;
+  const dashboardUrl = currentTeam
+    ? dashboard(currentTeam.slug)
+    : '/dashboard';
 
   const mainNavItems: NavItem[] = [
     {
@@ -29,6 +31,16 @@ export function AppSidebar() {
       icon: LayoutGrid,
     },
   ];
+
+  if (userRole === 'admin') {
+    mainNavItems.push(
+      {
+        title: 'Quiz Bank',
+        href: '/admin/quizzes',
+        icon: LibraryBig,
+      },
+    );
+  }
 
   return (
     <Sidebar collapsible="icon" variant="inset">
@@ -42,11 +54,13 @@ export function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <TeamSwitcher />
-          </SidebarMenuItem>
-        </SidebarMenu>
+        {userRole !== 'admin' ? (
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <TeamSwitcher />
+            </SidebarMenuItem>
+          </SidebarMenu>
+        ) : null}
       </SidebarHeader>
 
       <SidebarContent>

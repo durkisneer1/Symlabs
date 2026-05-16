@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
+            $table->string('course_slug');
             $table->string('slug')->unique();
             $table->string('title');
             $table->text('description')->nullable();

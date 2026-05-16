@@ -16,7 +16,7 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   const { auth, currentTeam } = usePage().props;
-  const dashboardUrl = currentTeam ? dashboard(currentTeam.slug) : '/';
+  const dashboardUrl = currentTeam ? dashboard(currentTeam.slug) : '/dashboard';
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-background p-6 text-foreground lg:p-8">

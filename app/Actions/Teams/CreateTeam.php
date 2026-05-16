@@ -22,7 +22,7 @@ class CreateTeam
 
             $membership = $team->memberships()->create([
                 'user_id' => $user->id,
-                'role' => TeamRole::Admin,
+                'role' => TeamRole::Teacher,
             ]);
 
             $user->switchTeam($team);

@@ -2,8 +2,8 @@
 
 namespace App\Models\Assignments;
 
-use App\Models\Team;
 use App\Models\User;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
     'assignable_type',
     'assignable_id',
     'title',
+    'description',
     'opens_at',
     'due_at',
     'points',

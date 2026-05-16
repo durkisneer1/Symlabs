@@ -46,7 +46,11 @@ class TeamMemberController extends Controller
             ->delete();
 
         if ($user->isCurrentTeam($team)) {
-            $user->switchTeam($user->personalTeam());
+            if ($fallbackTeam = $user->fallbackTeam($team)) {
+                $user->switchTeam($fallbackTeam);
+            } else {
+                $user->update(['current_team_id' => null]);
+            }
         }
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Member removed.')]);

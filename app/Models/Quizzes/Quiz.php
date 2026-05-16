@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Str;
 
 #[Fillable([
+    'course_slug',
     'slug',
     'title',
     'description',
@@ -17,6 +19,20 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 ])]
 class Quiz extends Model
 {
+    /**
+     * Bootstrap the model and its traits.
+     */
+    protected static function booted(): void
+    {
+        static::saving(function (Quiz $quiz) {
+            $quiz->slug = Str::slug($quiz->course_slug.' '.$quiz->title);
+        });
+
+        static::deleting(function (Quiz $quiz) {
+            $quiz->assignments()->delete();
+        });
+    }
+
     /**
      * Get the questions that belong to this quiz.
      *

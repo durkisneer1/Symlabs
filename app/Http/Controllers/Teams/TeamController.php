@@ -23,6 +23,8 @@ class TeamController extends Controller
      */
     public function index(Request $request): Response
     {
+        Gate::authorize('viewAny', Team::class);
+
         $user = $request->user();
 
         return Inertia::render('teams/index', [
@@ -35,6 +37,8 @@ class TeamController extends Controller
      */
     public function store(SaveTeamRequest $request, CreateTeam $createTeam): RedirectResponse
     {
+        Gate::authorize('create', Team::class);
+
         $team = $createTeam->handle($request->user(), $request->validated('name'));
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Team created.')]);
@@ -124,7 +128,13 @@ class TeamController extends Controller
         DB::transaction(function () use ($user, $team) {
             User::where('current_team_id', $team->id)
                 ->where('id', '!=', $user->id)
-                ->each(fn (User $affectedUser) => $affectedUser->switchTeam($affectedUser->personalTeam()));
+                ->each(function (User $affectedUser) use ($team) {
+                    if ($fallbackTeam = $affectedUser->fallbackTeam($team)) {
+                        $affectedUser->switchTeam($fallbackTeam);
+                    } else {
+                        $affectedUser->update(['current_team_id' => null]);
+                    }
+                });
 
             $team->invitations()->delete();
             $team->memberships()->delete();
@@ -133,6 +143,8 @@ class TeamController extends Controller
 
         if ($fallbackTeam) {
             $user->switchTeam($fallbackTeam);
+        } elseif ($user->isCurrentTeam($team)) {
+            $user->update(['current_team_id' => null]);
         }
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Team deleted.')]);

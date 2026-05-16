@@ -43,7 +43,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
   const { auth, currentTeam } = page.props;
   const getInitials = useInitials();
   const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
-  const dashboardUrl = currentTeam ? dashboard(currentTeam.slug) : '/';
+  const dashboardUrl = currentTeam ? dashboard(currentTeam.slug) : '/dashboard';
 
   const mainNavItems: NavItem[] = [
     {
@@ -151,7 +151,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <TeamSwitcher inHeader />
+            {auth.user.role !== 'admin' ? <TeamSwitcher inHeader /> : null}
           </div>
         </div>
       </div>

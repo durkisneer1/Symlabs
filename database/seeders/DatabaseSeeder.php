@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\Quizzes\Quiz;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -199,12 +200,30 @@ class DatabaseSeeder extends Seeder
 
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $users = [
+            [
+                'name' => 'Admin User',
+                'email' => 'admin@ink.edu',
+                'role' => UserRole::Admin,
+            ],
+            [
+                'name' => 'Teacher User',
+                'email' => 'teacher@ink.edu',
+                'role' => UserRole::Teacher,
+            ],
+            [
+                'name' => 'Student User',
+                'email' => 'student@ink.edu',
+                'role' => UserRole::Student,
+            ],
+        ];
+
+        foreach ($users as $user) {
+            User::factory()->create($user);
+        }
 
         $quiz = Quiz::create([
+            'course_slug' => 'html',
             'slug' => 'markup-lang-quiz',
             'title' => 'Elements and Tags Quiz',
             'description' => 'Ten questions selected from a larger bank. Questions are selected and graded on the server.',
