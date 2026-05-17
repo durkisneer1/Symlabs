@@ -149,6 +149,56 @@
   }
 }
 
+@layer components {
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: var(--muted-foreground);
+  }
+
+  .token.tag,
+  .token.selector,
+  .token.keyword {
+    color: oklch(0.48 0.16 264);
+  }
+
+  .token.attr-name,
+  .token.property,
+  .token.function {
+    color: oklch(0.55 0.14 165);
+  }
+
+  .token.attr-value,
+  .token.string,
+  .token.char {
+    color: oklch(0.55 0.15 45);
+  }
+
+  .token.punctuation,
+  .token.operator {
+    color: var(--muted-foreground);
+  }
+
+  .dark .token.tag,
+  .dark .token.selector,
+  .dark .token.keyword {
+    color: oklch(0.78 0.12 264);
+  }
+
+  .dark .token.attr-name,
+  .dark .token.property,
+  .dark .token.function {
+    color: oklch(0.78 0.12 165);
+  }
+
+  .dark .token.attr-value,
+  .dark .token.string,
+  .dark .token.char {
+    color: oklch(0.8 0.13 75);
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

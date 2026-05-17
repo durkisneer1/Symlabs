@@ -16,9 +16,13 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('quiz_id')->constrained()->cascadeOnDelete();
+            $table->string('course_slug');
+            $table->string('chapter_slug');
+            $table->string('type')->default('multiple_choice');
             $table->string('topic');
             $table->string('difficulty');
             $table->text('prompt');
+            $table->string('answer_pattern')->nullable();
             $table->unsignedInteger('position')->default(0);
         });
     }

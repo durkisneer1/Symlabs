@@ -75,7 +75,9 @@ class QuizController extends Controller
     public function edit(Request $request, Quiz $quiz): Response
     {
         $this->authorizeAdmin($request);
-        $quiz->loadCount('questions');
+        $quiz->loadCount('questions')->load([
+            'questions' => fn ($query) => $query->with('options')->orderBy('position'),
+        ]);
 
         return Inertia::render('admin/quizzes/edit', [
             'courses' => $this->courses(),
@@ -90,6 +92,27 @@ class QuizController extends Controller
                 'time_limit_minutes',
                 ]),
                 'questions_count' => $quiz->questions_count,
+                'questions' => $quiz->questions->map(fn ($question) => [
+                    'id' => $question->id,
+                    'course_slug' => $question->course_slug,
+                    'chapter_slug' => $question->chapter_slug,
+                    'type' => $question->type,
+                    'topic' => $question->topic,
+                    'difficulty' => $question->difficulty,
+                    'prompt' => $question->prompt,
+                    'answer_pattern' => $question->answer_pattern,
+                    'position' => $question->position,
+                    'options' => $question->options
+                        ->sortBy('position')
+                        ->values()
+                        ->map(fn ($option) => [
+                            'id' => $option->id,
+                            'text' => $option->text,
+                            'match_text' => $option->match_text,
+                            'is_correct' => $option->is_correct,
+                            'position' => $option->position,
+                        ]),
+                ]),
             ],
         ]);
     }

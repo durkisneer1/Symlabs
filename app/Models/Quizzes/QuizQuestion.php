@@ -9,9 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'quiz_id',
+    'course_slug',
+    'chapter_slug',
+    'type',
     'topic',
     'difficulty',
     'prompt',
+    'answer_pattern',
     'position',
 ])]
 class QuizQuestion extends Model

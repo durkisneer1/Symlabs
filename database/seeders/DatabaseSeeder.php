@@ -227,7 +227,7 @@ class DatabaseSeeder extends Seeder
             'slug' => 'markup-lang-quiz',
             'title' => 'Elements and Tags Quiz',
             'description' => 'Ten questions selected from a larger bank. Questions are selected and graded on the server.',
-            'question_count' => 10,
+            'question_count' => 1,
             'time_limit_minutes' => 15,
         ]);
 
@@ -235,7 +235,13 @@ class DatabaseSeeder extends Seeder
             $options = $questionData['options'];
             unset($questionData['options']);
 
-            $question = $quiz->questions()->create($questionData);
+            $question = $quiz->questions()->create([
+                'course_slug' => 'html',
+                'chapter_slug' => 'elements-and-tags',
+                'type' => 'multiple_choice',
+                'answer_pattern' => null,
+                ...$questionData,
+            ]);
 
             $question->options()->createMany($options);
         }

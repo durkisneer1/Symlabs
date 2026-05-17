@@ -19,6 +19,7 @@ class TeamMemberController extends Controller
     public function update(UpdateTeamMemberRequest $request, Team $team, User $user): RedirectResponse
     {
         Gate::authorize('updateMember', $team);
+        abort_if($request->user()->is($user), 403, __('You cannot change your own classroom role.'));
 
         $newRole = TeamRole::from($request->validated('role'));
 

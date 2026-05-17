@@ -25,7 +25,24 @@ export type TeamInvitation = {
   email: string;
   role: TeamRole;
   role_label: string;
+  team?: Pick<Team, 'id' | 'name' | 'slug'>;
+  inviter?: {
+    name: string;
+  };
+  expires_at?: string | null;
   created_at: string;
+};
+
+export type TeamStudent = {
+  id: number;
+  name: string;
+  email: string;
+  role_label: string;
+  joined_at: string | null;
+  last_active_at: string | null;
+  started_assignments_count: number;
+  completion_percentage: number | null;
+  overall_grade: number | null;
 };
 
 export type TeamPermissions = {

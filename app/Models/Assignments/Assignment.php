@@ -2,6 +2,7 @@
 
 namespace App\Models\Assignments;
 
+use App\Enums\AssignmentType;
 use App\Models\User;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -13,11 +14,13 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 #[Fillable([
     'team_id',
     'created_by',
+    'type',
     'course_slug',
     'assignable_type',
     'assignable_id',
     'title',
     'description',
+    'settings',
     'opens_at',
     'due_at',
     'points',
@@ -70,6 +73,8 @@ class Assignment extends Model
     protected function casts(): array
     {
         return [
+            'type' => AssignmentType::class,
+            'settings' => 'array',
             'opens_at' => 'datetime',
             'due_at' => 'datetime',
             'points' => 'decimal:2',

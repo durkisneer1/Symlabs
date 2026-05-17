@@ -17,10 +17,12 @@ return new class extends Migration
 
             $table->foreignId('team_id')->constrained()->cascadeOnDelete();
             $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+            $table->string('type')->default('quiz');
             $table->string('course_slug');
             $table->nullableMorphs('assignable');
             $table->string('title');
             $table->text('description')->nullable();
+            $table->json('settings')->nullable();
             $table->dateTime('opens_at')->nullable();
             $table->dateTime('due_at')->nullable();
             $table->decimal('points', 8, 2)->default(0);

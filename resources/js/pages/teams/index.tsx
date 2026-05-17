@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { Eye, Pencil, Plus } from 'lucide-react';
 import CreateTeamModal from '@/components/create-team-modal';
 import Heading from '@/components/heading';
@@ -18,6 +18,9 @@ type Props = {
 };
 
 export default function TeamsIndex({ teams }: Props) {
+  const { auth } = usePage().props;
+  const canCreateClassroom = auth.user.role === 'teacher';
+
   return (
     <>
       <Head title="Teams" />
@@ -32,11 +35,13 @@ export default function TeamsIndex({ teams }: Props) {
             description="Manage your teams and team memberships"
           />
 
-          <CreateTeamModal>
-            <Button data-test="teams-new-team-button">
-              <Plus /> New team
-            </Button>
-          </CreateTeamModal>
+          {canCreateClassroom ? (
+            <CreateTeamModal>
+              <Button data-test="teams-new-team-button">
+                <Plus /> New team
+              </Button>
+            </CreateTeamModal>
+          ) : null}
         </div>
 
         <div className="space-y-3">

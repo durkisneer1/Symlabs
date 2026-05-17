@@ -17,7 +17,8 @@ return new class extends Migration
 
             $table->foreignId('quiz_question_id')->constrained()->cascadeOnDelete();
             $table->string('text');
-            $table->boolean('is_correct');
+            $table->string('match_text')->nullable();
+            $table->boolean('is_correct')->default(false);
             $table->unsignedInteger('position')->default(0);
         });
     }

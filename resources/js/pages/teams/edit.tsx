@@ -1,4 +1,4 @@
-import { Form, Head, router } from '@inertiajs/react';
+import { Form, Head, router, usePage } from '@inertiajs/react';
 import { ChevronDown, Mail, UserPlus, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import CancelInvitationModal from '@/components/cancel-invitation-modal';
@@ -51,6 +51,7 @@ export default function TeamEdit({
   availableRoles,
 }: Props) {
   const getInitials = useInitials();
+  const { auth } = usePage().props;
 
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -180,7 +181,9 @@ export default function TeamEdit({
                 </div>
 
                 <div className="flex items-center gap-2">
-                  {member.role !== 'admin' && permissions.canUpdateMember ? (
+                  {member.id !== auth.user.id &&
+                  member.role !== 'admin' &&
+                  permissions.canUpdateMember ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
@@ -210,7 +213,9 @@ export default function TeamEdit({
                     <Badge variant="secondary">{member.role_label}</Badge>
                   )}
 
-                  {member.role !== 'admin' && permissions.canRemoveMember ? (
+                  {member.id !== auth.user.id &&
+                  member.role !== 'admin' &&
+                  permissions.canRemoveMember ? (
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
