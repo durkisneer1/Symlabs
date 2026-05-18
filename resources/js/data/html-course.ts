@@ -1,3 +1,5 @@
+import type { CourseActivity } from '@/types/course-activities';
+
 export type HtmlChapter = {
   number: number;
   slug: string;
@@ -9,12 +11,7 @@ export type HtmlChapter = {
     body: string[];
     example?: string;
   }>;
-  activity: {
-    prompt: string;
-    choices: string[];
-    answer: string;
-    explanation: string;
-  };
+  activities: CourseActivity[];
 };
 
 export const htmlCourse = {
@@ -62,13 +59,87 @@ export const htmlCourse = {
           example: '<article>\n  <h2>Course Update</h2>\n  <p>Chapter one is ready.</p>\n</article>',
         },
       ],
-      activity: {
-        prompt: 'In `<p>Hello</p>`, what is `Hello`?',
-        choices: ['A tag', 'Text content', 'An attribute', 'A file path'],
-        answer: 'Text content',
-        explanation:
-          'The `<p>` and `</p>` pieces are tags. The word between them is the text content of the paragraph element.',
-      },
+      activities: [
+        {
+          type: 'html-playground',
+          title: 'Make Markup Change The Box',
+          prompt:
+            'Edit the line so the preview has a paragraph with emphasized text inside it.',
+          starter: '<p>Hello HTML</p>',
+          answerIncludes: ['<p>', '<em>'],
+          success:
+            'Nice. The browser parsed your markup and changed the preview structure.',
+        },
+        {
+          type: 'file-tree',
+          title: 'A Tiny Local Project',
+          description:
+            'Even a simple HTML project has a shape. The browser opens the HTML file, and the HTML can point to nearby assets.',
+          root: {
+            name: 'my-first-site',
+            kind: 'folder',
+            children: [
+              {
+                name: 'index.html',
+                kind: 'file',
+                note: 'the page the browser opens first',
+              },
+              {
+                name: 'images',
+                kind: 'folder',
+                children: [
+                  {
+                    name: 'logo.png',
+                    kind: 'file',
+                    note: 'referenced by an <img> tag',
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        {
+          type: 'css-playground',
+          title: 'Tiny Layout Challenge',
+          prompt:
+            'Write one declaration to center the three bubbles horizontally inside the preview box.',
+          starter: 'justify-content: ;',
+          allowedProperties: ['justify-content', 'align-items', 'gap'],
+          target: 'justify-content:center',
+          success:
+            'That is the Flexbox Froggy idea in miniature: code changes the layout immediately.',
+        },
+        {
+          type: 'quick-check',
+          title: 'Quick Check',
+          prompt: 'In `<p>Hello</p>`, what is `Hello`?',
+          choices: ['A tag', 'Text content', 'An attribute', 'A file path'],
+          answer: 'Text content',
+          explanation:
+            'The `<p>` and `</p>` pieces are tags. The word between them is the text content of the paragraph element.',
+        },
+        {
+          type: 'recap',
+          title: 'Chapter Rehash',
+          items: [
+            {
+              question: 'What is a tag?',
+              answer:
+                'A tag is the markup between angle brackets, like `<p>` or `</p>`.',
+            },
+            {
+              question: 'What is an element?',
+              answer:
+                'An element is the complete structure: opening tag, content, and usually a closing tag.',
+            },
+            {
+              question: 'What do attributes do?',
+              answer:
+                'Attributes add details inside the opening tag, like `href` on an `<a>` element.',
+            },
+          ],
+        },
+      ],
     },
     {
       number: 2,
@@ -78,12 +149,7 @@ export const htmlCourse = {
         'Learn the required pieces of an HTML document, including doctype, html, head, title, and body.',
       duration: '30 min',
       sections: [],
-      activity: {
-        prompt: '',
-        choices: [],
-        answer: '',
-        explanation: '',
-      },
+      activities: [],
     },
     {
       number: 3,
@@ -93,12 +159,7 @@ export const htmlCourse = {
         'Use elements like header, main, nav, article, section, and footer to describe page regions clearly.',
       duration: '35 min',
       sections: [],
-      activity: {
-        prompt: '',
-        choices: [],
-        answer: '',
-        explanation: '',
-      },
+      activities: [],
     },
   ] satisfies HtmlChapter[],
 };

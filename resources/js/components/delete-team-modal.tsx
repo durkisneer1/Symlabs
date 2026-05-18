@@ -50,7 +50,7 @@ export default function DeleteTeamModal({ team, open, onOpenChange }: Props) {
                 <DialogTitle>Are you sure?</DialogTitle>
                 <DialogDescription>
                   This action cannot be undone. This will permanently delete the
-                  team <strong>"{team.name}"</strong>.
+                  classroom <strong>"{team.name}"</strong>.
                 </DialogDescription>
               </DialogHeader>
 
@@ -67,7 +67,7 @@ export default function DeleteTeamModal({ team, open, onOpenChange }: Props) {
                     onChange={(event) =>
                       setConfirmationName(event.target.value)
                     }
-                    placeholder="Enter team name"
+                    placeholder="Enter classroom name"
                     autoComplete="off"
                   />
                   <InputError message={errors.name} />
@@ -85,7 +85,7 @@ export default function DeleteTeamModal({ team, open, onOpenChange }: Props) {
                   data-test="delete-team-confirm"
                   disabled={!canDeleteTeam || processing}
                 >
-                  Delete team
+                  Delete classroom
                 </Button>
               </DialogFooter>
             </>

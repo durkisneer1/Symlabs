@@ -1,7 +1,13 @@
-import { type FormEvent } from 'react';
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { GraduationCap, LibraryBig, MessageSquareText, School, Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Head, Link, usePage } from '@inertiajs/react';
+import {
+  ClipboardList,
+  GraduationCap,
+  LibraryBig,
+  MessageSquareText,
+  Pencil,
+  School,
+  Users,
+} from 'lucide-react';
 import { accept as acceptInvitation } from '@/routes/invitations';
 import { dashboard } from '@/routes';
 import type {
@@ -11,8 +17,6 @@ import type {
   TeamInvitation,
   TeamStudent,
 } from '@/types';
-
-type ViewAs = 'teacher' | 'student';
 
 export default function Dashboard() {
   const {
@@ -28,19 +32,16 @@ export default function Dashboard() {
 
   return (
     <>
-      <Head title="Dashboard" />
+      <Head title="Overview" />
 
-      <div className="space-y-6 p-4">
+      <div className="min-h-[calc(100vh-5rem)] space-y-6 bg-muted/30 p-4">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-sm font-medium text-muted-foreground">
               {currentTeam?.name ?? roleLabel(effectiveRole)}
             </p>
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Dashboard
-            </h1>
+            <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
           </div>
-
         </div>
 
         {effectiveRole === 'admin' ? <AdminDashboard /> : null}
@@ -72,9 +73,11 @@ function AdminDashboard() {
     <div className="grid gap-4 md:grid-cols-2">
       <Link
         href="/admin/quizzes"
-        className="group border p-4 transition-colors hover:bg-muted/50"
+        className="app-panel group p-4 transition-colors hover:bg-muted/50"
       >
-        <LibraryBig className="mb-8 size-6 text-muted-foreground group-hover:text-foreground" />
+        <span className="ink-accent-icon mb-8">
+          <LibraryBig className="size-5" />
+        </span>
         <h2 className="font-medium">Quiz Bank</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Create reusable chapter quizzes for teachers to include in their
@@ -100,7 +103,7 @@ function TeacherDashboard({
 }) {
   if (!currentTeam) {
     return (
-      <div className="border p-4">
+      <div className="app-panel p-4">
         <School className="mb-4 size-6 text-muted-foreground" />
         <h2 className="font-medium">Classrooms</h2>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -114,34 +117,44 @@ function TeacherDashboard({
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="border p-4">
-          <School className="mb-4 size-6 text-muted-foreground" />
-          <h2 className="font-medium">{currentTeam.name}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Active classroom
-          </p>
-        </div>
-        <div className="border p-4">
-          <Users className="mb-4 size-6 text-muted-foreground" />
+      <div className="grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Link
+          href={`/${currentTeam.slug}/roster`}
+          className="app-card app-card-link block p-4"
+        >
+          <span className="ink-accent-icon mb-4">
+            <Users className="size-5 text-black" />
+          </span>
           <p className="text-2xl font-semibold">{students.length}</p>
           <p className="text-sm text-muted-foreground">
             {students.length === 1 ? 'Student' : 'Students'}
           </p>
-        </div>
-        <div className="border p-4">
-          <GraduationCap className="mb-4 size-6 text-muted-foreground" />
+        </Link>
+        <div className="app-card p-4">
+          <span className="ink-accent-icon mb-4">
+            <GraduationCap className="size-5 text-black" />
+          </span>
           <p className="text-2xl font-semibold">--</p>
           <p className="text-sm text-muted-foreground">
             Average grade once assignments exist
           </p>
         </div>
+        <Link
+          href={`/${currentTeam.slug}/questions`}
+          className="app-card app-card-link block p-4"
+        >
+          <span className="ink-accent-icon mb-4">
+            <MessageSquareText className="size-5 text-black" />
+          </span>
+          <p className="text-2xl font-semibold">{questions.length}</p>
+          <p className="text-sm text-muted-foreground">
+            {questions.filter((question) => question.response).length} answered
+          </p>
+        </Link>
       </div>
 
-      <TeacherQuestions team={currentTeam} questions={questions} />
-
-      <div className="border">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b p-4">
+      <div className="app-panel">
+        <div className="app-panel-header flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="font-medium">Assigned Coursework</h2>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -150,18 +163,19 @@ function TeacherDashboard({
           </div>
           <Link
             href={`/${currentTeam.slug}/coursework/create`}
-            className="border bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground"
+            className="border bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground shadow-[0_6px_18px_rgb(0_0_0/0.12)]"
           >
             Assign Coursework
           </Link>
         </div>
 
         {assignments.length > 0 ? (
-          <div className="divide-y">
+          <div className="space-y-2 p-3">
             {assignments.map((assignment) => (
-              <div
+              <Link
                 key={assignment.id}
-                className="grid gap-3 p-4 md:grid-cols-[minmax(0,1fr)_120px_140px_100px]"
+                href={`/${currentTeam.slug}/coursework/${assignment.id}/edit`}
+                className="app-row app-row-link grid gap-3 p-4 md:grid-cols-[minmax(0,1fr)_120px_140px_100px_80px]"
               >
                 <div>
                   <p className="font-medium">{assignment.title}</p>
@@ -172,7 +186,10 @@ function TeacherDashboard({
                       : ''}
                   </p>
                 </div>
-                <Metric label="Course" value={assignment.course_slug.toUpperCase()} />
+                <Metric
+                  label="Course"
+                  value={assignment.course_slug.toUpperCase()}
+                />
                 <Metric label="Due" value={formatDate(assignment.due_at)} />
                 <Metric
                   label="Progress"
@@ -182,59 +199,17 @@ function TeacherDashboard({
                       : 'Percentage'
                   }
                 />
-              </div>
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <Pencil className="size-3.5" />
+                  Edit
+                </div>
+              </Link>
             ))}
           </div>
         ) : (
           <p className="p-4 text-sm text-muted-foreground">
             No coursework assigned yet. Add a chapter reading, homework set, or
             quiz when you are ready.
-          </p>
-        )}
-      </div>
-
-      <div className="border">
-        <div className="border-b p-4">
-          <h2 className="font-medium">Students</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Roster and early progress signals for this classroom.
-          </p>
-        </div>
-
-        {students.length > 0 ? (
-          <div className="divide-y">
-            {students.map((student) => (
-              <Link
-                key={student.id}
-                href={`/${currentTeam.slug}/students/${student.id}`}
-                className="grid gap-3 p-4 transition-colors hover:bg-muted/50 md:grid-cols-[minmax(0,1fr)_160px_140px_120px]"
-              >
-                <div>
-                  <p className="font-medium">{student.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {student.email}
-                  </p>
-                </div>
-                <Metric label="Last worked" value="Not tracked yet" />
-                <Metric
-                  label="Started"
-                  value={`${student.started_assignments_count} assignments`}
-                />
-                <Metric
-                  label="Completion"
-                  value={
-                    student.completion_percentage === null
-                      ? '--'
-                      : `${student.completion_percentage}%`
-                  }
-                />
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <p className="p-4 text-sm text-muted-foreground">
-            No students have joined this classroom yet. Invited students will
-            appear here after accepting.
           </p>
         )}
       </div>
@@ -276,17 +251,24 @@ function StudentDashboard({
   questions: ClassroomQuestion[];
   teams: Team[];
 }) {
+  const completedAssignments = assignments.filter(
+    (assignment) => assignment.status === 'completed',
+  ).length;
+  const answeredQuestions = questions.filter(
+    (question) => question.response,
+  ).length;
+
   return (
     <div className="space-y-4">
       {pendingInvitations.length > 0 ? (
-        <div className="border p-4">
+        <div className="app-panel p-4">
           <School className="mb-4 size-6 text-muted-foreground" />
           <h2 className="font-medium">Classroom Invitations</h2>
-          <div className="mt-4 divide-y border">
+          <div className="mt-4 space-y-2">
             {pendingInvitations.map((invitation) => (
               <div
                 key={invitation.code}
-                className="flex flex-wrap items-center justify-between gap-3 p-3"
+                className="app-row flex flex-wrap items-center justify-between gap-3 p-3"
               >
                 <div>
                   <p className="font-medium">
@@ -309,195 +291,44 @@ function StudentDashboard({
         </div>
       ) : null}
 
-      <div className="border p-4">
-        <GraduationCap className="mb-4 size-6 text-muted-foreground" />
-        <h2 className="font-medium">Classroom Work</h2>
-        {currentTeam && assignments.length > 0 ? (
-          <div className="mt-4 divide-y border">
-            {assignments.map((assignment) => (
-              <div key={assignment.id} className="p-3">
-                <p className="font-medium">{assignment.title}</p>
-                <p className="text-sm text-muted-foreground">
-                  {assignment.description}
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {assignment.type_label} | Due {formatDate(assignment.due_at)}
-                </p>
-                {assignment.actions.length > 0 ? (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {assignment.actions.map((action) => (
-                      <Button key={action.href} asChild variant="outline" size="sm">
-                        <Link href={action.href}>{action.label}</Link>
-                      </Button>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="mt-1 text-sm text-muted-foreground">
-            {currentTeam
-              ? `You are viewing ${currentTeam.name}. Assigned coursework will appear here.`
-              : teams.length > 0
-                ? 'Choose a classroom from the switcher to view assigned work.'
-                : 'No classrooms yet. Join a classroom when your teacher invites you.'}
-          </p>
-        )}
-      </div>
-
       {currentTeam ? (
-        <StudentQuestions team={currentTeam} questions={questions} />
-      ) : null}
-    </div>
-  );
-}
-
-function StudentQuestions({
-  team,
-  questions,
-}: {
-  team: Team;
-  questions: ClassroomQuestion[];
-}) {
-  const form = useForm({
-    question: '',
-  });
-
-  const submit = (event: FormEvent) => {
-    event.preventDefault();
-    form.post(`/${team.slug}/questions`, {
-      preserveScroll: true,
-      onSuccess: () => form.reset(),
-    });
-  };
-
-  return (
-    <div className="border p-4">
-      <MessageSquareText className="mb-4 size-6 text-muted-foreground" />
-      <h2 className="font-medium">Ask An Anonymous Question</h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Your teacher can respond without seeing your name. Only you can see the
-        response tied to your question.
-      </p>
-
-      <form className="mt-4 space-y-3" onSubmit={submit}>
-        <textarea
-          className="min-h-24 w-full border border-input bg-transparent px-2.5 py-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50"
-          value={form.data.question}
-          onChange={(event) => form.setData('question', event.target.value)}
-          required
-        />
-        {form.errors.question ? (
-          <p className="text-sm text-destructive">{form.errors.question}</p>
-        ) : null}
-        <Button type="submit" disabled={form.processing}>
-          Send question
-        </Button>
-      </form>
-
-      {questions.length > 0 ? (
-        <div className="mt-4 divide-y border">
-          {questions.map((question) => (
-            <div key={question.id} className="space-y-3 p-3">
-              <div>
-                <p className="text-xs font-medium text-muted-foreground">
-                  You asked
-                </p>
-                <p className="mt-1 text-sm">{question.question}</p>
-              </div>
-              <div>
-                <p className="text-xs font-medium text-muted-foreground">
-                  Teacher response
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {question.response ?? 'No response yet.'}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
-function TeacherQuestions({
-  team,
-  questions,
-}: {
-  team: Team;
-  questions: ClassroomQuestion[];
-}) {
-  return (
-    <div className="border">
-      <div className="border-b p-4">
-        <h2 className="font-medium">Anonymous Questions</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Students can ask without revealing who they are.
-        </p>
-      </div>
-
-      {questions.length > 0 ? (
-        <div className="divide-y">
-          {questions.map((question) => (
-            <TeacherQuestionResponse
-              key={question.id}
-              question={question}
-              team={team}
-            />
-          ))}
+        <div className="grid max-w-2xl gap-4 sm:grid-cols-2">
+          <Link
+            href={`/${currentTeam.slug}/work`}
+            className="app-card app-card-link block p-4"
+          >
+            <span className="ink-accent-icon mb-4">
+              <ClipboardList className="size-5" />
+            </span>
+            <p className="text-2xl font-semibold">{assignments.length}</p>
+            <p className="text-sm text-muted-foreground">
+              {completedAssignments} completed
+            </p>
+          </Link>
+          <Link
+            href={`/${currentTeam.slug}/questions`}
+            className="app-card app-card-link block p-4"
+          >
+            <span className="ink-accent-icon mb-4">
+              <MessageSquareText className="size-5" />
+            </span>
+            <p className="text-2xl font-semibold">{questions.length}</p>
+            <p className="text-sm text-muted-foreground">
+              {answeredQuestions} answered
+            </p>
+          </Link>
         </div>
       ) : (
-        <p className="p-4 text-sm text-muted-foreground">
-          No anonymous questions yet.
-        </p>
+        <div className="app-panel p-4">
+          <School className="mb-4 size-6 text-muted-foreground" />
+          <h2 className="font-medium">Classroom</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {teams.length > 0
+              ? 'Choose a classroom from the switcher to view your work.'
+              : 'No classrooms yet. Join a classroom when your teacher invites you.'}
+          </p>
+        </div>
       )}
-    </div>
-  );
-}
-
-function TeacherQuestionResponse({
-  question,
-  team,
-}: {
-  question: ClassroomQuestion;
-  team: Team;
-}) {
-  const form = useForm({
-    response: question.response ?? '',
-  });
-
-  const submit = (event: FormEvent) => {
-    event.preventDefault();
-    form.post(`/${team.slug}/questions/${question.id}/respond`, {
-      preserveScroll: true,
-    });
-  };
-
-  return (
-    <div className="space-y-3 p-4">
-      <div>
-        <p className="text-xs font-medium text-muted-foreground">
-          Anonymous student asked
-        </p>
-        <p className="mt-1 text-sm">{question.question}</p>
-      </div>
-
-      <form className="space-y-2" onSubmit={submit}>
-        <textarea
-          className="min-h-20 w-full border border-input bg-transparent px-2.5 py-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50"
-          value={form.data.response}
-          onChange={(event) => form.setData('response', event.target.value)}
-          required
-        />
-        {form.errors.response ? (
-          <p className="text-sm text-destructive">{form.errors.response}</p>
-        ) : null}
-        <Button type="submit" size="sm" disabled={form.processing}>
-          {question.response ? 'Update response' : 'Send response'}
-        </Button>
-      </form>
     </div>
   );
 }
@@ -509,8 +340,10 @@ function roleLabel(role: string) {
 Dashboard.layout = (props: { currentTeam?: { slug: string } | null }) => ({
   breadcrumbs: [
     {
-      title: 'Dashboard',
-      href: props.currentTeam ? dashboard(props.currentTeam.slug) : '/dashboard',
+      title: 'Overview',
+      href: props.currentTeam
+        ? dashboard(props.currentTeam.slug)
+        : '/dashboard',
     },
   ],
 });

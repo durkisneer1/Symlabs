@@ -50,7 +50,7 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'currentTeam' => fn () => $user?->currentTeam ? $user->toUserTeam($user->currentTeam) : null,
             'teams' => fn () => $user?->toUserTeams(includeCurrent: true) ?? [],
-            'currentTeamStudents' => fn () => $user?->currentTeam
+            'currentTeamStudents' => fn () => $user?->currentTeam && $user->teamRole($user->currentTeam) === TeamRole::Teacher
                 ? $user->currentTeam
                     ->members()
                     ->wherePivot('role', TeamRole::Student->value)

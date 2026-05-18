@@ -23,7 +23,7 @@ const sidebarNavItems: NavItem[] = [
     icon: null,
   },
   {
-    title: 'Teams',
+    title: 'Classrooms',
     href: teams(),
     icon: null,
   },
@@ -39,7 +39,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
   const { auth } = usePage().props;
   const navItems =
     auth.user.role === 'admin'
-      ? sidebarNavItems.filter((item) => item.title !== 'Teams')
+      ? sidebarNavItems.filter((item) => item.title !== 'Classrooms')
       : sidebarNavItems;
 
   return (

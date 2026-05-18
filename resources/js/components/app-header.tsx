@@ -1,5 +1,12 @@
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Menu } from 'lucide-react';
+import {
+  ClipboardList,
+  LayoutGrid,
+  Menu,
+  MessageSquareText,
+  Settings2,
+  Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import AppLogoIcon from '@/components/app-logo-icon';
 import { Breadcrumbs } from '@/components/breadcrumbs';
@@ -47,11 +54,40 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
 
   const mainNavItems: NavItem[] = [
     {
-      title: 'Dashboard',
+      title: 'Overview',
       href: dashboardUrl,
       icon: LayoutGrid,
     },
   ];
+
+  if (auth.user.role === 'student' && currentTeam) {
+    mainNavItems.push({
+      title: 'Work',
+      href: `/${currentTeam.slug}/work`,
+      icon: ClipboardList,
+    });
+  }
+
+  if (auth.user.role === 'teacher' && currentTeam) {
+    mainNavItems.push({
+      title: 'Roster',
+      href: `/${currentTeam.slug}/roster`,
+      icon: Users,
+    });
+    mainNavItems.push({
+      title: 'Classroom',
+      href: `/${currentTeam.slug}/classroom`,
+      icon: Settings2,
+    });
+  }
+
+  if (auth.user.role !== 'admin' && currentTeam) {
+    mainNavItems.push({
+      title: 'Q&A',
+      href: `/${currentTeam.slug}/questions`,
+      icon: MessageSquareText,
+    });
+  }
 
   return (
     <>

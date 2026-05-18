@@ -16,18 +16,28 @@ Route::get('/courses/html/{chapter}', fn (string $chapter) => Inertia::render('c
     'chapterSlug' => $chapter,
 ]))->whereIn('chapter', ['elements-and-tags', 'document-structure', 'semantic-html'])->name('courses.html.chapter');
 Route::inertia('/courses/css', 'courses/course-shell', ['course' => 'CSS'])->name('courses.css');
-Route::inertia('/courses/php', 'courses/course-shell', ['course' => 'PHP'])->name('courses.php');
+Route::inertia('/courses/php', 'courses/php-course')->name('courses.php');
+Route::get('/courses/php/{chapter}', fn (string $chapter) => Inertia::render('courses/php-chapter', [
+    'chapterSlug' => $chapter,
+]))->whereIn('chapter', ['variables-and-flow'])->name('courses.php.chapter');
 Route::inertia('/courses/mysql', 'courses/course-shell', ['course' => 'MySQL'])->name('courses.mysql');
 
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
     ->group(function () {
         Route::inertia('dashboard', 'dashboard')->name('dashboard');
+        Route::inertia('work', 'classroom-work')->name('work.index');
+        Route::inertia('roster', 'classroom-roster')->name('roster.index');
+        Route::inertia('classroom', 'classroom-settings')->name('classroom.settings');
         Route::get('coursework/create', [CourseworkController::class, 'create'])->name('coursework.create');
         Route::post('coursework', [CourseworkController::class, 'store'])->name('coursework.store');
+        Route::get('coursework/{assignment}/edit', [CourseworkController::class, 'edit'])->name('coursework.edit');
+        Route::put('coursework/{assignment}', [CourseworkController::class, 'update'])->name('coursework.update');
         Route::get('students/{student}', [StudentAnalyticsController::class, 'show'])->name('students.show');
+        Route::inertia('questions', 'classroom-questions')->name('questions.index');
         Route::post('questions', [ClassroomQuestionController::class, 'store'])->name('questions.store');
         Route::post('questions/{question}/respond', [ClassroomQuestionController::class, 'respond'])->name('questions.respond');
+        Route::delete('questions/{question}', [ClassroomQuestionController::class, 'destroy'])->name('questions.destroy');
     });
 
 Route::middleware(['auth'])->group(function () {

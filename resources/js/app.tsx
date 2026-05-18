@@ -1,4 +1,5 @@
 import { createInertiaApp } from '@inertiajs/react';
+import FlashToastListener from '@/components/flash-toast-listener';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
@@ -30,6 +31,7 @@ createInertiaApp({
     return (
       <TooltipProvider delayDuration={0}>
         {app}
+        <FlashToastListener />
         <Toaster />
       </TooltipProvider>
     );

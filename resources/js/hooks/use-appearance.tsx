@@ -30,7 +30,15 @@ const getStoredAppearance = (): Appearance => {
 };
 
 const isDarkMode = (): boolean => {
-  return false;
+  if (currentAppearance === 'dark') {
+    return true;
+  }
+
+  if (currentAppearance === 'light') {
+    return false;
+  }
+
+  return mediaQuery()?.matches ?? false;
 };
 
 const applyTheme = (): void => {
@@ -38,8 +46,10 @@ const applyTheme = (): void => {
     return;
   }
 
-  document.documentElement.classList.remove('dark');
-  document.documentElement.style.colorScheme = 'light';
+  const dark = isDarkMode();
+
+  document.documentElement.classList.toggle('dark', dark);
+  document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
 };
 
 const subscribe = (callback: () => void) => {
@@ -58,7 +68,14 @@ const mediaQuery = (): MediaQueryList | null => {
   return window.matchMedia('(prefers-color-scheme: dark)');
 };
 
-const handleSystemThemeChange = (): void => applyTheme();
+const handleSystemThemeChange = (): void => {
+  if (currentAppearance !== 'system') {
+    return;
+  }
+
+  applyTheme();
+  notify();
+};
 
 export function initializeTheme(): void {
   if (typeof window === 'undefined') {

@@ -85,7 +85,7 @@ export function TeamSwitcher({ inHeader = false }: TeamSwitcherProps) {
                   : 'truncate font-semibold'
               }
             >
-              {currentTeam?.name ?? 'Select team'}
+              {currentTeam?.name ?? 'Select classroom'}
             </span>
           </div>
           <ChevronsUpDown
@@ -108,7 +108,7 @@ export function TeamSwitcher({ inHeader = false }: TeamSwitcherProps) {
         sideOffset={inHeader ? undefined : 4}
       >
         <DropdownMenuLabel className="text-xs text-muted-foreground">
-          Teams
+          Classrooms
         </DropdownMenuLabel>
         {teams.map((team) => (
           <DropdownMenuItem

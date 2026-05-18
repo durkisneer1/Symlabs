@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import CodeBlock from '@/components/code-block';
-import InlineCodeText from '@/components/inline-code-text';
+import ChapterSectionNav, { sectionId } from '@/components/chapter-section-nav';
+import CourseActivityBlock from '@/components/course-activity';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -26,7 +26,18 @@ export default function HtmlChapter({ chapterSlug }: Props) {
   );
   const previousChapter = htmlCourse.chapters[chapterIndex - 1] ?? null;
   const nextChapter = htmlCourse.chapters[chapterIndex + 1] ?? null;
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const navItems = [
+    ...chapter.sections.map((section) => ({
+      id: sectionId(section.title),
+      title: section.title,
+      depth: 0,
+    })),
+    ...chapter.activities.map((activity) => ({
+      id: sectionId(activity.title),
+      title: activity.title,
+      depth: 1,
+    })),
+  ];
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -64,12 +75,19 @@ export default function HtmlChapter({ chapterSlug }: Props) {
           {chapter.sections.length > 0 ? (
             <div className="space-y-6">
               {chapter.sections.map((section) => (
-                <section key={section.title} className="space-y-3">
+                <section
+                  key={section.title}
+                  id={sectionId(section.title)}
+                  className="scroll-mt-6 space-y-3"
+                >
                   <h2 className="text-xl font-semibold tracking-tight">
                     {section.title}
                   </h2>
                   {section.body.map((paragraph) => (
-                    <p key={paragraph} className="leading-7 text-muted-foreground">
+                    <p
+                      key={paragraph}
+                      className="leading-7 text-muted-foreground"
+                    >
                       {paragraph}
                     </p>
                   ))}
@@ -91,46 +109,15 @@ export default function HtmlChapter({ chapterSlug }: Props) {
             </Card>
           )}
 
-          {chapter.activity.prompt ? (
-            <Card>
-              <CardHeader>
-                <CardTitle>Quick Check</CardTitle>
-                <CardDescription>
-                  <InlineCodeText text={chapter.activity.prompt} />
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="grid gap-2">
-                  {chapter.activity.choices.map((choice) => {
-                    const isSelected = selectedAnswer === choice;
-                    const isCorrect = choice === chapter.activity.answer;
-
-                    return (
-                      <Button
-                        key={choice}
-                        type="button"
-                        variant={isSelected ? 'secondary' : 'outline'}
-                        className="justify-start"
-                        onClick={() => setSelectedAnswer(choice)}
-                      >
-                        {isSelected && isCorrect ? <CheckCircle2 /> : null}
-                        {choice}
-                      </Button>
-                    );
-                  })}
-                </div>
-
-                {selectedAnswer ? (
-                  <p className="text-sm text-muted-foreground">
-                    {selectedAnswer === chapter.activity.answer
-                      ? 'Correct. '
-                      : 'Not quite. '}
-                    <InlineCodeText text={chapter.activity.explanation} />
-                  </p>
-                ) : null}
-              </CardContent>
-            </Card>
-          ) : null}
+          {chapter.activities.map((activity) => (
+            <section
+              key={`${activity.type}-${activity.title}`}
+              id={sectionId(activity.title)}
+              className="scroll-mt-6"
+            >
+              <CourseActivityBlock activity={activity} />
+            </section>
+          ))}
 
           <Separator />
 
@@ -155,26 +142,7 @@ export default function HtmlChapter({ chapterSlug }: Props) {
         </article>
 
         <aside className="hidden lg:block">
-          <Card className="sticky top-4">
-            <CardHeader>
-              <CardTitle>HTML Chapters</CardTitle>
-              <CardDescription>Jump to another chapter.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {htmlCourse.chapters.map((item) => (
-                <Button
-                  key={item.slug}
-                  asChild
-                  variant={item.slug === chapter.slug ? 'secondary' : 'ghost'}
-                  className="w-full justify-start"
-                >
-                  <Link href={`/courses/html/${item.slug}`}>
-                    {item.number}. {item.title}
-                  </Link>
-                </Button>
-              ))}
-            </CardContent>
-          </Card>
+          <ChapterSectionNav items={navItems} />
         </aside>
       </main>
     </>

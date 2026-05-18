@@ -1,10 +1,12 @@
 import Prism from 'prismjs';
 import 'prismjs/components/prism-markup';
+import 'prismjs/components/prism-markup-templating';
+import 'prismjs/components/prism-php';
 import { cn } from '@/lib/utils';
 
 type CodeBlockProps = {
   code: string;
-  language?: 'markup' | 'html';
+  language?: 'markup' | 'html' | 'php';
   className?: string;
 };
 
@@ -19,7 +21,7 @@ export default function CodeBlock({
   return (
     <pre
       className={cn(
-        'overflow-x-auto border bg-muted p-4 text-sm leading-6',
+        'code-block-sunken overflow-x-auto border bg-muted p-4 text-sm leading-6',
         className,
       )}
     >

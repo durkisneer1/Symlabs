@@ -2,6 +2,7 @@ import { type FormEvent } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
+import type { DateRange } from 'react-day-picker';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -39,32 +40,50 @@ type QuizOption = {
 
 type Props = {
   team: Team;
+  assignment?: CourseworkAssignment;
   courses: CourseOption[];
   chapters: Record<string, ContentOption[]>;
   homeworkSets: Record<string, ContentOption[]>;
   quizzes: QuizOption[];
 };
 
+type CourseworkAssignment = {
+  id: number;
+  type: AssignmentType;
+  course_slug: string;
+  title: string;
+  opens_at: string;
+  due_at: string;
+  quiz_id: string;
+  chapter_slugs: string[];
+  homework_slug: string;
+  question_count: number;
+  difficulty: string;
+  attempts_allowed: number;
+};
+
 export default function CreateCoursework({
   team,
+  assignment,
   courses,
   chapters,
   homeworkSets,
   quizzes,
 }: Props) {
   const form = useForm({
-    type: 'quiz' as AssignmentType,
-    course_slug: 'html',
-    title: '',
-    opens_at: '',
-    due_at: '',
-    quiz_id: '',
-    chapter_slugs: [] as string[],
-    homework_slug: '',
-    question_count: 1,
-    difficulty: 'any',
-    attempts_allowed: 1,
+    type: assignment?.type ?? ('quiz' as AssignmentType),
+    course_slug: assignment?.course_slug ?? 'html',
+    title: assignment?.title ?? '',
+    opens_at: assignment?.opens_at ?? '',
+    due_at: assignment?.due_at ?? '',
+    quiz_id: assignment?.quiz_id ?? '',
+    chapter_slugs: assignment?.chapter_slugs ?? ([] as string[]),
+    homework_slug: assignment?.homework_slug ?? '',
+    question_count: assignment?.question_count ?? 1,
+    difficulty: assignment?.difficulty ?? 'any',
+    attempts_allowed: assignment?.attempts_allowed ?? 1,
   });
+  const isEditing = Boolean(assignment);
 
   const courseChapters = chapters[form.data.course_slug] ?? [];
   const courseHomework = homeworkSets[form.data.course_slug] ?? [];
@@ -77,6 +96,13 @@ export default function CreateCoursework({
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
+
+    if (assignment) {
+      form.put(`/${team.slug}/coursework/${assignment.id}`);
+
+      return;
+    }
+
     form.post(`/${team.slug}/coursework`);
   };
 
@@ -110,12 +136,12 @@ export default function CreateCoursework({
 
   return (
     <>
-      <Head title="Assign Coursework" />
+      <Head title={isEditing ? 'Edit Coursework' : 'Assign Coursework'} />
 
       <form className="max-w-3xl space-y-6 p-4" onSubmit={submit}>
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">
-            Assign Coursework
+            {isEditing ? 'Edit Coursework' : 'Assign Coursework'}
           </h1>
           <p className="text-sm text-muted-foreground">
             Choose classroom work for {team.name}.
@@ -296,24 +322,23 @@ export default function CreateCoursework({
           />
         ) : null}
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <DateField
-            label="Opens"
-            value={form.data.opens_at}
-            error={form.errors.opens_at}
-            onChange={(value) => form.setData('opens_at', value)}
-          />
-          <DateField
-            label="Due"
-            value={form.data.due_at}
-            error={form.errors.due_at}
-            onChange={(value) => form.setData('due_at', value)}
-          />
-        </div>
+        <DateRangeField
+          opensAt={form.data.opens_at}
+          dueAt={form.data.due_at}
+          opensError={form.errors.opens_at}
+          dueError={form.errors.due_at}
+          onChange={(opensAt, dueAt) =>
+            form.setData({
+              ...form.data,
+              opens_at: opensAt,
+              due_at: dueAt,
+            })
+          }
+        />
 
         <div className="flex items-center gap-2">
           <Button type="submit" disabled={form.processing}>
-            Assign coursework
+            {isEditing ? 'Save coursework' : 'Assign coursework'}
           </Button>
           <Button asChild variant="outline">
             <Link href={`/${team.slug}/dashboard`}>Cancel</Link>
@@ -324,36 +349,137 @@ export default function CreateCoursework({
   );
 }
 
-function DateField({
-  label,
-  value,
-  error,
+function DateRangeField({
+  opensAt,
+  dueAt,
+  opensError,
+  dueError,
   onChange,
 }: {
-  label: string;
-  value: string;
-  error?: string;
-  onChange: (value: string) => void;
+  opensAt: string;
+  dueAt: string;
+  opensError?: string;
+  dueError?: string;
+  onChange: (opensAt: string, dueAt: string) => void;
 }) {
-  const selected = value ? new Date(`${value}T00:00:00`) : undefined;
+  const selected: DateRange = {
+    from: dateFromDateTime(opensAt),
+    to: dateFromDateTime(dueAt),
+  };
+  const opensTime = timeFromDateTime(opensAt, '08:00');
+  const dueTime = timeFromDateTime(dueAt, '23:59');
+
+  const setRange = (range: DateRange | undefined) => {
+    const nextOpensAt = range?.from
+      ? composeDateTime(range.from, opensTime)
+      : '';
+    const nextDueAt = range?.to ? composeDateTime(range.to, dueTime) : '';
+
+    onChange(nextOpensAt, nextDueAt);
+  };
+
+  const setOpensTime = (time: string) => {
+    const opensDate = dateFromDateTime(opensAt);
+
+    if (!opensDate) {
+      return;
+    }
+
+    onChange(composeDateTime(opensDate, time), dueAt);
+  };
+
+  const setDueTime = (time: string) => {
+    const dueDate = dateFromDateTime(dueAt);
+
+    if (!dueDate) {
+      return;
+    }
+
+    onChange(opensAt, composeDateTime(dueDate, time));
+  };
 
   return (
     <div className="grid gap-2">
-      <Label>{label}</Label>
+      <Label>Availability</Label>
       <div className="border">
         <div className="flex items-center gap-2 border-b p-2 text-sm text-muted-foreground">
           <CalendarIcon className="size-4" />
-          {selected ? format(selected, 'PPP') : 'No date selected'}
+          {availabilityLabel(opensAt, dueAt)}
         </div>
         <Calendar
-          mode="single"
+          className="w-full"
+          mode="range"
+          defaultMonth={selected.from}
+          numberOfMonths={2}
           selected={selected}
-          onSelect={(date) => onChange(date ? format(date, 'yyyy-MM-dd') : '')}
+          onSelect={setRange}
         />
+        <div className="grid gap-3 border-t p-3 sm:grid-cols-2">
+          <div className="grid gap-2">
+            <Label htmlFor="opens-time">Opens time</Label>
+            <Input
+              id="opens-time"
+              type="time"
+              value={opensTime}
+              disabled={!selected.from}
+              onChange={(event) => setOpensTime(event.target.value)}
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="due-time">Due time</Label>
+            <Input
+              id="due-time"
+              type="time"
+              value={dueTime}
+              disabled={!selected.to}
+              onChange={(event) => setDueTime(event.target.value)}
+            />
+          </div>
+        </div>
       </div>
-      <InputError message={error} />
+      <InputError message={opensError} />
+      <InputError message={dueError} />
     </div>
   );
+}
+
+function dateFromDateTime(value: string) {
+  const datePart = value.slice(0, 10);
+
+  if (!datePart) {
+    return undefined;
+  }
+
+  return new Date(`${datePart}T00:00:00`);
+}
+
+function timeFromDateTime(value: string, fallback: string) {
+  const timePart = value.match(/T(\d{2}:\d{2})/)?.[1];
+
+  return timePart ?? fallback;
+}
+
+function composeDateTime(date: Date, time: string) {
+  return `${format(date, 'yyyy-MM-dd')}T${time}`;
+}
+
+function availabilityLabel(opensAt: string, dueAt: string) {
+  const opensDate = dateFromDateTime(opensAt);
+  const dueDate = dateFromDateTime(dueAt);
+
+  if (!opensDate && !dueDate) {
+    return 'No date range selected';
+  }
+
+  if (opensDate && !dueDate) {
+    return `Opens ${format(opensDate, 'PP')} at ${timeFromDateTime(opensAt, '08:00')}`;
+  }
+
+  if (!opensDate || !dueDate) {
+    return 'Incomplete date range';
+  }
+
+  return `${format(opensDate, 'PP')} ${timeFromDateTime(opensAt, '08:00')} to ${format(dueDate, 'PP')} ${timeFromDateTime(dueAt, '23:59')}`;
 }
 
 function AttemptsInput({
@@ -392,14 +518,17 @@ function descriptionFor(type: AssignmentType) {
   return 'Take the quiz.';
 }
 
-CreateCoursework.layout = (props: { team?: Team }) => ({
+CreateCoursework.layout = (props: {
+  team?: Team;
+  assignment?: CourseworkAssignment;
+}) => ({
   breadcrumbs: [
     {
       title: 'Dashboard',
       href: props.team ? `/${props.team.slug}/dashboard` : '/dashboard',
     },
     {
-      title: 'Assign Coursework',
+      title: props.assignment ? 'Edit Coursework' : 'Assign Coursework',
       href: '#',
     },
   ],

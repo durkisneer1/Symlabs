@@ -1,5 +1,12 @@
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, LibraryBig } from 'lucide-react';
+import {
+  ClipboardList,
+  LayoutGrid,
+  LibraryBig,
+  MessageSquareText,
+  Settings2,
+  Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -26,11 +33,40 @@ export function AppSidebar() {
 
   const mainNavItems: NavItem[] = [
     {
-      title: 'Dashboard',
+      title: 'Overview',
       href: dashboardUrl,
       icon: LayoutGrid,
     },
   ];
+
+  if (userRole === 'student' && currentTeam) {
+    mainNavItems.push({
+      title: 'Work',
+      href: `/${currentTeam.slug}/work`,
+      icon: ClipboardList,
+    });
+  }
+
+  if (userRole === 'teacher' && currentTeam) {
+    mainNavItems.push({
+      title: 'Roster',
+      href: `/${currentTeam.slug}/roster`,
+      icon: Users,
+    });
+    mainNavItems.push({
+      title: 'Classroom',
+      href: `/${currentTeam.slug}/classroom`,
+      icon: Settings2,
+    });
+  }
+
+  if (userRole !== 'admin' && currentTeam) {
+    mainNavItems.push({
+      title: 'Q&A',
+      href: `/${currentTeam.slug}/questions`,
+      icon: MessageSquareText,
+    });
+  }
 
   if (userRole === 'admin') {
     mainNavItems.push(

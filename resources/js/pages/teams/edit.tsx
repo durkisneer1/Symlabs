@@ -97,15 +97,15 @@ export default function TeamEdit({
             <>
               <Heading
                 variant="small"
-                title="Team settings"
-                description="Update your team name and settings"
+                title="Classroom settings"
+                description="Update your classroom name and settings"
               />
 
               <Form {...update.form(team.slug)} className="space-y-6">
                 {({ errors, processing }) => (
                   <>
                     <div className="grid gap-2">
-                      <Label htmlFor="name">Team name</Label>
+                      <Label htmlFor="name">Classroom name</Label>
                       <Input
                         id="name"
                         name="name"
@@ -140,10 +140,10 @@ export default function TeamEdit({
           <div className="flex items-center justify-between">
             <Heading
               variant="small"
-              title="Team members"
+              title="Classroom members"
               description={
                 permissions.canCreateInvitation
-                  ? 'Manage who belongs to this team'
+                  ? 'Manage who belongs to this classroom'
                   : ''
               }
             />
@@ -296,8 +296,8 @@ export default function TeamEdit({
           <div className="space-y-6">
             <Heading
               variant="small"
-              title="Delete team"
-              description="Permanently delete your team"
+              title="Delete classroom"
+              description="Permanently delete your classroom"
             />
             <div className="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
               <div className="relative space-y-0.5 text-red-600 dark:text-red-100">
@@ -311,7 +311,7 @@ export default function TeamEdit({
                 data-test="delete-team-button"
                 onClick={() => setDeleteDialogOpen(true)}
               >
-                Delete team
+                Delete classroom
               </Button>
             </div>
           </div>
@@ -355,7 +355,7 @@ export default function TeamEdit({
 TeamEdit.layout = (props: { team: { name: string; slug: string } }) => ({
   breadcrumbs: [
     {
-      title: 'Teams',
+      title: 'Classrooms',
       href: index(),
     },
     {

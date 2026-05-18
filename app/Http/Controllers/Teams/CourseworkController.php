@@ -67,23 +67,7 @@ class CourseworkController extends Controller
 
         return Inertia::render('teacher/coursework/create', [
             'team' => $request->user()->toUserTeam($currentTeam),
-            'courses' => $this->courses(),
-            'chapters' => self::CHAPTERS,
-            'homeworkSets' => self::HOMEWORK,
-            'quizzes' => Quiz::query()
-                ->withCount('questions')
-                ->orderBy('course_slug')
-                ->orderBy('title')
-                ->get(['id', 'course_slug', 'title', 'description', 'question_count', 'time_limit_minutes'])
-                ->map(fn (Quiz $quiz) => [
-                    'id' => $quiz->id,
-                    'course_slug' => $quiz->course_slug,
-                    'title' => $quiz->title,
-                    'description' => $quiz->description,
-                    'question_count' => $quiz->question_count,
-                    'time_limit_minutes' => $quiz->time_limit_minutes,
-                    'questions_count' => $quiz->questions_count,
-                ]),
+            ...$this->formOptions(),
         ]);
     }
 
@@ -117,6 +101,50 @@ class CourseworkController extends Controller
     }
 
     /**
+     * Show the coursework edit form.
+     */
+    public function edit(Request $request, Team $currentTeam, Assignment $assignment): Response
+    {
+        abort_unless($request->user()?->toTeamPermissions($currentTeam)->canAssignCoursework, 403);
+        abort_unless($assignment->team_id === $currentTeam->id, 404);
+
+        return Inertia::render('teacher/coursework/create', [
+            'team' => $request->user()->toUserTeam($currentTeam),
+            'assignment' => $this->assignmentPayload($assignment),
+            ...$this->formOptions(),
+        ]);
+    }
+
+    /**
+     * Update assigned coursework for the classroom.
+     */
+    public function update(StoreCourseworkRequest $request, Team $currentTeam, Assignment $assignment): RedirectResponse
+    {
+        abort_unless($assignment->team_id === $currentTeam->id, 404);
+
+        $data = $request->validated();
+        $type = AssignmentType::from($data['type']);
+        $quiz = $type === AssignmentType::Quiz
+            ? Quiz::findOrFail($data['quiz_id'])
+            : null;
+
+        $assignment->update([
+            'type' => $type,
+            'course_slug' => $data['course_slug'],
+            'assignable_type' => $quiz ? $quiz->getMorphClass() : null,
+            'assignable_id' => $quiz?->id,
+            'title' => $data['title'],
+            'description' => $this->descriptionFor($type),
+            'settings' => $this->settingsFor($type, $data),
+            'opens_at' => $data['opens_at'] ?? null,
+            'due_at' => $data['due_at'] ?? null,
+            'points' => 0,
+        ]);
+
+        return to_route('dashboard', ['current_team' => $currentTeam->slug]);
+    }
+
+    /**
      * Get supported course options.
      *
      * @return array<int, array{value: string, label: string}>
@@ -130,6 +158,56 @@ class CourseworkController extends Controller
             ])
             ->values()
             ->all();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function formOptions(): array
+    {
+        return [
+            'courses' => $this->courses(),
+            'chapters' => self::CHAPTERS,
+            'homeworkSets' => self::HOMEWORK,
+            'quizzes' => Quiz::query()
+                ->withCount('questions')
+                ->orderBy('course_slug')
+                ->orderBy('title')
+                ->get(['id', 'course_slug', 'title', 'description', 'question_count', 'time_limit_minutes'])
+                ->map(fn (Quiz $quiz) => [
+                    'id' => $quiz->id,
+                    'course_slug' => $quiz->course_slug,
+                    'title' => $quiz->title,
+                    'description' => $quiz->description,
+                    'question_count' => $quiz->question_count,
+                    'time_limit_minutes' => $quiz->time_limit_minutes,
+                    'questions_count' => $quiz->questions_count,
+                ]),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function assignmentPayload(Assignment $assignment): array
+    {
+        return [
+            'id' => $assignment->id,
+            'type' => $assignment->type->value,
+            'course_slug' => $assignment->course_slug,
+            'title' => $assignment->title,
+            'opens_at' => $assignment->opens_at?->format('Y-m-d\TH:i') ?? '',
+            'due_at' => $assignment->due_at?->format('Y-m-d\TH:i') ?? '',
+            'quiz_id' => $assignment->type === AssignmentType::Quiz
+                ? (string) $assignment->assignable_id
+                : '',
+            'chapter_slugs' => $assignment->settings['chapter_slugs'] ?? [],
+            'homework_slug' => $assignment->settings['homework_slug'] ?? '',
+            'question_count' => $assignment->settings['question_count'] ?? 1,
+            'difficulty' => $assignment->settings['difficulty'] ?? 'any',
+            'attempts_allowed' => $assignment->settings['attempts_allowed']
+                ?? ($assignment->type === AssignmentType::Quiz ? 1 : 3),
+        ];
     }
 
     /**

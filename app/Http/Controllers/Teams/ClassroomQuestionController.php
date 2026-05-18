@@ -8,6 +8,7 @@ use App\Models\ClassroomQuestion;
 use App\Models\Team;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ClassroomQuestionController extends Controller
 {
@@ -28,7 +29,12 @@ class ClassroomQuestionController extends Controller
             'question' => $data['question'],
         ]);
 
-        return to_route('dashboard', ['current_team' => $currentTeam->slug]);
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => __('Question sent.'),
+        ]);
+
+        return to_route('questions.index', ['current_team' => $currentTeam->slug]);
     }
 
     /**
@@ -49,6 +55,29 @@ class ClassroomQuestionController extends Controller
             'responded_at' => now(),
         ]);
 
-        return to_route('dashboard', ['current_team' => $currentTeam->slug]);
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => __('Response saved.'),
+        ]);
+
+        return to_route('questions.index', ['current_team' => $currentTeam->slug]);
+    }
+
+    /**
+     * Remove a student's own anonymous question.
+     */
+    public function destroy(Request $request, Team $currentTeam, ClassroomQuestion $question): RedirectResponse
+    {
+        abort_unless($question->team_id === $currentTeam->id, 404);
+        abort_unless($question->user_id === $request->user()?->id, 403);
+
+        $question->delete();
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => __('Question removed.'),
+        ]);
+
+        return to_route('questions.index', ['current_team' => $currentTeam->slug]);
     }
 }
