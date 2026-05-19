@@ -1,5 +1,6 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Users } from 'lucide-react';
+import { Eye, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import {
   Table,
@@ -105,18 +106,14 @@ function RosterTable({
                   <TableHead>Completion</TableHead>
                   <TableHead>Grade</TableHead>
                   <TableHead>Last active</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {students.map((student) => (
                   <TableRow key={student.id}>
                     <TableCell className="whitespace-normal">
-                      <Link
-                        href={`/${team.slug}/students/${student.id}`}
-                        className="font-medium hover:text-primary"
-                      >
-                        {student.name}
-                      </Link>
+                      <div className="font-medium">{student.name}</div>
                       <div className="text-muted-foreground">
                         {student.email}
                       </div>
@@ -138,6 +135,14 @@ function RosterTable({
                         : `${student.overall_grade}%`}
                     </TableCell>
                     <TableCell>{formatDate(student.last_active_at)}</TableCell>
+                    <TableCell className="text-right">
+                      <Button asChild size="sm" variant="outline">
+                        <Link href={`/${team.slug}/students/${student.id}`}>
+                          <Eye />
+                          View
+                        </Link>
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
 use App\Enums\TeamRole;
+use App\Models\Assignments\Assignment;
 use App\Models\SupportTicket;
 use App\Models\User;
+use App\Support\ClassroomGrading;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -27,6 +29,25 @@ class SupportTicketController extends Controller
             'supportTeachers' => $user->role === UserRole::Admin
                 ? $this->supportTeachers()
                 : [],
+        ]);
+    }
+
+    /**
+     * Show an admin-only course summary for a teacher's classrooms.
+     */
+    public function teacher(Request $request, User $teacher): Response
+    {
+        abort_unless($request->user()?->role === UserRole::Admin, 403);
+        abort_unless($teacher->role === UserRole::Teacher, 404);
+
+        return Inertia::render('support-teacher', [
+            'supportTeacher' => [
+                'id' => $teacher->id,
+                'name' => $teacher->name,
+                'email' => $teacher->email,
+                'created_at' => $teacher->created_at?->toISOString(),
+            ],
+            'classrooms' => $this->teacherClassrooms($teacher),
         ]);
     }
 
@@ -125,9 +146,8 @@ class SupportTicketController extends Controller
         return User::query()
             ->with(['teams' => fn ($query) => $query
                 ->wherePivot('role', TeamRole::Teacher->value)
-                ->with(['members' => fn ($members) => $members
-                    ->wherePivot('role', TeamRole::Student->value)
-                    ->orderBy('name')])
+                ->withCount(['members as students_count' => fn ($members) => $members
+                    ->where('team_members.role', TeamRole::Student->value)])
                 ->orderBy('name')])
             ->where('role', UserRole::Teacher->value)
             ->orderBy('name')
@@ -141,14 +161,78 @@ class SupportTicketController extends Controller
                     'id' => $team->id,
                     'name' => $team->name,
                     'slug' => $team->slug,
-                    'students' => $team->members->map(fn (User $student) => [
-                        'id' => $student->id,
-                        'name' => $student->name,
-                        'email' => $student->email,
-                    ])->values()->all(),
+                    'students_count' => $team->students_count,
                 ])->values()->all(),
                 'created_at' => $user->created_at?->toISOString(),
             ])
+            ->all();
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    protected function teacherClassrooms(User $teacher): array
+    {
+        return $teacher->teams()
+            ->wherePivot('role', TeamRole::Teacher->value)
+            ->with([
+                'members' => fn ($members) => $members
+                    ->wherePivot('role', TeamRole::Student->value)
+                    ->orderBy('name'),
+            ])
+            ->orderBy('name')
+            ->get()
+            ->map(function ($team) {
+                $assignments = Assignment::query()
+                    ->where('team_id', $team->id)
+                    ->with(['submissions'])
+                    ->orderBy('due_at')
+                    ->orderBy('created_at')
+                    ->get();
+
+                $students = $team->members->map(function (User $student) use ($team) {
+                    $summary = ClassroomGrading::summaryFor($team, $student);
+
+                    return [
+                        'id' => $student->id,
+                        'name' => $student->name,
+                        'email' => $student->email,
+                        'started_assignments_count' => $summary['started_assignments_count'],
+                        'completion_percentage' => $summary['completion_percentage'],
+                        'overall_grade' => $summary['overall_grade'],
+                        'last_worked_at' => $summary['last_worked_at'],
+                    ];
+                })->values();
+
+                return [
+                    'id' => $team->id,
+                    'name' => $team->name,
+                    'slug' => $team->slug,
+                    'semester_starts_at' => $team->semester_starts_at?->toISOString(),
+                    'semester_ends_at' => $team->semester_ends_at?->toISOString(),
+                    'semester_active' => $team->semesterIsActive(),
+                    'grade_weights' => ClassroomGrading::weightsFor($team),
+                    'average_class_score' => $students
+                        ->pluck('overall_grade')
+                        ->filter(fn ($grade) => $grade !== null)
+                        ->avg(),
+                    'students' => $students->all(),
+                    'assignments' => $assignments->map(fn (Assignment $assignment) => [
+                        'id' => $assignment->id,
+                        'title' => $assignment->title,
+                        'type' => $assignment->type->value,
+                        'course_slug' => $assignment->course_slug,
+                        'opens_at' => $assignment->opens_at?->toISOString(),
+                        'due_at' => $assignment->due_at?->toISOString(),
+                        'points' => $assignment->points,
+                        'submissions_count' => $assignment->submissions->count(),
+                        'completed_submissions_count' => $assignment->submissions
+                            ->where('status', 'completed')
+                            ->count(),
+                    ])->values()->all(),
+                ];
+            })
+            ->values()
             ->all();
     }
 }

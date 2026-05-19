@@ -1,5 +1,5 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Plus, Trash2 } from 'lucide-react';
+import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 type Quiz = {
@@ -78,12 +78,7 @@ export default function AdminQuizzesIndex({
               {quizzes.map((quiz) => (
                 <tr key={quiz.id} className="border-b last:border-b-0">
                   <td className="px-3 py-2">
-                    <Link
-                      href={`${baseUrl}/${quiz.id}/edit`}
-                      className="font-medium hover:underline"
-                    >
-                      {quiz.title}
-                    </Link>
+                    <p className="font-medium">{quiz.title}</p>
                     {quiz.question_count > quiz.questions_count ? (
                       <p className="text-xs text-destructive">
                         Invalid: asks for {quiz.question_count} questions, but
@@ -100,15 +95,23 @@ export default function AdminQuizzesIndex({
                     {quiz.course_slug}
                   </td>
                   <td className="px-3 py-2">{quiz.questions_count}</td>
-                  <td className="px-3 py-2 text-right">
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      onClick={() => router.delete(`${baseUrl}/${quiz.id}`)}
-                    >
-                      <Trash2 />
-                      <span className="sr-only">Delete quiz</span>
-                    </Button>
+                  <td className="px-3 py-2">
+                    <div className="flex justify-end gap-2">
+                      <Button asChild size="sm" variant="outline">
+                        <Link href={`${baseUrl}/${quiz.id}/edit`}>
+                          <Pencil />
+                          Edit
+                        </Link>
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        onClick={() => router.delete(`${baseUrl}/${quiz.id}`)}
+                      >
+                        <Trash2 />
+                        <span className="sr-only">Delete quiz</span>
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -1,6 +1,7 @@
-import { type FormEvent } from 'react';
-import { Head, useForm, usePage } from '@inertiajs/react';
-import { LifeBuoy, Send, UserCog } from 'lucide-react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { ArrowRight, LifeBuoy, Search, Send, UserCog } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import type { FormEvent } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,11 +16,7 @@ type SupportTeacher = {
     id: number;
     name: string;
     slug: string;
-    students: {
-      id: number;
-      name: string;
-      email: string;
-    }[];
+    students_count: number;
   }[];
   created_at: string | null;
 };
@@ -85,6 +82,21 @@ function AdminSupport({
   tickets: SupportTicket[];
   teachers: SupportTeacher[];
 }) {
+  const [teacherSearch, setTeacherSearch] = useState('');
+  const filteredTeachers = useMemo(() => {
+    const search = teacherSearch.trim().toLowerCase();
+
+    if (!search) {
+      return teachers;
+    }
+
+    return teachers.filter((teacher) =>
+      [teacher.name, teacher.email].some((value) =>
+        value.toLowerCase().includes(search),
+      ),
+    );
+  }, [teacherSearch, teachers]);
+
   return (
     <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_26rem]">
       <section className="app-panel">
@@ -107,60 +119,61 @@ function AdminSupport({
           </span>
           <h2 className="font-medium">Dashboard Review</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Students are grouped through the classrooms their teachers manage.
+            Search teachers, then open a course summary for class details.
           </p>
         </div>
-        <div className="space-y-2 p-3">
-          {teachers.map((teacher) => (
-            <div key={teacher.id} className="app-row p-3">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-medium">{teacher.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {teacher.email}
-                  </p>
+        <div className="space-y-3 p-3">
+          <label className="relative block">
+            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              className="bg-background pl-9"
+              value={teacherSearch}
+              onChange={(event) => setTeacherSearch(event.target.value)}
+              placeholder="Search name or email"
+            />
+          </label>
+
+          <div className="max-h-[32rem] space-y-2 overflow-y-auto pr-1">
+            {filteredTeachers.map((teacher) => (
+              <Link
+                key={teacher.id}
+                href={`/support/teachers/${teacher.id}`}
+                className="app-row block p-3 transition-colors hover:border-primary/50 hover:bg-primary/5"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-medium">{teacher.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {teacher.email}
+                    </p>
+                  </div>
+                  <ArrowRight className="mt-1 size-4 text-muted-foreground" />
                 </div>
-                <Badge variant="outline">teacher</Badge>
-              </div>
-              {teacher.classrooms.length > 0 ? (
-                <div className="mt-3 space-y-2">
-                  {teacher.classrooms.map((classroom) => (
-                    <div key={classroom.id} className="border bg-background p-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="text-sm font-medium">{classroom.name}</p>
-                        <span className="text-xs text-muted-foreground">
-                          {classroom.students.length}{' '}
-                          {classroom.students.length === 1
-                            ? 'student'
-                            : 'students'}
-                        </span>
-                      </div>
-                      {classroom.students.length > 0 ? (
-                        <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
-                          {classroom.students.map((student) => (
-                            <li key={student.id}>
-                              {student.name} - {student.email}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <p className="mt-2 text-sm text-muted-foreground">
-                          No students in this classroom.
-                        </p>
-                      )}
-                    </div>
-                  ))}
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Badge variant="outline">
+                    {teacher.classrooms.length}{' '}
+                    {teacher.classrooms.length === 1
+                      ? 'classroom'
+                      : 'classrooms'}
+                  </Badge>
+                  <Badge variant="secondary">
+                    {teacher.classrooms.reduce(
+                      (total, classroom) => total + classroom.students_count,
+                      0,
+                    )}{' '}
+                    students
+                  </Badge>
                 </div>
-              ) : (
-                <p className="mt-3 text-sm text-muted-foreground">
-                  No classrooms created yet.
-                </p>
-              )}
-            </div>
-          ))}
+              </Link>
+            ))}
+          </div>
+
           {teachers.length === 0 ? (
+            <p className="p-4 text-sm text-muted-foreground">No teachers yet.</p>
+          ) : null}
+          {teachers.length > 0 && filteredTeachers.length === 0 ? (
             <p className="p-4 text-sm text-muted-foreground">
-              No teachers yet.
+              No teachers match that search.
             </p>
           ) : null}
         </div>

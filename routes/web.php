@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard.global');
     Route::get('support', [SupportTicketController::class, 'index'])->name('support.index');
     Route::post('support', [SupportTicketController::class, 'store'])->name('support.store');
+    Route::get('support/teachers/{teacher}', [SupportTicketController::class, 'teacher'])->name('support.teachers.show');
     Route::put('support/tickets/{ticket}', [SupportTicketController::class, 'update'])->name('support.update');
     Route::get('teacher-requests', [TeacherAccountRequestController::class, 'index'])->name('teacher-requests.index');
     Route::post('teacher-requests', [TeacherAccountRequestController::class, 'store'])->name('teacher-requests.store');
