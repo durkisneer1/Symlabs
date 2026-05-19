@@ -6,6 +6,7 @@ use App\Enums\TeamRole;
 use App\Models\Assignments\Assignment;
 use App\Models\ClassroomQuestion;
 use App\Models\TeamInvitation;
+use App\Support\ClassroomGrading;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -56,17 +57,21 @@ class HandleInertiaRequests extends Middleware
                     ->wherePivot('role', TeamRole::Student->value)
                     ->orderBy('name')
                     ->get()
-                    ->map(fn ($student) => [
-                        'id' => $student->id,
-                        'name' => $student->name,
-                        'email' => $student->email,
-                        'role_label' => TeamRole::Student->label(),
-                        'joined_at' => $student->pivot->created_at?->toISOString(),
-                        'last_active_at' => null,
-                        'started_assignments_count' => 0,
-                        'completion_percentage' => null,
-                        'overall_grade' => null,
-                    ])
+                    ->map(function ($student) use ($user) {
+                        $summary = ClassroomGrading::summaryFor($user->currentTeam, $student);
+
+                        return [
+                            'id' => $student->id,
+                            'name' => $student->name,
+                            'email' => $student->email,
+                            'role_label' => TeamRole::Student->label(),
+                            'joined_at' => $student->pivot->created_at?->toISOString(),
+                            'last_active_at' => $summary['last_worked_at'],
+                            'started_assignments_count' => $summary['started_assignments_count'],
+                            'completion_percentage' => $summary['completion_percentage'],
+                            'overall_grade' => $summary['overall_grade'],
+                        ];
+                    })
                 : [],
             'currentTeamAssignments' => fn () => $user?->currentTeam
                 ? Assignment::query()
@@ -93,6 +98,12 @@ class HandleInertiaRequests extends Middleware
                             'due_at' => $assignment->due_at?->toISOString(),
                             'points' => (float) $assignment->points,
                             'status' => $submission?->status ?? 'assigned',
+                            'attempts_used' => $submission?->attempts_count ?? 0,
+                            'attempts_allowed' => $assignment->settings['attempts_allowed'] ?? 1,
+                            'grade_visible' => $assignment->type->value !== 'quiz'
+                                || (bool) ($assignment->settings['grades_published'] ?? false),
+                            'score' => $submission?->score,
+                            'max_score' => $submission?->max_score,
                             'completed_at' => $submission?->submitted_at?->toISOString(),
                             'assignable' => $assignment->assignable ? [
                                 'id' => $assignment->assignable->id,
@@ -171,14 +182,54 @@ class HandleInertiaRequests extends Middleware
      */
     protected function assignmentActions(Assignment $assignment): array
     {
+        if (in_array($assignment->type->value, ['homework', 'quiz'], true)) {
+            $submission = $assignment->submissions()
+                ->where('user_id', request()->user()?->id)
+                ->first();
+            $attemptsAllowed = (int) ($assignment->settings['attempts_allowed'] ?? 1);
+            $attemptsUsed = $submission?->attempts_count ?? 0;
+            $canAttempt = $assignment->team->semesterIsActive() && $attemptsUsed < $attemptsAllowed;
+            $canReview = $submission !== null && (
+                $assignment->type->value === 'homework'
+                || (bool) ($assignment->settings['grades_published'] ?? false)
+            );
+
+            if ($canAttempt) {
+                $actions = [[
+                    'label' => $assignment->type->value === 'quiz'
+                        ? 'Take quiz'
+                        : ($attemptsUsed > 0 ? 'Retake homework' : 'Start homework'),
+                    'href' => "/{$assignment->team->slug}/coursework/{$assignment->id}/attempt",
+                ]];
+
+                if ($canReview) {
+                    $actions[] = [
+                        'label' => $assignment->type->value === 'quiz' ? 'View quiz' : 'View homework',
+                        'href' => "/{$assignment->team->slug}/coursework/{$assignment->id}/attempt?mode=review",
+                    ];
+                }
+
+                return $actions;
+            }
+
+            return $canReview
+                ? [[
+                    'label' => $assignment->type->value === 'quiz' ? 'View quiz' : 'View homework',
+                    'href' => "/{$assignment->team->slug}/coursework/{$assignment->id}/attempt",
+                ]]
+                : [];
+        }
+
+        if (! $assignment->team->semesterIsActive()) {
+            return [];
+        }
+
         if ($assignment->type->value !== 'chapter_reading' || $assignment->course_slug !== 'html') {
             return [];
         }
 
         $chapterLabels = [
             'elements-and-tags' => 'Elements and Tags',
-            'document-structure' => 'Document Structure',
-            'semantic-html' => 'Semantic HTML',
         ];
 
         return collect($assignment->settings['chapter_slugs'] ?? [])

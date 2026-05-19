@@ -1,10 +1,12 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
   ClipboardList,
+  LifeBuoy,
   LayoutGrid,
   Menu,
   MessageSquareText,
   Settings2,
+  UserPlus,
   Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -68,6 +70,14 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     });
   }
 
+  if (auth.user.role === 'student') {
+    mainNavItems.push({
+      title: 'Teacher Request',
+      href: '/teacher-requests',
+      icon: UserPlus,
+    });
+  }
+
   if (auth.user.role === 'teacher' && currentTeam) {
     mainNavItems.push({
       title: 'Roster',
@@ -86,6 +96,27 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
       title: 'Q&A',
       href: `/${currentTeam.slug}/questions`,
       icon: MessageSquareText,
+    });
+  }
+
+  if (auth.user.role === 'teacher') {
+    mainNavItems.push({
+      title: 'Support',
+      href: '/support',
+      icon: LifeBuoy,
+    });
+  }
+
+  if (auth.user.role === 'admin') {
+    mainNavItems.push({
+      title: 'Support',
+      href: '/support',
+      icon: LifeBuoy,
+    });
+    mainNavItems.push({
+      title: 'Teacher Requests',
+      href: '/teacher-requests',
+      icon: UserPlus,
     });
   }
 

@@ -9,6 +9,14 @@ export type Team = {
   roleLabel?: string;
   isCurrent?: boolean;
   viewModes?: RoleOption[];
+  gradeWeights?: {
+    chapter_reading?: number;
+    homework?: number;
+    quiz?: number;
+  } | null;
+  semesterStartsAt?: string | null;
+  semesterEndsAt?: string | null;
+  semesterActive?: boolean;
 };
 
 export type TeamMember = {

@@ -5,13 +5,10 @@ import { Button } from '@/components/ui/button';
 type Quiz = {
   id: number;
   course_slug: string;
-  slug: string;
   title: string;
   description: string | null;
   question_count: number;
-  time_limit_minutes: number;
   questions_count: number;
-  assignments_count: number;
 };
 
 type CourseOption = {
@@ -22,7 +19,7 @@ type CourseOption = {
 type Props = {
   quizzes: Quiz[];
   courses: CourseOption[];
-  selectedCourse: string | null;
+  selectedCourse: string;
 };
 
 export default function AdminQuizzesIndex({
@@ -39,9 +36,7 @@ export default function AdminQuizzesIndex({
       <div className="space-y-6 p-4">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Quiz Bank
-            </h1>
+            <h1 className="text-2xl font-semibold tracking-tight">Quiz Bank</h1>
             <p className="text-sm text-muted-foreground">
               Reusable quizzes that classroom teachers can assign later.
             </p>
@@ -54,22 +49,18 @@ export default function AdminQuizzesIndex({
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Button asChild size="sm" variant={selectedCourse ? 'outline' : 'default'}>
-            <Link href={baseUrl}>All courses</Link>
-          </Button>
           {courses.map((course) => (
-            <Button
+            <Link
               key={course.value}
-              asChild
-              size="sm"
-              variant={selectedCourse === course.value ? 'default' : 'outline'}
+              href={`${baseUrl}?course=${encodeURIComponent(course.value)}`}
+              className={`app-card-link border px-3 py-1.5 text-sm font-medium ${
+                selectedCourse === course.value
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-background text-foreground hover:bg-muted/50'
+              }`}
             >
-              <Link
-                href={`${baseUrl}?course=${encodeURIComponent(course.value)}`}
-              >
-                {course.label}
-              </Link>
-            </Button>
+              {course.label}
+            </Link>
           ))}
         </div>
 
@@ -79,10 +70,7 @@ export default function AdminQuizzesIndex({
               <tr>
                 <th className="px-3 py-2 font-medium">Title</th>
                 <th className="px-3 py-2 font-medium">Course</th>
-                <th className="px-3 py-2 font-medium">Slug</th>
                 <th className="px-3 py-2 font-medium">Questions</th>
-                <th className="px-3 py-2 font-medium">Limit</th>
-                <th className="px-3 py-2 font-medium">Assignments</th>
                 <th className="px-3 py-2 text-right font-medium">Actions</th>
               </tr>
             </thead>
@@ -111,14 +99,7 @@ export default function AdminQuizzesIndex({
                   <td className="px-3 py-2 text-muted-foreground">
                     {quiz.course_slug}
                   </td>
-                  <td className="px-3 py-2 text-muted-foreground">
-                    {quiz.slug}
-                  </td>
                   <td className="px-3 py-2">{quiz.questions_count}</td>
-                  <td className="px-3 py-2">
-                    {quiz.question_count} in {quiz.time_limit_minutes} min
-                  </td>
-                  <td className="px-3 py-2">{quiz.assignments_count}</td>
                   <td className="px-3 py-2 text-right">
                     <Button
                       variant="ghost"
@@ -135,7 +116,7 @@ export default function AdminQuizzesIndex({
                 <tr>
                   <td
                     className="px-3 py-8 text-center text-muted-foreground"
-                    colSpan={7}
+                    colSpan={4}
                   >
                     No quizzes yet.
                   </td>

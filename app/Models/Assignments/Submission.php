@@ -11,8 +11,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'assignment_id',
     'user_id',
     'status',
+    'attempts_count',
     'score',
     'max_score',
+    'answer_snapshot',
     'submitted_at',
 ])]
 class Submission extends Model
@@ -47,6 +49,8 @@ class Submission extends Model
         return [
             'score' => 'decimal:2',
             'max_score' => 'decimal:2',
+            'attempts_count' => 'integer',
+            'answer_snapshot' => 'array',
             'submitted_at' => 'datetime',
         ];
     }

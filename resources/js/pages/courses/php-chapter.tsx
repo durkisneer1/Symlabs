@@ -1,30 +1,30 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import ChapterSectionNav, { sectionId } from '@/components/chapter-section-nav';
-import CodeBlock from '@/components/code-block';
-import CourseActivityBlock from '@/components/course-activity';
+import CourseContentBlockRenderer from '@/components/course-content-block';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { findPhpChapter, phpCourse } from '@/data/php-course';
+import type { Assignment } from '@/types';
+import type { CourseContentBlock } from '@/types/course-content';
 
 type Props = {
   chapterSlug: string;
 };
 
 export default function PhpChapter({ chapterSlug }: Props) {
+  const { auth, currentTeam, currentTeamAssignments } = usePage().props;
   const chapter = findPhpChapter(chapterSlug) ?? phpCourse.chapters[0];
-  const navItems = [
-    ...chapter.sections.map((section) => ({
-      id: sectionId(section.title),
-      title: section.title,
-      depth: 0,
-    })),
-    ...chapter.activities.map((activity) => ({
-      id: sectionId(activity.title),
-      title: activity.title,
-      depth: 1,
-    })),
-  ];
+  const navItems = chapter.content.map((block) => navItemFor(block));
+  const chapterProgress = buildChapterProgress({
+    assignments: currentTeamAssignments,
+    chapterSlug: chapter.slug,
+    courseSlug: 'php',
+    visible:
+      auth.user?.role === 'student' &&
+      Boolean(currentTeam) &&
+      currentTeam?.semesterActive !== false,
+  });
 
   return (
     <>
@@ -51,42 +51,91 @@ export default function PhpChapter({ chapterSlug }: Props) {
           </div>
 
           <div className="space-y-6">
-            {chapter.sections.map((section) => (
-              <section
-                key={section.title}
-                id={sectionId(section.title)}
-                className="scroll-mt-6 space-y-3"
-              >
-                <h2 className="text-xl font-semibold tracking-tight">
-                  {section.title}
-                </h2>
-                {section.body.map((paragraph) => (
-                  <p key={paragraph} className="leading-7 text-muted-foreground">
-                    {paragraph}
-                  </p>
-                ))}
-                {section.example ? (
-                  <CodeBlock code={section.example} language="php" />
-                ) : null}
-              </section>
+            {chapter.content.map((block) => (
+              <CourseContentBlockRenderer
+                key={contentKey(block)}
+                block={block}
+                id={sectionId(blockTitle(block))}
+                codeLanguage="php"
+              />
             ))}
           </div>
-
-          {chapter.activities.map((activity) => (
-            <section
-              key={`${activity.type}-${activity.title}`}
-              id={sectionId(activity.title)}
-              className="scroll-mt-6"
-            >
-              <CourseActivityBlock activity={activity} />
-            </section>
-          ))}
         </article>
 
         <aside className="hidden lg:block">
-          <ChapterSectionNav items={navItems} />
+          <ChapterSectionNav items={navItems} progress={chapterProgress} />
         </aside>
       </main>
     </>
   );
+}
+
+function navItemFor(block: CourseContentBlock) {
+  return {
+    id: sectionId(blockTitle(block)),
+    title: blockTitle(block),
+    depth: block.type === 'activity' ? 1 : 0,
+  };
+}
+
+function blockTitle(block: CourseContentBlock) {
+  return block.type === 'activity' ? block.activity.title : block.title;
+}
+
+function contentKey(block: CourseContentBlock) {
+  return `${block.type}-${blockTitle(block)}`;
+}
+
+function buildChapterProgress({
+  assignments,
+  chapterSlug,
+  courseSlug,
+  visible,
+}: {
+  assignments: Assignment[];
+  chapterSlug: string;
+  courseSlug: string;
+  visible: boolean;
+}) {
+  const chapterAssignments = assignments.filter(
+    (assignment) =>
+      assignment.course_slug === courseSlug &&
+      includesChapter(assignment, chapterSlug),
+  );
+  const completed = chapterAssignments.filter(
+    (assignment) => assignment.status === 'completed',
+  ).length;
+
+  return {
+    visible,
+    title: 'Classroom Progress',
+    completed,
+    total: chapterAssignments.length,
+    items: chapterAssignments.map((assignment) => ({
+      id: assignment.id,
+      title: assignment.title,
+      status: assignment.status,
+      due: formatDate(assignment.due_at),
+    })),
+  };
+}
+
+function includesChapter(assignment: Assignment, chapterSlug: string) {
+  const chapterSlugs = assignment.settings.chapter_slugs;
+
+  return (
+    Array.isArray(chapterSlugs) &&
+    chapterSlugs.some((slug) => String(slug) === chapterSlug)
+  );
+}
+
+function formatDate(value: string | null) {
+  if (!value) {
+    return 'No due date';
+  }
+
+  return new Intl.DateTimeFormat(undefined, {
+    month: 'short',
+    day: 'numeric',
+  }).format(new Date(value));
 }

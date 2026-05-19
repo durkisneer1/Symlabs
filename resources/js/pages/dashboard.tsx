@@ -1,4 +1,4 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
   ClipboardList,
   GraduationCap,
@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { accept as acceptInvitation } from '@/routes/invitations';
 import { dashboard } from '@/routes';
+import { Button } from '@/components/ui/button';
 import type {
   Assignment,
   ClassroomQuestion,
@@ -73,7 +74,7 @@ function AdminDashboard() {
     <div className="grid gap-4 md:grid-cols-2">
       <Link
         href="/admin/quizzes"
-        className="app-panel group p-4 transition-colors hover:bg-muted/50"
+        className="app-panel app-card-link group p-4"
       >
         <span className="ink-accent-icon mb-8">
           <LibraryBig className="size-5" />
@@ -114,6 +115,11 @@ function TeacherDashboard({
       </div>
     );
   }
+  const averageGrade = average(
+    students
+      .map((student) => student.overall_grade)
+      .filter((grade): grade is number => grade !== null),
+  );
 
   return (
     <div className="space-y-4">
@@ -134,7 +140,9 @@ function TeacherDashboard({
           <span className="ink-accent-icon mb-4">
             <GraduationCap className="size-5 text-black" />
           </span>
-          <p className="text-2xl font-semibold">--</p>
+          <p className="text-2xl font-semibold">
+            {averageGrade === null ? '--' : `${averageGrade}%`}
+          </p>
           <p className="text-sm text-muted-foreground">
             Average grade once assignments exist
           </p>
@@ -161,21 +169,19 @@ function TeacherDashboard({
               Work students can complete inside this classroom.
             </p>
           </div>
-          <Link
-            href={`/${currentTeam.slug}/coursework/create`}
-            className="border bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground shadow-[0_6px_18px_rgb(0_0_0/0.12)]"
-          >
-            Assign Coursework
-          </Link>
+          <Button asChild>
+            <Link href={`/${currentTeam.slug}/coursework/create`}>
+              Assign Coursework
+            </Link>
+          </Button>
         </div>
 
         {assignments.length > 0 ? (
           <div className="space-y-2 p-3">
             {assignments.map((assignment) => (
-              <Link
+              <div
                 key={assignment.id}
-                href={`/${currentTeam.slug}/coursework/${assignment.id}/edit`}
-                className="app-row app-row-link grid gap-3 p-4 md:grid-cols-[minmax(0,1fr)_120px_140px_100px_80px]"
+                className="app-row app-row-link grid gap-3 p-4 md:grid-cols-[minmax(0,1fr)_120px_140px_140px_120px]"
               >
                 <div>
                   <p className="font-medium">{assignment.title}</p>
@@ -192,18 +198,45 @@ function TeacherDashboard({
                 />
                 <Metric label="Due" value={formatDate(assignment.due_at)} />
                 <Metric
-                  label="Progress"
+                  label={assignment.type === 'quiz' ? 'Grades' : 'Progress'}
                   value={
-                    assignment.type === 'chapter_reading'
+                    assignment.type === 'quiz'
+                      ? assignment.settings.grades_published
+                        ? 'Published'
+                        : 'Hidden'
+                      : assignment.type === 'chapter_reading'
                       ? 'Complete / incomplete'
                       : 'Percentage'
                   }
                 />
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Pencil className="size-3.5" />
-                  Edit
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                  {assignment.type === 'quiz' &&
+                  !assignment.settings.grades_published ? (
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={() =>
+                        router.post(
+                          `/${currentTeam.slug}/coursework/${assignment.id}/publish-grades`,
+                          {},
+                          { preserveScroll: true },
+                        )
+                      }
+                    >
+                      Publish grades
+                    </Button>
+                  ) : null}
+                  <Button asChild size="sm" variant="outline">
+                    <Link
+                      href={`/${currentTeam.slug}/coursework/${assignment.id}/edit`}
+                      className="gap-1"
+                    >
+                      <Pencil className="size-3.5" />
+                      Edit
+                    </Link>
+                  </Button>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         ) : (
@@ -257,6 +290,9 @@ function StudentDashboard({
   const answeredQuestions = questions.filter(
     (question) => question.response,
   ).length;
+  const gradeAverage = currentTeam
+    ? studentGrade(assignments, currentTeam.gradeWeights)
+    : null;
 
   return (
     <div className="space-y-4">
@@ -292,7 +328,7 @@ function StudentDashboard({
       ) : null}
 
       {currentTeam ? (
-        <div className="grid max-w-2xl gap-4 sm:grid-cols-2">
+        <div className="grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Link
             href={`/${currentTeam.slug}/work`}
             className="app-card app-card-link block p-4"
@@ -317,6 +353,15 @@ function StudentDashboard({
               {answeredQuestions} answered
             </p>
           </Link>
+          <div className="app-card p-4">
+            <span className="ink-accent-icon mb-4">
+              <GraduationCap className="size-5" />
+            </span>
+            <p className="text-2xl font-semibold">
+              {gradeAverage === null ? '--' : `${gradeAverage}%`}
+            </p>
+            <p className="text-sm text-muted-foreground">Current grade</p>
+          </div>
         </div>
       ) : (
         <div className="app-panel p-4">
@@ -335,6 +380,71 @@ function StudentDashboard({
 
 function roleLabel(role: string) {
   return role.charAt(0).toUpperCase() + role.slice(1);
+}
+
+function average(values: number[]) {
+  if (values.length === 0) {
+    return null;
+  }
+
+  return Math.round(
+    values.reduce((total, value) => total + value, 0) / values.length,
+  );
+}
+
+function studentGrade(
+  assignments: Assignment[],
+  weights:
+    | {
+        chapter_reading?: number;
+        homework?: number;
+        quiz?: number;
+      }
+    | null
+    | undefined,
+) {
+  const resolvedWeights = {
+    chapter_reading: weights?.chapter_reading ?? 20,
+    homework: weights?.homework ?? 35,
+    quiz: weights?.quiz ?? 45,
+  };
+  let weightedScore = 0;
+  let activeWeight = 0;
+
+  (['chapter_reading', 'homework', 'quiz'] as const).forEach((type) => {
+    const typedAssignments = assignments.filter(
+      (assignment) => assignment.type === type,
+    );
+
+    if (typedAssignments.length === 0) {
+      return;
+    }
+
+    const categoryAverage = average(
+      typedAssignments.map((assignment) => assignmentPercentage(assignment)),
+    );
+
+    if (categoryAverage === null) {
+      return;
+    }
+
+    weightedScore += categoryAverage * resolvedWeights[type];
+    activeWeight += resolvedWeights[type];
+  });
+
+  return activeWeight > 0 ? Math.round(weightedScore / activeWeight) : null;
+}
+
+function assignmentPercentage(assignment: Assignment) {
+  if (assignment.type === 'chapter_reading') {
+    return assignment.status === 'completed' ? 100 : 0;
+  }
+
+  if (assignment.max_score && Number(assignment.max_score) > 0) {
+    return (Number(assignment.score ?? 0) / Number(assignment.max_score)) * 100;
+  }
+
+  return assignment.status === 'completed' ? 100 : 0;
 }
 
 Dashboard.layout = (props: { currentTeam?: { slug: string } | null }) => ({

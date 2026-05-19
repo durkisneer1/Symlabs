@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['name', 'slug', 'is_personal'])]
+#[Fillable(['name', 'slug', 'is_personal', 'grade_weights'])]
 class Team extends Model
 {
     /** @use HasFactory<TeamFactory> */
@@ -98,7 +98,25 @@ class Team extends Model
     {
         return [
             'is_personal' => 'boolean',
+            'grade_weights' => 'array',
+            'semester_starts_at' => 'datetime',
+            'semester_ends_at' => 'datetime',
         ];
+    }
+
+    public function semesterIsActive(): bool
+    {
+        $now = now();
+
+        if ($this->semester_starts_at && $now->lt($this->semester_starts_at)) {
+            return false;
+        }
+
+        if ($this->semester_ends_at && $now->gt($this->semester_ends_at)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

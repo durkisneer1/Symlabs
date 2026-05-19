@@ -98,6 +98,7 @@ function StudentWork({
                   <TableHead>Type</TableHead>
                   <TableHead>Due</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Grade</TableHead>
                   <TableHead className="text-right">Open</TableHead>
                 </TableRow>
               </TableHeader>
@@ -125,6 +126,7 @@ function StudentWork({
                         {assignment.status}
                       </Badge>
                     </TableCell>
+                    <TableCell>{gradeLabel(assignment)}</TableCell>
                     <TableCell>
                       {assignment.actions.length > 0 ? (
                         <div className="flex flex-wrap justify-end gap-2">
@@ -170,6 +172,26 @@ function formatDate(value: string | null) {
     day: 'numeric',
     year: 'numeric',
   }).format(new Date(value));
+}
+
+function gradeLabel(assignment: Assignment) {
+  if (assignment.status !== 'completed') {
+    return '--';
+  }
+
+  if (!assignment.grade_visible) {
+    return 'Hidden';
+  }
+
+  if (assignment.type === 'chapter_reading') {
+    return '100%';
+  }
+
+  if (assignment.max_score && Number(assignment.max_score) > 0) {
+    return `${Math.round((Number(assignment.score ?? 0) / Number(assignment.max_score)) * 100)}%`;
+  }
+
+  return '--';
 }
 
 ClassroomWork.layout = (props: { currentTeam?: { slug: string } | null }) => ({

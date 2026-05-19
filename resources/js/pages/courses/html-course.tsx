@@ -85,7 +85,7 @@ export default function HtmlCourse() {
                   </CardHeader>
                   <CardContent className="flex items-center gap-2">
                     <Badge variant="secondary">{chapter.duration}</Badge>
-                    {chapter.sections.length === 0 ? (
+                    {chapter.content.length === 0 ? (
                       <Badge variant="outline">Coming soon</Badge>
                     ) : null}
                   </CardContent>

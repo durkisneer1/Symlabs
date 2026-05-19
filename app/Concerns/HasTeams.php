@@ -166,6 +166,10 @@ trait HasTeams
             roleLabel: $role?->label(),
             isCurrent: $this->isCurrentTeam($team),
             viewModes: $role?->viewModes() ?? [],
+            gradeWeights: $team->grade_weights,
+            semesterStartsAt: $team->semester_starts_at?->toISOString(),
+            semesterEndsAt: $team->semester_ends_at?->toISOString(),
+            semesterActive: $team->semesterIsActive(),
         );
     }
 

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" role="img" aria-labelledby="title desc">
+  <title id="title">HTML element anatomy</title>
+  <desc id="desc">A paragraph element showing an opening tag, text content, and a closing tag.</desc>
+  <rect width="920" height="360" fill="#f6f2ea"/>
+  <rect x="64" y="74" width="792" height="160" fill="#fffaf0" stroke="#dfd2bd" stroke-width="2"/>
+  <text x="120" y="172" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#1f1f24">&lt;p&gt;</text>
+  <text x="340" y="172" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#c4632d">Hello</text>
+  <text x="646" y="172" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#1f1f24">&lt;/p&gt;</text>
+  <line x1="160" y1="208" x2="160" y2="278" stroke="#b86a1f" stroke-width="3"/>
+  <line x1="430" y1="208" x2="430" y2="278" stroke="#b86a1f" stroke-width="3"/>
+  <line x1="704" y1="208" x2="704" y2="278" stroke="#b86a1f" stroke-width="3"/>
+  <text x="88" y="314" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#4b4650">opening tag</text>
+  <text x="338" y="314" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#4b4650">text content</text>
+  <text x="628" y="314" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#4b4650">closing tag</text>
+</svg>

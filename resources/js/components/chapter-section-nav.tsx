@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 
 export type ChapterNavItem = {
   id: string;
@@ -14,15 +15,28 @@ export type ChapterNavItem = {
 
 export default function ChapterSectionNav({
   items,
+  progress,
 }: {
   items: ChapterNavItem[];
+  progress?: {
+    visible: boolean;
+    title: string;
+    completed: number;
+    total: number;
+  };
 }) {
+  const progressValue =
+    progress && progress.total > 0
+      ? Math.round((progress.completed / progress.total) * 100)
+      : 0;
+
   return (
-    <Card className="sticky top-4 bg-card">
+    <Card className="sticky top-4 bg-card shadow-[0_14px_34px_rgb(0_0_0/0.08)]">
       <CardHeader>
         <CardTitle>In This Chapter</CardTitle>
+        <CardDescription>Jump to a part of this chapter.</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-5">
         <div className="border-t">
           {items.map((item) => (
             <a
@@ -35,6 +49,22 @@ export default function ChapterSectionNav({
             </a>
           ))}
         </div>
+        {progress?.visible ? (
+          <div className="space-y-3 border-t pt-4">
+            <div>
+              <p className="text-sm font-medium">{progress.title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {progress.completed} of {progress.total} complete
+              </p>
+            </div>
+            <Progress value={progressValue} />
+            {progress.total === 0 ? (
+              <p className="text-xs text-muted-foreground">
+                No classroom work is tied to this chapter yet.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
       </CardContent>
     </Card>
   );

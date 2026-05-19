@@ -13,6 +13,10 @@ readonly class UserTeam
         public ?string $roleLabel,
         public ?bool $isCurrent = null,
         public array $viewModes = [],
+        public ?array $gradeWeights = null,
+        public ?string $semesterStartsAt = null,
+        public ?string $semesterEndsAt = null,
+        public bool $semesterActive = true,
     ) {
         //
     }

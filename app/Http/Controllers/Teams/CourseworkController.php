@@ -24,8 +24,8 @@ class CourseworkController extends Controller
 
     private const CHAPTERS = [
         'html' => [
-            ['value' => 'intro-to-html', 'label' => 'Intro to HTML'],
             ['value' => 'elements-and-tags', 'label' => 'Elements and Tags'],
+            ['value' => 'document-structure', 'label' => 'Document Structure'],
             ['value' => 'semantic-html', 'label' => 'Semantic HTML'],
         ],
         'css' => [
@@ -33,8 +33,7 @@ class CourseworkController extends Controller
             ['value' => 'box-model', 'label' => 'Box Model'],
         ],
         'php' => [
-            ['value' => 'php-basics', 'label' => 'PHP Basics'],
-            ['value' => 'control-flow', 'label' => 'Control Flow'],
+            ['value' => 'variables-and-flow', 'label' => 'Variables and Flow'],
         ],
         'mysql' => [
             ['value' => 'tables-and-queries', 'label' => 'Tables and Queries'],
@@ -144,6 +143,25 @@ class CourseworkController extends Controller
         return to_route('dashboard', ['current_team' => $currentTeam->slug]);
     }
 
+    public function publishGrades(Request $request, Team $currentTeam, Assignment $assignment): RedirectResponse
+    {
+        abort_unless($request->user()?->toTeamPermissions($currentTeam)->canAssignCoursework, 403);
+        abort_unless($assignment->team_id === $currentTeam->id, 404);
+        abort_unless($assignment->type === AssignmentType::Quiz, 404);
+
+        $settings = $assignment->settings ?? [];
+        $settings['grades_published'] = true;
+
+        $assignment->update(['settings' => $settings]);
+
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => __('Quiz grades published.'),
+        ]);
+
+        return back();
+    }
+
     /**
      * Get supported course options.
      *
@@ -232,6 +250,7 @@ class CourseworkController extends Controller
                 'question_count' => (int) ($data['question_count'] ?? 1),
                 'difficulty' => $data['difficulty'] ?? 'any',
                 'attempts_allowed' => (int) ($data['attempts_allowed'] ?? 1),
+                'grades_published' => false,
             ],
         };
     }

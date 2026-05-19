@@ -1,4 +1,5 @@
-import { Head, usePage } from '@inertiajs/react';
+import { type FormEvent } from 'react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import {
   CalendarClock,
   ClipboardCheck,
@@ -9,12 +10,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-const gradeWeights = [
-  { label: 'Chapter reading', value: 20 },
-  { label: 'Homework', value: 35 },
-  { label: 'Quizzes', value: 45 },
-];
-
 const classroomTasks = [
   'Review grade weight totals before the semester begins',
   'Set late work and retake expectations',
@@ -24,10 +19,47 @@ const classroomTasks = [
 export default function ClassroomSettings() {
   const { auth, currentTeam } = usePage().props;
   const isTeacher = auth.user.role === 'teacher';
+  const form = useForm({
+    grade_weights: {
+      chapter_reading: currentTeam?.gradeWeights?.chapter_reading ?? 20,
+      homework: currentTeam?.gradeWeights?.homework ?? 35,
+      quiz: currentTeam?.gradeWeights?.quiz ?? 45,
+    },
+    semester_starts_at: toDateTimeLocal(currentTeam?.semesterStartsAt),
+    semester_ends_at: toDateTimeLocal(currentTeam?.semesterEndsAt),
+  });
+  const gradeWeights = [
+    {
+      key: 'chapter_reading' as const,
+      label: 'Chapter reading',
+      value: form.data.grade_weights.chapter_reading,
+    },
+    {
+      key: 'homework' as const,
+      label: 'Homework',
+      value: form.data.grade_weights.homework,
+    },
+    {
+      key: 'quiz' as const,
+      label: 'Quizzes',
+      value: form.data.grade_weights.quiz,
+    },
+  ];
   const totalWeight = gradeWeights.reduce(
     (total, weight) => total + weight.value,
     0,
   );
+  const submit = (event: FormEvent) => {
+    event.preventDefault();
+
+    if (!currentTeam) {
+      return;
+    }
+
+    form.put(`/${currentTeam.slug}/classroom`, {
+      preserveScroll: true,
+    });
+  };
 
   return (
     <>
@@ -52,7 +84,7 @@ export default function ClassroomSettings() {
           </div>
         ) : (
           <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
-            <section className="app-panel">
+            <form className="app-panel" onSubmit={submit}>
               <div className="app-panel-header">
                 <span className="ink-accent-icon mb-4">
                   <Percent className="size-5 text-black" />
@@ -79,8 +111,16 @@ export default function ClassroomSettings() {
                       <Input
                         id={`weight-${weight.label}`}
                         value={weight.value}
-                        readOnly
+                        type="number"
+                        min={0}
+                        max={100}
                         className="pr-8"
+                        onChange={(event) =>
+                          form.setData('grade_weights', {
+                            ...form.data.grade_weights,
+                            [weight.key]: Number(event.target.value),
+                          })
+                        }
                       />
                       <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-sm text-muted-foreground">
                         %
@@ -92,14 +132,23 @@ export default function ClassroomSettings() {
                 <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/70 pt-4">
                   <p className="text-sm text-muted-foreground">
                     Current total:{' '}
-                    <span className="font-medium text-foreground">
+                    <span
+                      className={`font-medium ${totalWeight === 100 ? 'text-foreground' : 'text-destructive'}`}
+                    >
                       {totalWeight}%
                     </span>
                   </p>
-                  <Button disabled>Save weights</Button>
+                  <Button type="submit" disabled={form.processing}>
+                    Save weights
+                  </Button>
                 </div>
+                {form.errors.grade_weights ? (
+                  <p className="text-sm text-destructive">
+                    {form.errors.grade_weights}
+                  </p>
+                ) : null}
               </div>
-            </section>
+            </form>
 
             <aside className="space-y-4">
               <section className="app-card p-4">
@@ -134,10 +183,35 @@ export default function ClassroomSettings() {
                   <CalendarClock className="size-5 text-black" />
                 </span>
                 <h2 className="font-medium">Semester Window</h2>
-                <p className="mt-3 text-sm text-muted-foreground">
-                  Add start and end dates here once classroom-wide scheduling is
-                  backed by the database.
-                </p>
+                <div className="mt-4 space-y-3">
+                  <div className="grid gap-2">
+                    <Label htmlFor="semester-start">Starts</Label>
+                    <Input
+                      id="semester-start"
+                      type="datetime-local"
+                      value={form.data.semester_starts_at}
+                      onChange={(event) =>
+                        form.setData('semester_starts_at', event.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="semester-end">Ends</Label>
+                    <Input
+                      id="semester-end"
+                      type="datetime-local"
+                      value={form.data.semester_ends_at}
+                      onChange={(event) =>
+                        form.setData('semester_ends_at', event.target.value)
+                      }
+                    />
+                  </div>
+                  {form.errors.semester_ends_at ? (
+                    <p className="text-sm text-destructive">
+                      {form.errors.semester_ends_at}
+                    </p>
+                  ) : null}
+                </div>
               </section>
             </aside>
           </div>
@@ -145,6 +219,14 @@ export default function ClassroomSettings() {
       </main>
     </>
   );
+}
+
+function toDateTimeLocal(value?: string | null) {
+  if (!value) {
+    return '';
+  }
+
+  return value.slice(0, 16);
 }
 
 function SettingRow({ label, value }: { label: string; value: string }) {

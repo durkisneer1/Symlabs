@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Assignments\Assignment;
 use App\Models\Team;
 use App\Models\User;
+use App\Support\ClassroomGrading;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -46,7 +47,11 @@ class StudentAnalyticsController extends Controller
                 'max_score' => $assignment->submissions->first()?->max_score,
             ]);
 
-        $completed = $assignments->where('status', 'completed')->count();
+        $summaryAssignments = Assignment::query()
+            ->where('team_id', $currentTeam->id)
+            ->with(['submissions' => fn ($query) => $query->where('user_id', $student->id)])
+            ->get();
+        $summary = ClassroomGrading::summaryFromAssignments($currentTeam, $summaryAssignments);
 
         return Inertia::render('teacher/students/show', [
             'team' => $request->user()->toUserTeam($currentTeam),
@@ -56,17 +61,11 @@ class StudentAnalyticsController extends Controller
                 'email' => $student->email,
             ],
             'summary' => [
-                'assigned_count' => $assignments->count(),
-                'completed_count' => $completed,
-                'completion_percentage' => $assignments->count() > 0
-                    ? round(($completed / $assignments->count()) * 100)
-                    : null,
-                'overall_grade' => null,
-                'last_worked_at' => $assignments
-                    ->pluck('completed_at')
-                    ->filter()
-                    ->sortDesc()
-                    ->first(),
+                'assigned_count' => $summary['assigned_count'],
+                'completed_count' => $summary['completed_count'],
+                'completion_percentage' => $summary['completion_percentage'],
+                'overall_grade' => $summary['overall_grade'],
+                'last_worked_at' => $summary['last_worked_at'],
             ],
             'assignments' => $assignments,
         ]);

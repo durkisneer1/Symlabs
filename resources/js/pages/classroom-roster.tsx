@@ -55,6 +55,11 @@ function RosterTable({
             0,
           ) / students.length,
         );
+  const averageGrade = average(
+    students
+      .map((student) => student.overall_grade)
+      .filter((grade): grade is number => grade !== null),
+  );
 
   return (
     <div className="space-y-4">
@@ -75,7 +80,9 @@ function RosterTable({
           <p className="text-sm text-muted-foreground">Average completion</p>
         </div>
         <div className="app-card p-4">
-          <p className="text-2xl font-semibold">--</p>
+          <p className="text-2xl font-semibold">
+            {averageGrade === null ? '--' : `${averageGrade}%`}
+          </p>
           <p className="text-sm text-muted-foreground">Average grade</p>
         </div>
       </div>
@@ -156,6 +163,16 @@ function formatDate(value: string | null) {
     day: 'numeric',
     year: 'numeric',
   }).format(new Date(value));
+}
+
+function average(values: number[]) {
+  if (values.length === 0) {
+    return null;
+  }
+
+  return Math.round(
+    values.reduce((total, value) => total + value, 0) / values.length,
+  );
 }
 
 ClassroomRoster.layout = (props: { currentTeam?: { slug: string } | null }) => ({

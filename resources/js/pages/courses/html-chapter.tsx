@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import CodeBlock from '@/components/code-block';
 import ChapterSectionNav, { sectionId } from '@/components/chapter-section-nav';
-import CourseActivityBlock from '@/components/course-activity';
+import CourseContentBlockRenderer from '@/components/course-content-block';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,30 +13,103 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { findHtmlChapter, htmlCourse } from '@/data/html-course';
+import type { Assignment } from '@/types';
+import type {
+  CourseActivityBlock as CourseActivityContentBlock,
+  CourseContentBlock,
+} from '@/types/course-content';
 
 type Props = {
   chapterSlug: string;
 };
 
 export default function HtmlChapter({ chapterSlug }: Props) {
+  const { auth, currentTeam, currentTeamAssignments } = usePage().props;
   const chapter = findHtmlChapter(chapterSlug) ?? htmlCourse.chapters[0];
   const chapterIndex = htmlCourse.chapters.findIndex(
     (candidate) => candidate.slug === chapter.slug,
   );
   const previousChapter = htmlCourse.chapters[chapterIndex - 1] ?? null;
   const nextChapter = htmlCourse.chapters[chapterIndex + 1] ?? null;
-  const navItems = [
-    ...chapter.sections.map((section) => ({
-      id: sectionId(section.title),
-      title: section.title,
-      depth: 0,
-    })),
-    ...chapter.activities.map((activity) => ({
-      id: sectionId(activity.title),
-      title: activity.title,
-      depth: 1,
-    })),
-  ];
+  const navItems = chapter.content.map((block) => navItemFor(block));
+  const completableActivities = useMemo(
+    () =>
+      (chapter.content as CourseContentBlock[])
+        .filter(isCompletableActivityBlock)
+        .map((block) => activityId(block.activity.title)),
+    [chapter.content],
+  );
+  const assignedChapterReading = findAssignedChapterReading({
+    assignments: currentTeamAssignments,
+    chapterSlug: chapter.slug,
+    courseSlug: 'html',
+  });
+  const [completedActivities, setCompletedActivities] = useState<Set<string>>(
+    () =>
+      assignedChapterReading?.status === 'completed'
+        ? new Set(completableActivities)
+        : new Set(),
+  );
+  const submittedCompletion = useRef(assignedChapterReading?.status === 'completed');
+  const completeActivity = useCallback((id: string) => {
+    setCompletedActivities((current) => {
+      if (current.has(id)) {
+        return current;
+      }
+
+      return new Set([...current, id]);
+    });
+  }, []);
+  const chapterProgress = buildChapterProgress({
+    completedActivities,
+    totalActivities: completableActivities.length,
+    visible:
+      auth.user?.role === 'student' &&
+      Boolean(currentTeam) &&
+      currentTeam?.semesterActive !== false &&
+      Boolean(assignedChapterReading),
+  });
+
+  useEffect(() => {
+    setCompletedActivities(
+      assignedChapterReading?.status === 'completed'
+        ? new Set(completableActivities)
+        : new Set(),
+    );
+    submittedCompletion.current = assignedChapterReading?.status === 'completed';
+  }, [assignedChapterReading?.id, assignedChapterReading?.status, completableActivities]);
+
+  useEffect(() => {
+    if (
+      !currentTeam ||
+      !assignedChapterReading ||
+      submittedCompletion.current ||
+      completableActivities.length === 0 ||
+      completedActivities.size < completableActivities.length
+    ) {
+      return;
+    }
+
+    submittedCompletion.current = true;
+    router.post(
+      `/${currentTeam.slug}/chapter-progress/complete`,
+      {
+        assignment_id: assignedChapterReading.id,
+        course_slug: 'html',
+        chapter_slug: chapter.slug,
+        activity_count: completableActivities.length,
+      },
+      {
+        preserveScroll: true,
+      },
+    );
+  }, [
+    assignedChapterReading,
+    chapter.slug,
+    completableActivities.length,
+    completedActivities.size,
+    currentTeam,
+  ]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -72,29 +144,20 @@ export default function HtmlChapter({ chapterSlug }: Props) {
             </div>
           </div>
 
-          {chapter.sections.length > 0 ? (
+          {chapter.content.length > 0 ? (
             <div className="space-y-6">
-              {chapter.sections.map((section) => (
-                <section
-                  key={section.title}
-                  id={sectionId(section.title)}
-                  className="scroll-mt-6 space-y-3"
-                >
-                  <h2 className="text-xl font-semibold tracking-tight">
-                    {section.title}
-                  </h2>
-                  {section.body.map((paragraph) => (
-                    <p
-                      key={paragraph}
-                      className="leading-7 text-muted-foreground"
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
-                  {section.example ? (
-                    <CodeBlock code={section.example} language="html" />
-                  ) : null}
-                </section>
+              {chapter.content.map((block) => (
+                <CourseContentBlockRenderer
+                  key={contentKey(block)}
+                  block={block}
+                  id={sectionId(blockTitle(block))}
+                  codeLanguage="html"
+                  onActivityComplete={
+                    isCompletableActivityBlock(block)
+                      ? () => completeActivity(activityId(block.activity.title))
+                      : undefined
+                  }
+                />
               ))}
             </div>
           ) : (
@@ -108,16 +171,6 @@ export default function HtmlChapter({ chapterSlug }: Props) {
               </CardHeader>
             </Card>
           )}
-
-          {chapter.activities.map((activity) => (
-            <section
-              key={`${activity.type}-${activity.title}`}
-              id={sectionId(activity.title)}
-              className="scroll-mt-6"
-            >
-              <CourseActivityBlock activity={activity} />
-            </section>
-          ))}
 
           <Separator />
 
@@ -142,9 +195,83 @@ export default function HtmlChapter({ chapterSlug }: Props) {
         </article>
 
         <aside className="hidden lg:block">
-          <ChapterSectionNav items={navItems} />
+          <ChapterSectionNav items={navItems} progress={chapterProgress} />
         </aside>
       </main>
     </>
   );
+}
+
+function navItemFor(block: CourseContentBlock) {
+  return {
+    id: sectionId(blockTitle(block)),
+    title: blockTitle(block),
+    depth: block.type === 'activity' ? 1 : 0,
+  };
+}
+
+function blockTitle(block: CourseContentBlock) {
+  return block.type === 'activity' ? block.activity.title : block.title;
+}
+
+function contentKey(block: CourseContentBlock) {
+  return `${block.type}-${blockTitle(block)}`;
+}
+
+function buildChapterProgress({
+  completedActivities,
+  totalActivities,
+  visible,
+}: {
+  completedActivities: Set<string>;
+  totalActivities: number;
+  visible: boolean;
+}) {
+  return {
+    visible,
+    title: 'Classroom Progress',
+    completed: completedActivities.size,
+    total: totalActivities,
+  };
+}
+
+function findAssignedChapterReading({
+  assignments,
+  chapterSlug,
+  courseSlug,
+}: {
+  assignments: Assignment[];
+  chapterSlug: string;
+  courseSlug: string;
+}) {
+  return assignments.find(
+    (assignment) =>
+      assignment.type === 'chapter_reading' &&
+      assignment.course_slug === courseSlug &&
+      includesChapter(assignment, chapterSlug),
+  );
+}
+
+function includesChapter(assignment: Assignment, chapterSlug: string) {
+  const chapterSlugs = assignment.settings.chapter_slugs;
+
+  return (
+    Array.isArray(chapterSlugs) &&
+    chapterSlugs.some((slug) => String(slug) === chapterSlug)
+  );
+}
+
+function isCompletableActivityBlock(
+  block: CourseContentBlock,
+): block is CourseActivityContentBlock {
+  return (
+    block.type === 'activity' &&
+    ['html-playground', 'css-playground', 'quick-check'].includes(
+      block.activity.type,
+    )
+  );
+}
+
+function activityId(title: string) {
+  return sectionId(title);
 }

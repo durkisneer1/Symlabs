@@ -30,6 +30,8 @@ class StoreCourseworkRequest extends FormRequest
      */
     public function rules(): array
     {
+        $type = $this->string('type')->toString();
+
         return [
             'type' => ['required', Rule::enum(AssignmentType::class)],
             'course_slug' => ['required', 'string', Rule::in(self::COURSES)],
@@ -37,11 +39,31 @@ class StoreCourseworkRequest extends FormRequest
             'opens_at' => ['nullable', 'date'],
             'due_at' => ['nullable', 'date', 'after_or_equal:opens_at'],
             'points' => ['nullable', 'numeric', 'min:0', 'max:10000'],
-            'quiz_id' => ['nullable', 'integer', 'exists:quizzes,id'],
-            'chapter_slugs' => ['nullable', 'array', 'min:1'],
+            'quiz_id' => [
+                Rule::excludeIf($type !== AssignmentType::Quiz->value),
+                'required',
+                'integer',
+                'exists:quizzes,id',
+            ],
+            'chapter_slugs' => [
+                Rule::excludeIf($type !== AssignmentType::ChapterReading->value),
+                'required',
+                'array',
+                'min:1',
+            ],
             'chapter_slugs.*' => ['string', 'max:255'],
-            'homework_slug' => ['nullable', 'string', 'max:255'],
-            'question_count' => ['nullable', 'integer', 'min:1'],
+            'homework_slug' => [
+                Rule::excludeIf($type !== AssignmentType::Homework->value),
+                'required',
+                'string',
+                'max:255',
+            ],
+            'question_count' => [
+                Rule::excludeIf($type !== AssignmentType::Quiz->value),
+                'required',
+                'integer',
+                'min:1',
+            ],
             'difficulty' => ['nullable', 'string', 'in:any,easy,medium,hard'],
             'attempts_allowed' => ['nullable', 'integer', 'min:1', 'max:10'],
         ];
@@ -54,6 +76,15 @@ class StoreCourseworkRequest extends FormRequest
     {
         $this->merge([
             'course_slug' => strtolower((string) $this->input('course_slug')),
+            'quiz_id' => $this->input('type') === AssignmentType::Quiz->value
+                ? $this->input('quiz_id')
+                : null,
+            'homework_slug' => $this->input('type') === AssignmentType::Homework->value
+                ? $this->input('homework_slug')
+                : null,
+            'chapter_slugs' => $this->input('type') === AssignmentType::ChapterReading->value
+                ? $this->input('chapter_slugs')
+                : [],
         ]);
     }
 

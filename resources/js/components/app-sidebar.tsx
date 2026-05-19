@@ -1,10 +1,12 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
   ClipboardList,
+  LifeBuoy,
   LayoutGrid,
   LibraryBig,
   MessageSquareText,
   Settings2,
+  UserPlus,
   Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -47,6 +49,14 @@ export function AppSidebar() {
     });
   }
 
+  if (userRole === 'student') {
+    mainNavItems.push({
+      title: 'Teacher Request',
+      href: '/teacher-requests',
+      icon: UserPlus,
+    });
+  }
+
   if (userRole === 'teacher' && currentTeam) {
     mainNavItems.push({
       title: 'Roster',
@@ -68,12 +78,30 @@ export function AppSidebar() {
     });
   }
 
+  if (userRole === 'teacher') {
+    mainNavItems.push({
+      title: 'Support',
+      href: '/support',
+      icon: LifeBuoy,
+    });
+  }
+
   if (userRole === 'admin') {
     mainNavItems.push(
       {
         title: 'Quiz Bank',
         href: '/admin/quizzes',
         icon: LibraryBig,
+      },
+      {
+        title: 'Support',
+        href: '/support',
+        icon: LifeBuoy,
+      },
+      {
+        title: 'Teacher Requests',
+        href: '/teacher-requests',
+        icon: UserPlus,
       },
     );
   }

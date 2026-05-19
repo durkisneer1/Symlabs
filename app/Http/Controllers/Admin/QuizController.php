@@ -30,17 +30,17 @@ class QuizController extends Controller
         $selectedCourse = $request->query('course');
         $selectedCourse = array_key_exists($selectedCourse, self::COURSES)
             ? $selectedCourse
-            : null;
+            : $this->defaultCourse();
 
         return Inertia::render('admin/quizzes/index', [
             'selectedCourse' => $selectedCourse,
             'courses' => $this->courses(),
             'quizzes' => Quiz::query()
-                ->withCount(['questions', 'assignments'])
-                ->when($selectedCourse, fn ($query) => $query->where('course_slug', $selectedCourse))
+                ->withCount('questions')
+                ->where('course_slug', $selectedCourse)
                 ->orderBy('course_slug')
                 ->orderBy('title')
-                ->get(['id', 'course_slug', 'slug', 'title', 'description', 'question_count', 'time_limit_minutes', 'created_at', 'updated_at']),
+                ->get(['id', 'course_slug', 'title', 'description', 'question_count', 'created_at', 'updated_at']),
         ]);
     }
 
@@ -158,7 +158,13 @@ class QuizController extends Controller
                 'value' => $value,
                 'label' => $label,
             ])
+            ->sortBy('label')
             ->values()
             ->all();
+    }
+
+    protected function defaultCourse(): string
+    {
+        return $this->courses()[0]['value'];
     }
 }

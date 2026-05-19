@@ -70,15 +70,24 @@ export default function CreateCoursework({
   homeworkSets,
   quizzes,
 }: Props) {
+  const initialType = assignment?.type ?? ('quiz' as AssignmentType);
+  const initialCourseSlug = assignment?.course_slug ?? 'html';
+  const initialQuiz = quizzes.find(
+    (quiz) => quiz.course_slug === initialCourseSlug,
+  );
+  const initialHomework = homeworkSets[initialCourseSlug]?.[0]?.value ?? '';
   const form = useForm({
-    type: assignment?.type ?? ('quiz' as AssignmentType),
-    course_slug: assignment?.course_slug ?? 'html',
+    type: initialType,
+    course_slug: initialCourseSlug,
     title: assignment?.title ?? '',
     opens_at: assignment?.opens_at ?? '',
     due_at: assignment?.due_at ?? '',
-    quiz_id: assignment?.quiz_id ?? '',
+    quiz_id:
+      assignment?.quiz_id ?? (initialType === 'quiz' && initialQuiz ? `${initialQuiz.id}` : ''),
     chapter_slugs: assignment?.chapter_slugs ?? ([] as string[]),
-    homework_slug: assignment?.homework_slug ?? '',
+    homework_slug:
+      assignment?.homework_slug ??
+      (initialType === 'homework' ? initialHomework : ''),
     question_count: assignment?.question_count ?? 1,
     difficulty: assignment?.difficulty ?? 'any',
     attempts_allowed: assignment?.attempts_allowed ?? 1,
@@ -90,20 +99,28 @@ export default function CreateCoursework({
   const courseQuizzes = quizzes.filter(
     (quiz) => quiz.course_slug === form.data.course_slug,
   );
+  const defaultHomeworkSlug = courseHomework[0]?.value ?? '';
+  const defaultQuizId = courseQuizzes[0] ? `${courseQuizzes[0].id}` : '';
   const selectedQuiz = courseQuizzes.find(
     (quiz) => quiz.id === Number(form.data.quiz_id),
   );
+  const hasErrors = Object.keys(form.errors).length > 0;
+  const errorMessages = Object.values(form.errors);
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
 
     if (assignment) {
-      form.put(`/${team.slug}/coursework/${assignment.id}`);
+      form.put(`/${team.slug}/coursework/${assignment.id}`, {
+        preserveScroll: true,
+      });
 
       return;
     }
 
-    form.post(`/${team.slug}/coursework`);
+    form.post(`/${team.slug}/coursework`, {
+      preserveScroll: true,
+    });
   };
 
   const setType = (type: AssignmentType) => {
@@ -111,17 +128,33 @@ export default function CreateCoursework({
       ...form.data,
       type,
       attempts_allowed: type === 'quiz' ? 1 : 3,
+      homework_slug: type === 'homework' ? defaultHomeworkSlug : '',
+      quiz_id: type === 'quiz' ? defaultQuizId : '',
+      question_count:
+        type === 'quiz'
+          ? Math.min(
+              form.data.question_count,
+              courseQuizzes.find((quiz) => `${quiz.id}` === defaultQuizId)
+                ?.questions_count || 1,
+            )
+          : form.data.question_count,
     });
   };
 
   const setCourse = (courseSlug: string) => {
+    const nextHomework = homeworkSets[courseSlug]?.[0]?.value ?? '';
+    const nextQuiz = quizzes.find((quiz) => quiz.course_slug === courseSlug);
+
     form.setData({
       ...form.data,
       course_slug: courseSlug,
-      quiz_id: '',
+      quiz_id: form.data.type === 'quiz' && nextQuiz ? `${nextQuiz.id}` : '',
       chapter_slugs: [],
-      homework_slug: '',
-      question_count: 1,
+      homework_slug: form.data.type === 'homework' ? nextHomework : '',
+      question_count: Math.min(
+        form.data.question_count,
+        nextQuiz?.questions_count || 1,
+      ),
     });
   };
 
@@ -148,10 +181,24 @@ export default function CreateCoursework({
           </p>
         </div>
 
+        {hasErrors ? (
+          <div className="border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+            <p className="font-medium">Coursework was not assigned yet.</p>
+            <ul className="mt-2 list-disc space-y-1 pl-5">
+              {errorMessages.map((message) => (
+                <li key={message}>{message}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="grid gap-2">
             <Label>Type</Label>
-            <Select value={form.data.type} onValueChange={(value) => setType(value as AssignmentType)}>
+            <Select
+              value={form.data.type}
+              onValueChange={(value) => setType(value as AssignmentType)}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue />
               </SelectTrigger>

@@ -16,6 +16,11 @@ export type Assignment = {
   due_at: string | null;
   points: number;
   status: string;
+  attempts_used: number;
+  attempts_allowed: number;
+  grade_visible: boolean;
+  score: string | number | null;
+  max_score: string | number | null;
   completed_at: string | null;
   assignable: {
     id: number;

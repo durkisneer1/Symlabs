@@ -1,18 +1,6 @@
-import type { CourseActivity } from '@/types/course-activities';
+import type { CourseChapter } from '@/types/course-content';
 
-export type HtmlChapter = {
-  number: number;
-  slug: string;
-  title: string;
-  summary: string;
-  duration: string;
-  sections: Array<{
-    title: string;
-    body: string[];
-    example?: string;
-  }>;
-  activities: CourseActivity[];
-};
+export type HtmlChapter = CourseChapter;
 
 export const htmlCourse = {
   title: 'HTML',
@@ -26,8 +14,9 @@ export const htmlCourse = {
       summary:
         'Start with the core vocabulary of HTML: tags, elements, attributes, nesting, and text content.',
       duration: '25 min',
-      sections: [
+      content: [
         {
+          type: 'section',
           title: 'HTML Describes Meaning',
           body: [
             'HTML is the language browsers use to understand the structure and meaning of a web page.',
@@ -35,6 +24,7 @@ export const htmlCourse = {
           ],
         },
         {
+          type: 'section',
           title: 'Tags Create Elements',
           body: [
             'A tag is the markup written between angle brackets. Most elements use an opening tag, content, and a closing tag.',
@@ -43,6 +33,28 @@ export const htmlCourse = {
           example: '<p>This is a paragraph element.</p>',
         },
         {
+          type: 'image',
+          title: 'Element Anatomy',
+          src: '/images/courses/html/element-anatomy.svg',
+          alt: 'A paragraph element split into opening tag, text content, and closing tag.',
+          caption:
+            'Most beginner HTML bugs come from mixing up the tag pieces with the complete element.',
+        },
+        {
+          type: 'activity',
+          activity: {
+            type: 'html-playground',
+            title: 'Make Markup Change The Box',
+            prompt:
+              'Edit the line so the preview has a paragraph with emphasized text inside it.',
+            starter: '<p>Hello HTML</p>',
+            answerIncludes: ['<p>', '<em>', '</em>'],
+            success:
+              'Nice. The browser parsed your markup and changed the preview structure.',
+          },
+        },
+        {
+          type: 'section',
           title: 'Attributes Add Detail',
           body: [
             'Attributes live inside an opening tag. They provide extra information about an element.',
@@ -51,6 +63,7 @@ export const htmlCourse = {
           example: '<a href="/courses/html">Study HTML</a>',
         },
         {
+          type: 'section',
           title: 'Nesting Builds Structure',
           body: [
             'HTML elements can contain other elements. This is called nesting.',
@@ -58,108 +71,88 @@ export const htmlCourse = {
           ],
           example: '<article>\n  <h2>Course Update</h2>\n  <p>Chapter one is ready.</p>\n</article>',
         },
-      ],
-      activities: [
         {
-          type: 'html-playground',
-          title: 'Make Markup Change The Box',
-          prompt:
-            'Edit the line so the preview has a paragraph with emphasized text inside it.',
-          starter: '<p>Hello HTML</p>',
-          answerIncludes: ['<p>', '<em>'],
-          success:
-            'Nice. The browser parsed your markup and changed the preview structure.',
+          type: 'activity',
+          activity: {
+            type: 'file-tree',
+            title: 'A Tiny Local Project',
+            description:
+              'Even a simple HTML project has a shape. The browser opens the HTML file, and the HTML can point to nearby assets.',
+            root: {
+              name: 'my-first-site',
+              kind: 'folder',
+              children: [
+                {
+                  name: 'index.html',
+                  kind: 'file',
+                  note: 'the page the browser opens first',
+                },
+                {
+                  name: 'images',
+                  kind: 'folder',
+                  children: [
+                    {
+                      name: 'logo.png',
+                      kind: 'file',
+                      note: 'referenced by an <img> tag',
+                    },
+                  ],
+                },
+              ],
+            },
+          },
         },
         {
-          type: 'file-tree',
-          title: 'A Tiny Local Project',
-          description:
-            'Even a simple HTML project has a shape. The browser opens the HTML file, and the HTML can point to nearby assets.',
-          root: {
-            name: 'my-first-site',
-            kind: 'folder',
-            children: [
+          type: 'activity',
+          activity: {
+            type: 'css-playground',
+            title: 'Tiny Layout Challenge',
+            prompt:
+              'Write one declaration to center the three bubbles horizontally inside the preview box.',
+            starter: 'justify-content: ;',
+            allowedProperties: ['justify-content', 'align-items', 'gap'],
+            target: 'justify-content:center',
+            success:
+              'That is the Flexbox Froggy idea in miniature: code changes the layout immediately.',
+          },
+        },
+        {
+          type: 'activity',
+          activity: {
+            type: 'quick-check',
+            title: 'Quick Check',
+            prompt: 'In `<p>Hello</p>`, what is `Hello`?',
+            choices: ['A tag', 'Text content', 'An attribute', 'A file path'],
+            answer: 'Text content',
+            explanation:
+              'The `<p>` and `</p>` pieces are tags. The word between them is the text content of the paragraph element.',
+          },
+        },
+        {
+          type: 'activity',
+          activity: {
+            type: 'recap',
+            title: 'Chapter Rehash',
+            items: [
               {
-                name: 'index.html',
-                kind: 'file',
-                note: 'the page the browser opens first',
+                question: 'What is a tag?',
+                answer:
+                  'A tag is the markup between angle brackets, like `<p>` or `</p>`.',
               },
               {
-                name: 'images',
-                kind: 'folder',
-                children: [
-                  {
-                    name: 'logo.png',
-                    kind: 'file',
-                    note: 'referenced by an <img> tag',
-                  },
-                ],
+                question: 'What is an element?',
+                answer:
+                  'An element is the complete structure: opening tag, content, and usually a closing tag.',
+              },
+              {
+                question: 'What do attributes do?',
+                answer:
+                  'Attributes add details inside the opening tag, like `href` on an `<a>` element.',
               },
             ],
           },
         },
-        {
-          type: 'css-playground',
-          title: 'Tiny Layout Challenge',
-          prompt:
-            'Write one declaration to center the three bubbles horizontally inside the preview box.',
-          starter: 'justify-content: ;',
-          allowedProperties: ['justify-content', 'align-items', 'gap'],
-          target: 'justify-content:center',
-          success:
-            'That is the Flexbox Froggy idea in miniature: code changes the layout immediately.',
-        },
-        {
-          type: 'quick-check',
-          title: 'Quick Check',
-          prompt: 'In `<p>Hello</p>`, what is `Hello`?',
-          choices: ['A tag', 'Text content', 'An attribute', 'A file path'],
-          answer: 'Text content',
-          explanation:
-            'The `<p>` and `</p>` pieces are tags. The word between them is the text content of the paragraph element.',
-        },
-        {
-          type: 'recap',
-          title: 'Chapter Rehash',
-          items: [
-            {
-              question: 'What is a tag?',
-              answer:
-                'A tag is the markup between angle brackets, like `<p>` or `</p>`.',
-            },
-            {
-              question: 'What is an element?',
-              answer:
-                'An element is the complete structure: opening tag, content, and usually a closing tag.',
-            },
-            {
-              question: 'What do attributes do?',
-              answer:
-                'Attributes add details inside the opening tag, like `href` on an `<a>` element.',
-            },
-          ],
-        },
       ],
-    },
-    {
-      number: 2,
-      slug: 'document-structure',
-      title: 'Document Structure',
-      summary:
-        'Learn the required pieces of an HTML document, including doctype, html, head, title, and body.',
-      duration: '30 min',
-      sections: [],
-      activities: [],
-    },
-    {
-      number: 3,
-      slug: 'semantic-html',
-      title: 'Semantic HTML',
-      summary:
-        'Use elements like header, main, nav, article, section, and footer to describe page regions clearly.',
-      duration: '35 min',
-      sections: [],
-      activities: [],
     },
   ] satisfies HtmlChapter[],
 };

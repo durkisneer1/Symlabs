@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CheckCircle2, ChevronRight, File, Folder } from 'lucide-react';
 import CodeBlock from '@/components/code-block';
 import InlineCodeText from '@/components/inline-code-text';
@@ -26,28 +26,36 @@ import type {
 
 export default function CourseActivityBlock({
   activity,
+  onComplete,
 }: {
   activity: CourseActivity;
+  onComplete?: () => void;
 }) {
   return (
     <div className="activity-card">
       {activity.type === 'quick-check' ? (
-        <QuickCheck activity={activity} />
+        <QuickCheck activity={activity} onComplete={onComplete} />
       ) : null}
       {activity.type === 'file-tree' ? <FileTree activity={activity} /> : null}
       {activity.type === 'code-flow' ? <CodeFlow activity={activity} /> : null}
       {activity.type === 'css-playground' ? (
-        <CssPlayground activity={activity} />
+        <CssPlayground activity={activity} onComplete={onComplete} />
       ) : null}
       {activity.type === 'html-playground' ? (
-        <HtmlPlayground activity={activity} />
+        <HtmlPlayground activity={activity} onComplete={onComplete} />
       ) : null}
       {activity.type === 'recap' ? <Recap activity={activity} /> : null}
     </div>
   );
 }
 
-function QuickCheck({ activity }: { activity: QuickCheckActivity }) {
+function QuickCheck({
+  activity,
+  onComplete,
+}: {
+  activity: QuickCheckActivity;
+  onComplete?: () => void;
+}) {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
   return (
@@ -70,7 +78,12 @@ function QuickCheck({ activity }: { activity: QuickCheckActivity }) {
                 type="button"
                 variant={isSelected ? 'secondary' : 'outline'}
                 className="justify-start"
-                onClick={() => setSelectedAnswer(choice)}
+                onClick={() => {
+                  setSelectedAnswer(choice);
+                  if (isCorrect) {
+                    onComplete?.();
+                  }
+                }}
               >
                 {isSelected && isCorrect ? <CheckCircle2 /> : null}
                 {choice}
@@ -122,7 +135,9 @@ function TreeNode({ node, depth }: { node: FileTreeNode; depth: number }) {
         <div>
           <span className="font-medium">{node.name}</span>
           {node.note ? (
-            <span className="ml-2 text-muted-foreground">{node.note}</span>
+            <span className="ml-2 text-muted-foreground italic">
+              {node.note}
+            </span>
           ) : null}
         </div>
       </div>
@@ -203,7 +218,13 @@ function CodeFlow({ activity }: { activity: CodeFlowActivity }) {
   );
 }
 
-function CssPlayground({ activity }: { activity: CssPlaygroundActivity }) {
+function CssPlayground({
+  activity,
+  onComplete,
+}: {
+  activity: CssPlaygroundActivity;
+  onComplete?: () => void;
+}) {
   const [css, setCss] = useState(activity.starter);
   const styles = useMemo(
     () => parseDeclarations(css, activity.allowedProperties),
@@ -215,6 +236,12 @@ function CssPlayground({ activity }: { activity: CssPlaygroundActivity }) {
     .every((declaration) =>
       css.replace(/\s/g, '').includes(declaration.replace(/\s/g, '')),
     );
+
+  useEffect(() => {
+    if (solved) {
+      onComplete?.();
+    }
+  }, [onComplete, solved]);
 
   return (
     <Card>
@@ -242,7 +269,7 @@ function CssPlayground({ activity }: { activity: CssPlaygroundActivity }) {
 
         <div className="border bg-muted/40 p-3">
           <div
-            className="min-h-44 border bg-background p-3"
+            className="min-h-44 border bg-white p-3"
             style={{ display: 'flex', ...styles }}
           >
             <div className="ink-accent-icon">A</div>
@@ -255,12 +282,24 @@ function CssPlayground({ activity }: { activity: CssPlaygroundActivity }) {
   );
 }
 
-function HtmlPlayground({ activity }: { activity: HtmlPlaygroundActivity }) {
+function HtmlPlayground({
+  activity,
+  onComplete,
+}: {
+  activity: HtmlPlaygroundActivity;
+  onComplete?: () => void;
+}) {
   const [markup, setMarkup] = useState(activity.starter);
   const safeMarkup = sanitizeMarkup(markup);
   const solved = activity.answerIncludes.every((snippet) =>
     markup.toLowerCase().includes(snippet.toLowerCase()),
   );
+
+  useEffect(() => {
+    if (solved) {
+      onComplete?.();
+    }
+  }, [onComplete, solved]);
 
   return (
     <Card>

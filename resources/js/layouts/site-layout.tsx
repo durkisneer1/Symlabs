@@ -8,6 +8,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
+import AppearanceMenu from '@/components/appearance-menu';
 import { dashboard, login } from '@/routes';
 
 export default function SiteLayout({
@@ -52,7 +53,8 @@ export default function SiteLayout({
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>
-          <NavigationMenuList>
+          <NavigationMenuList className="items-center gap-1">
+            <AppearanceMenu />
             {auth.user ? (
               <NavigationMenuItem>
                 <NavigationMenuLink

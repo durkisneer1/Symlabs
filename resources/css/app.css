@@ -150,6 +150,16 @@
     @apply bg-background text-foreground;
   }
 
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [role='button'][aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
   html {
     @apply font-mono;
   }
@@ -237,7 +247,7 @@
     @apply transition-all duration-150 hover:translate-y-px;
     box-shadow:
       0 1px 0 rgb(0 0 0 / 0.04),
-      0 8px 16px color-mix(in oklch, var(--ink-orange) 13%, transparent);
+      0 4px 8px rgb(0 0 0 / 0.04);
   }
 
   .app-card-link:hover {
@@ -294,7 +304,8 @@
   }
 
   .ink-accent-icon {
-    @apply relative inline-flex size-9 items-center justify-center rounded-full border text-foreground;
+    @apply relative inline-flex size-9 min-h-9 min-w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border text-black;
+    aspect-ratio: 1 / 1;
     background:
       radial-gradient(
         circle at 32% 24%,
@@ -379,26 +390,6 @@
   .dark .app-card,
   .dark .app-row {
     @apply bg-background/35;
-  }
-
-  .dark .ink-accent-icon {
-    @apply text-foreground;
-    background:
-      radial-gradient(
-        circle at 32% 24%,
-        color-mix(in oklch, white 50%, var(--ink-amber)) 0 17%,
-        transparent 18%
-      ),
-      linear-gradient(
-        145deg,
-        color-mix(in oklch, var(--ink-amber) 70%, white),
-        var(--ink-orange) 60%,
-        color-mix(in oklch, var(--ink-coral) 74%, black)
-      );
-    box-shadow:
-      inset 0 1px 0 color-mix(in oklch, white 42%, transparent),
-      inset 0 -5px 10px color-mix(in oklch, var(--ink-coral) 30%, transparent),
-      0 1px 2px rgb(0 0 0 / 0.24);
   }
 
   .dark .calendar-day-button[data-range-start='true']:hover,
