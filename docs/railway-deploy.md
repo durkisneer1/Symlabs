@@ -28,11 +28,13 @@ with a MySQL database in the same Railway project.
 ## App Service Variables
 
 Set these on the Laravel app service. Do not commit real secret values.
+`APP_KEY` and `DB_URL` are required; the app will not build/deploy correctly
+without them.
 
 ```env
 APP_NAME=InkBooks
 APP_ENV=production
-APP_KEY=
+APP_KEY=base64:replace-with-a-generated-key
 APP_DEBUG=false
 APP_URL=https://${{RAILWAY_PUBLIC_DOMAIN}}
 
@@ -63,12 +65,21 @@ VITE_APP_NAME="${APP_NAME}"
 ```
 
 This project requires PHP 8.4 because the locked Laravel/Symfony dependency set
-requires it. Railpack reads that from `composer.json`.
+requires it. The repo pins PHP 8.4 in `composer.json`, `composer.lock`,
+`.php-version`, and `mise.toml` so Railway/Railpack does not fall back to PHP
+8.3.
 
 Generate `APP_KEY` locally with:
 
 ```sh
 php artisan key:generate --show
+```
+
+If PHP is not on your local PATH, you can generate a compatible key with
+PowerShell:
+
+```powershell
+'base64:' + [Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))
 ```
 
 ## Later
