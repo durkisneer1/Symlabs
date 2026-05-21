@@ -14,7 +14,7 @@ with a MySQL database in the same Railway project.
    Build command:
 
    ```sh
-   pnpm build
+   sh ./railway/build.sh
    ```
 
    Pre-deploy command:
@@ -66,8 +66,7 @@ VITE_APP_NAME="${APP_NAME}"
 
 This project requires PHP 8.4 because the locked Laravel/Symfony dependency set
 requires it. The repo pins PHP 8.4 in `composer.json`, `composer.lock`,
-`.php-version`, and `mise.toml` so Railway/Railpack does not fall back to PHP
-8.3.
+and `.php-version` so Railway/Railpack does not fall back to PHP 8.3.
 
 Generate `APP_KEY` locally with:
 
