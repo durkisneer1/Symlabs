@@ -5,6 +5,6 @@ if [ ! -f .env ]; then
   cp .env.example .env
 fi
 
-APP_URL=http://localhost php artisan key:generate --ansi
-APP_URL=http://localhost php artisan package:discover --ansi
-APP_URL=http://localhost pnpm exec vite build
+php artisan key:generate --ansi
+php artisan package:discover --ansi
+pnpm exec vite build
