@@ -2,8 +2,9 @@
 set -e
 
 if [ ! -f .env ]; then
-    cp .env.example .env
+  cp .env.example .env
 fi
 
-php artisan package:discover --ansi
-pnpm exec vite build
+php artisan key:generate --ansi
+APP_URL=http://localhost php artisan package:discover --ansi
+APP_URL=http://localhost pnpm exec vite build
