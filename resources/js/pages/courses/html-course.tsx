@@ -68,14 +68,14 @@ export default function HtmlCourse() {
             </p>
           </div>
 
-          <div className="relative space-y-3 before:absolute before:left-5 before:top-2 before:h-[calc(100%-1rem)] before:w-px before:bg-border">
+          <div className="relative space-y-3 before:absolute before:top-2 before:left-5 before:h-[calc(100%-1rem)] before:w-px before:bg-border">
             {htmlCourse.chapters.map((chapter) => (
               <Link
                 key={chapter.slug}
                 href={`/courses/html/${chapter.slug}`}
                 className="group relative grid gap-3 pl-14"
               >
-                <span className="absolute left-0 top-4 z-10 flex size-10 items-center justify-center border bg-background text-sm font-medium">
+                <span className="absolute top-4 left-0 z-10 flex size-10 items-center justify-center border bg-background text-sm font-medium">
                   {chapter.number}
                 </span>
                 <Card className="transition-colors group-hover:bg-muted/50">
@@ -104,14 +104,16 @@ function readLastChapterSlug() {
     return null;
   }
 
-  const stored = window.localStorage.getItem('inkbooks:last-html-chapter');
+  const stored = window.localStorage.getItem('symlabs:last-html-chapter');
 
   if (stored) {
     return stored;
   }
 
-  return document.cookie
-    .split('; ')
-    .find((cookie) => cookie.startsWith('inkbooks_last_html_chapter='))
-    ?.split('=')[1] ?? null;
+  return (
+    document.cookie
+      .split('; ')
+      .find((cookie) => cookie.startsWith('symlabs_last_html_chapter='))
+      ?.split('=')[1] ?? null
+  );
 }

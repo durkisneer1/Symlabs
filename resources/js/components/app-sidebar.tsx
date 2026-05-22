@@ -6,6 +6,7 @@ import {
   LibraryBig,
   MessageSquareText,
   Settings2,
+  ShieldCheck,
   UserPlus,
   Users,
 } from 'lucide-react';
@@ -29,9 +30,7 @@ export function AppSidebar() {
   const page = usePage();
   const currentTeam = page.props.currentTeam;
   const userRole = page.props.auth.user.role;
-  const dashboardUrl = currentTeam
-    ? dashboard(currentTeam.slug)
-    : '/dashboard';
+  const dashboardUrl = currentTeam ? dashboard(currentTeam.slug) : '/dashboard';
 
   const mainNavItems: NavItem[] = [
     {
@@ -92,6 +91,11 @@ export function AppSidebar() {
         title: 'Quiz Bank',
         href: '/admin/quizzes',
         icon: LibraryBig,
+      },
+      {
+        title: 'Users',
+        href: '/admin/users',
+        icon: ShieldCheck,
       },
       {
         title: 'Support',

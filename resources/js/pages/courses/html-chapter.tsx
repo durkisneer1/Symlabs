@@ -50,7 +50,9 @@ export default function HtmlChapter({ chapterSlug }: Props) {
         ? new Set(completableActivities)
         : new Set(),
   );
-  const submittedCompletion = useRef(assignedChapterReading?.status === 'completed');
+  const submittedCompletion = useRef(
+    assignedChapterReading?.status === 'completed',
+  );
   const completeActivity = useCallback((id: string) => {
     setCompletedActivities((current) => {
       if (current.has(id)) {
@@ -76,8 +78,13 @@ export default function HtmlChapter({ chapterSlug }: Props) {
         ? new Set(completableActivities)
         : new Set(),
     );
-    submittedCompletion.current = assignedChapterReading?.status === 'completed';
-  }, [assignedChapterReading?.id, assignedChapterReading?.status, completableActivities]);
+    submittedCompletion.current =
+      assignedChapterReading?.status === 'completed';
+  }, [
+    assignedChapterReading?.id,
+    assignedChapterReading?.status,
+    completableActivities,
+  ]);
 
   useEffect(() => {
     if (
@@ -116,8 +123,8 @@ export default function HtmlChapter({ chapterSlug }: Props) {
       return;
     }
 
-    window.localStorage.setItem('inkbooks:last-html-chapter', chapter.slug);
-    document.cookie = `inkbooks_last_html_chapter=${chapter.slug}; path=/; max-age=31536000; samesite=lax`;
+    window.localStorage.setItem('symlabs:last-html-chapter', chapter.slug);
+    document.cookie = `symlabs_last_html_chapter=${chapter.slug}; path=/; max-age=31536000; samesite=lax`;
   }, [chapter.slug]);
 
   return (

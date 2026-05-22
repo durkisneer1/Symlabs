@@ -203,6 +203,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Admin User',
                 'email' => 'admin@ink.edu',
                 'role' => UserRole::Admin,
+                'can_invite_admins' => true,
             ],
             [
                 'name' => 'Teacher User',

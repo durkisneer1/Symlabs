@@ -1,6 +1,6 @@
 # Inertia Routing
 
-Inkbooks uses Laravel routes to render React pages through Inertia. Components from shadcn/ui are React components, so they work on any route that returns an Inertia page.
+SymLabs uses Laravel routes to render React pages through Inertia. Components from shadcn/ui are React components, so they work on any route that returns an Inertia page.
 
 The choice between `Route::inertia` and `Route::get` is about backend logic, not about whether React components will work.
 

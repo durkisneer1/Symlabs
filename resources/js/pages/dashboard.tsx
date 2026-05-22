@@ -6,6 +6,7 @@ import {
   MessageSquareText,
   Pencil,
   School,
+  ShieldCheck,
   Users,
 } from 'lucide-react';
 import { accept as acceptInvitation } from '@/routes/invitations';
@@ -72,10 +73,7 @@ export default function Dashboard() {
 function AdminDashboard() {
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <Link
-        href="/admin/quizzes"
-        className="app-panel app-card-link group p-4"
-      >
+      <Link href="/admin/quizzes" className="app-panel app-card-link group p-4">
         <span className="ink-accent-icon mb-8">
           <LibraryBig className="size-5" />
         </span>
@@ -83,6 +81,15 @@ function AdminDashboard() {
         <p className="mt-1 text-sm text-muted-foreground">
           Create reusable chapter quizzes for teachers to include in their
           classes.
+        </p>
+      </Link>
+      <Link href="/admin/users" className="app-panel app-card-link group p-4">
+        <span className="ink-accent-icon mb-8">
+          <ShieldCheck className="size-5" />
+        </span>
+        <h2 className="font-medium">Users</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Invite trusted admins and remove obvious bot accounts.
         </p>
       </Link>
     </div>
@@ -205,8 +212,8 @@ function TeacherDashboard({
                         ? 'Published'
                         : 'Hidden'
                       : assignment.type === 'chapter_reading'
-                      ? 'Complete / incomplete'
-                      : 'Percentage'
+                        ? 'Complete / incomplete'
+                        : 'Percentage'
                   }
                 />
                 <div className="flex flex-wrap items-center justify-end gap-2">

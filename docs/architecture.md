@@ -1,6 +1,6 @@
 # Content Storage and Anti-Cheat Architecture
 
-Inkbooks will use a hybrid courseware model:
+SymLabs will use a hybrid courseware model:
 
 - Canonical lessons, homework definitions, quiz banks, and grading rules live in version-controlled files
 - Teacher/class choices, student attempts, grades, and activity logs live in the database

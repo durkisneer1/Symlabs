@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\QuizController;
 use App\Http\Controllers\Admin\QuizQuestionController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Teams\AssignmentAttemptController;
 use App\Http\Controllers\Teams\ClassroomSettingsController;
 use App\Http\Controllers\Teams\ClassroomQuestionController;
@@ -59,6 +60,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('teacher-requests', [TeacherAccountRequestController::class, 'index'])->name('teacher-requests.index');
     Route::post('teacher-requests', [TeacherAccountRequestController::class, 'store'])->name('teacher-requests.store');
     Route::put('teacher-requests/{teacherRequest}', [TeacherAccountRequestController::class, 'update'])->name('teacher-requests.update');
+    Route::get('admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::post('admin/invitations', [AdminUserController::class, 'invite'])->name('admin.invitations.store');
+    Route::delete('admin/invitations/{invitation}', [AdminUserController::class, 'cancelInvitation'])
+        ->name('admin.invitations.destroy');
+    Route::get('admin/invitations/{invitation}/accept', [AdminUserController::class, 'acceptInvitation'])
+        ->name('admin.invitations.accept');
+    Route::delete('admin/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
     Route::resource('admin/quizzes', QuizController::class)
         ->except(['show'])
         ->names('admin.quizzes');

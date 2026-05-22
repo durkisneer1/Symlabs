@@ -16,8 +16,9 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 /**
  * @property int|null $current_team_id
  * @property UserRole $role
+ * @property bool $can_invite_admins
  */
-#[Fillable(['name', 'email', 'password', 'role', 'current_team_id'])]
+#[Fillable(['name', 'email', 'password', 'role', 'can_invite_admins', 'current_team_id'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -33,6 +34,7 @@ class User extends Authenticatable
     {
         return [
             'role' => UserRole::class,
+            'can_invite_admins' => 'boolean',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',

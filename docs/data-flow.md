@@ -1,6 +1,6 @@
 # Frontend and Backend Data Flow
 
-Inkbooks uses Inertia to connect Laravel/PHP to React/TSX.
+SymLabs uses Inertia to connect Laravel/PHP to React/TSX.
 
 The short version:
 

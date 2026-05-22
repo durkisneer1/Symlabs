@@ -1,6 +1,6 @@
-# Inkbooks
+# SymLabs
 
-Inkbooks is a Laravel + Inertia + React application. Laravel handles routing,
+SymLabs is a Laravel + Inertia + React application. Laravel handles routing,
 auth, server-side data, queues, and the database. React/TypeScript handles the
 pages and UI through Inertia, Vite, Tailwind CSS, and shadcn/ui components.
 
@@ -66,7 +66,7 @@ cd ~/Herd
 # Windows PS
 cd $HOME\Herd
 
-git clone https://github.com/durkisneer1/InkBooks.git inkbooks && cd inkbooks
+git clone https://github.com/durkisneer1/SymLabs.git symlabs && cd symlabs
 ```
 
 Otherwise, you may clone the repo wherever.
@@ -116,7 +116,7 @@ php artisan migrate:fresh
 
 ## Running the App
 
-If using Herd, the app will be available at http://inkbooks.test.
+If using Herd, the app will be available at http://symlabs.test.
 
 Otherwise, start the local dev stack in a terminal:
 

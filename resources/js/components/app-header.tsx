@@ -6,6 +6,7 @@ import {
   Menu,
   MessageSquareText,
   Settings2,
+  ShieldCheck,
   UserPlus,
   Users,
 } from 'lucide-react';
@@ -109,6 +110,11 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
 
   if (auth.user.role === 'admin') {
     mainNavItems.push({
+      title: 'Users',
+      href: '/admin/users',
+      icon: ShieldCheck,
+    });
+    mainNavItems.push({
       title: 'Support',
       href: '/support',
       icon: LifeBuoy,
@@ -164,11 +170,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
             </Sheet>
           </div>
 
-          <Link
-            href={home()}
-            prefetch
-            className="flex items-center space-x-2"
-          >
+          <Link href={home()} prefetch className="flex items-center space-x-2">
             <AppLogo />
           </Link>
 
