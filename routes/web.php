@@ -28,6 +28,7 @@ Route::get('/courses/php/{chapter}', fn (string $chapter) => Inertia::render('co
 ]))->whereIn('chapter', ['variables-and-flow'])->name('courses.php.chapter');
 Route::inertia('/courses/mysql', 'courses/course-shell', ['course' => 'MySQL'])->name('courses.mysql');
 
+// When in a classroom as teacher or student
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
     ->group(function () {
@@ -51,6 +52,7 @@ Route::prefix('{current_team}')
         Route::delete('questions/{question}', [ClassroomQuestionController::class, 'destroy'])->name('questions.destroy');
     });
 
+// When logged in as an admin
 Route::middleware(['auth'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard.global');
     Route::get('support', [SupportTicketController::class, 'index'])->name('support.index');
