@@ -73,7 +73,10 @@ export default function Dashboard() {
 function AdminDashboard() {
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <Link href="/admin/quizzes" className="app-panel app-card-link group p-4">
+      <Link
+        href="/admin/quizzes"
+        className="app-panel app-card-link toy-purple group p-4"
+      >
         <span className="ink-accent-icon mb-8">
           <LibraryBig className="size-5" />
         </span>
@@ -83,7 +86,10 @@ function AdminDashboard() {
           classes.
         </p>
       </Link>
-      <Link href="/admin/users" className="app-panel app-card-link group p-4">
+      <Link
+        href="/admin/users"
+        className="app-panel app-card-link toy-green group p-4"
+      >
         <span className="ink-accent-icon mb-8">
           <ShieldCheck className="size-5" />
         </span>
@@ -133,7 +139,7 @@ function TeacherDashboard({
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link
           href={`/${currentTeam.slug}/roster`}
-          className="app-panel app-card-link block p-4"
+          className="app-panel app-card-link toy-green block p-4"
         >
           <span className="ink-accent-icon mb-4">
             <Users className="size-5" />
@@ -143,7 +149,7 @@ function TeacherDashboard({
             {students.length === 1 ? 'Student' : 'Students'}
           </p>
         </Link>
-        <div className="app-panel p-4">
+        <div className="app-panel toy-yellow p-4">
           <span className="ink-accent-icon mb-4">
             <GraduationCap className="size-5" />
           </span>
@@ -156,7 +162,7 @@ function TeacherDashboard({
         </div>
         <Link
           href={`/${currentTeam.slug}/questions`}
-          className="app-panel app-card-link block p-4"
+          className="app-panel app-card-link toy-pink block p-4"
         >
           <span className="ink-accent-icon mb-4">
             <MessageSquareText className="size-5" />
@@ -338,7 +344,7 @@ function StudentDashboard({
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Link
             href={`/${currentTeam.slug}/work`}
-            className="app-panel app-card-link block p-4"
+            className="app-panel app-card-link toy-cyan block p-4"
           >
             <span className="ink-accent-icon mb-4">
               <ClipboardList className="size-5" />
@@ -350,7 +356,7 @@ function StudentDashboard({
           </Link>
           <Link
             href={`/${currentTeam.slug}/questions`}
-            className="app-panel app-card-link block p-4"
+            className="app-panel app-card-link toy-pink block p-4"
           >
             <span className="ink-accent-icon mb-4">
               <MessageSquareText className="size-5" />
@@ -360,7 +366,7 @@ function StudentDashboard({
               {answeredQuestions} answered
             </p>
           </Link>
-          <div className="app-panel p-4">
+          <div className="app-panel toy-yellow p-4">
             <span className="ink-accent-icon mb-4">
               <GraduationCap className="size-5" />
             </span>

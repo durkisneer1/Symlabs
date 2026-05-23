@@ -1,0 +1,257 @@
+@layer components {
+  .app-row {
+    @apply border bg-background transition-colors;
+    border-color: color-mix(
+      in oklch,
+      var(--border) 86%,
+      var(--page-accent, var(--accent-cyan))
+    );
+    background: linear-gradient(
+      180deg,
+      color-mix(
+        in oklch,
+        var(--background) 98%,
+        var(--page-accent, var(--accent-cyan))
+      ),
+      var(--background)
+    );
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.24);
+  }
+
+  .app-row:hover {
+    background: linear-gradient(
+      180deg,
+      color-mix(
+        in oklch,
+        var(--background) 94%,
+        var(--page-accent, var(--accent-cyan))
+      ),
+      color-mix(in oklch, var(--background) 98%, var(--accent-purple))
+    );
+  }
+
+  .app-row-link {
+    @apply block transition-all duration-200 hover:-translate-y-0.5;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+  }
+
+  .app-row-link:hover {
+    box-shadow:
+      0 4px 8px rgb(0 0 0 / 0.08),
+      0 0 12px rgb(139 92 246 / 0.08);
+  }
+
+  .app-row-link:active {
+    @apply translate-y-0;
+    box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.06);
+  }
+
+  .activity-card {
+    @apply bg-card;
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--card) 96%, white),
+      var(--card)
+    );
+    box-shadow:
+      0 1px 0 rgb(0 0 0 / 0.02),
+      0 8px 12px rgb(0 0 0 / 0.04);
+  }
+
+  .activity-card > [data-slot='card'] {
+    @apply bg-transparent;
+    box-shadow: none;
+  }
+
+  .code-block-sunken {
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--muted) 88%, lightgray),
+      var(--muted)
+    );
+    box-shadow:
+      inset 0 1px 3px rgb(0 0 0 / 0.1),
+      inset 0 -1px 0 rgb(255 255 255 / 0.4);
+  }
+
+  .dark .code-block-sunken {
+    box-shadow:
+      inset 0 1px 4px rgb(0 0 0 / 0.36),
+      inset 0 -1px 0 rgb(255 255 255 / 0.05);
+  }
+
+  .ink-accent-icon {
+    @apply relative inline-flex size-9 min-h-9 min-w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border;
+    aspect-ratio: 1 / 1;
+    background:
+      radial-gradient(
+        circle at 32% 24%,
+        color-mix(in oklch, white 72%, var(--accent-cyan)) 0 18%,
+        transparent 19%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in oklch, var(--accent-cyan) 86%, white),
+        var(--accent-cyan) 62%,
+        color-mix(in oklch, var(--accent-cyan) 84%, black)
+      );
+    border-color: color-mix(in srgb, var(--accent-cyan) 58%, rgb(0 0 0 / 0.18));
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, white 65%, transparent),
+      inset 0 -5px 10px color-mix(in oklch, var(--accent-cyan) 24%, transparent),
+      0 0 8px rgb(139 92 246 / 0.12);
+    color: var(--foreground);
+  }
+
+  .ink-accent-icon.toy-purple,
+  .toy-purple .ink-accent-icon {
+    --toy-accent: var(--accent-purple);
+  }
+
+  .ink-accent-icon.toy-green,
+  .toy-green .ink-accent-icon {
+    --toy-accent: var(--accent-green);
+  }
+
+  .ink-accent-icon.toy-yellow,
+  .toy-yellow .ink-accent-icon {
+    --toy-accent: var(--accent-orange);
+  }
+
+  .ink-accent-icon.toy-pink,
+  .toy-pink .ink-accent-icon {
+    --toy-accent: var(--accent-pink);
+  }
+
+  .ink-accent-icon.toy-red,
+  .toy-red .ink-accent-icon {
+    --toy-accent: var(--accent-red);
+  }
+
+  .ink-accent-icon:is(
+    .toy-purple,
+    .toy-green,
+    .toy-yellow,
+    .toy-pink,
+    .toy-red
+  ),
+  :is(.toy-purple, .toy-green, .toy-yellow, .toy-pink, .toy-red)
+    .ink-accent-icon {
+    background:
+      radial-gradient(
+        circle at 32% 24%,
+        color-mix(in oklch, white 72%, var(--toy-accent)) 0 18%,
+        transparent 19%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in oklch, var(--toy-accent) 86%, white),
+        var(--toy-accent) 62%,
+        color-mix(in oklch, var(--toy-accent) 84%, black)
+      );
+    border-color: color-mix(in srgb, var(--toy-accent) 58%, rgb(0 0 0 / 0.18));
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, white 65%, transparent),
+      inset 0 -5px 10px color-mix(in oklch, var(--toy-accent) 24%, transparent),
+      0 0 8px color-mix(in oklch, var(--toy-accent) 18%, transparent);
+  }
+
+  .chapter-marker {
+    @apply inline-flex size-9 min-h-9 min-w-9 shrink-0 items-center justify-center overflow-hidden border text-sm font-semibold;
+    aspect-ratio: 1 / 1;
+    border-radius: 0.7rem;
+    line-height: 1;
+    color: var(--foreground);
+    background:
+      radial-gradient(
+        circle at 30% 22%,
+        color-mix(in oklch, white 76%, var(--toy-accent, var(--accent-cyan))) 0
+          20%,
+        transparent 21%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in oklch, var(--toy-accent, var(--accent-cyan)) 86%, white),
+        var(--toy-accent, var(--accent-cyan)) 62%,
+        color-mix(in oklch, var(--toy-accent, var(--accent-cyan)) 82%, black)
+      );
+    border-color: color-mix(
+      in srgb,
+      var(--toy-accent, var(--accent-cyan)) 72%,
+      rgb(0 0 0 / 0.22)
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, white 66%, transparent),
+      inset 0 -5px 10px
+        color-mix(
+          in oklch,
+          var(--toy-accent, var(--accent-cyan)) 26%,
+          transparent
+        ),
+      0 1px 2px color-mix(in srgb, var(--toy-accent, var(--accent-cyan)) 24%, rgb(0 0 0 / 0.12));
+  }
+
+  .dark .ink-accent-icon,
+  .dark .chapter-marker {
+    font-weight: bold;
+    text-shadow:
+      0 1px 0 rgb(4 50 65 / 0.6),
+      0 -1px 0 rgb(4 50 65 / 0.4),
+      1px 0 0 rgb(4 50 65 / 0.4),
+      -1px 0 0 rgb(4 50 65 / 0.4);
+  }
+
+  .dark .ink-accent-icon > svg {
+    filter: drop-shadow(0 1px 0 rgb(4 50 65 / 0.6))
+      drop-shadow(0 -1px 0 rgb(4 50 65 / 0.4))
+      drop-shadow(1px 0 0 rgb(4 50 65 / 0.4))
+      drop-shadow(-1px 0 0 rgb(4 50 65 / 0.4));
+  }
+
+  .ink-accent-rule {
+    @apply h-1 w-16;
+    background: linear-gradient(
+      90deg,
+      var(--page-accent, var(--accent-cyan)),
+      var(--accent-purple)
+    );
+  }
+
+  .calendar-day-button[data-range-start='true'],
+  .calendar-day-button[data-range-end='true'] {
+    color: var(--primary-foreground);
+    background:
+      radial-gradient(
+        circle at 32% 24%,
+        color-mix(in oklch, white 42%, var(--primary)) 0 18%,
+        transparent 19%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in oklch, var(--primary) 84%, white),
+        var(--primary) 58%,
+        color-mix(in oklch, var(--primary) 72%, black)
+      );
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, white 34%, transparent),
+      inset 0 -5px 10px rgb(0 0 0 / 0.42),
+      0 1px 2px rgb(0 0 0 / 0.16);
+  }
+
+  .calendar-day-button[data-range-start='true']:hover,
+  .calendar-day-button[data-range-end='true']:hover {
+    color: var(--foreground);
+    background:
+      radial-gradient(circle at 32% 24%, white 0 18%, transparent 19%),
+      linear-gradient(
+        145deg,
+        oklch(0.98 0.002 286),
+        oklch(0.9 0.004 286) 58%,
+        oklch(0.78 0.006 286)
+      );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.9),
+      inset 0 -5px 10px rgb(0 0 0 / 0.14),
+      0 1px 2px rgb(0 0 0 / 0.12);
+  }
+}

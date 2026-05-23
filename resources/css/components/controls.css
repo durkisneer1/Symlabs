@@ -1,0 +1,212 @@
+@layer components {
+  /* Interactive Elements - Tactile Feedback */
+  [data-slot='button'] {
+    @apply transition-all duration-200;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+  }
+
+  [data-slot='button']:hover:not(:disabled) {
+    box-shadow:
+      0 4px 8px rgb(0 0 0 / 0.1),
+      0 0 8px rgb(139 92 246 / 0.1);
+  }
+
+  [data-slot='button']:active:not(:disabled) {
+    @apply translate-y-px;
+    box-shadow:
+      inset 0 1px 2px rgb(0 0 0 / 0.08),
+      0 1px 0 rgb(0 0 0 / 0.02);
+  }
+
+  [data-slot='button'][data-variant='default'] {
+    --button-accent: var(
+      --panel-accent,
+      var(--page-accent, var(--accent-cyan))
+    );
+    color: var(--foreground) !important;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--button-accent) 58%, white) 0%,
+      color-mix(in srgb, var(--button-accent) 74%, white) 52%,
+      var(--button-accent) 100%
+    ) !important;
+    background-clip: border-box !important;
+    border-color: color-mix(in srgb, var(--button-accent) 54%, white);
+    box-shadow:
+      inset 0 -1px 0 color-mix(in srgb, var(--button-accent) 76%, black),
+      0 1px 2px rgb(0 0 0 / 0.08);
+  }
+
+  [data-slot='button'][data-variant='default']:hover:not(:disabled) {
+    color: var(--foreground) !important;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--button-accent) 52%, white) 0%,
+      color-mix(in srgb, var(--button-accent) 68%, white) 52%,
+      color-mix(in srgb, var(--button-accent) 92%, white) 100%
+    ) !important;
+    box-shadow:
+      inset 0 -1px 0 color-mix(in srgb, var(--button-accent) 72%, black),
+      0 2px 4px rgb(0 0 0 / 0.1);
+  }
+
+  [data-slot='button'][data-variant='secondary'] {
+    translate: 0 1px;
+    box-shadow:
+      inset 0 1px 4px rgb(0 0 0 / 0.1),
+      inset 0 -1px 0 rgb(255 255 255 / 0.34),
+      0 1px 0 rgb(0 0 0 / 0.03);
+  }
+
+  [data-slot='button'][data-variant='secondary']:hover:not(:disabled) {
+    translate: 0 0;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.45),
+      0 3px 6px rgb(0 0 0 / 0.08);
+  }
+
+  [data-slot='button'][data-variant='secondary']:active:not(:disabled) {
+    translate: 0 2px;
+    box-shadow:
+      inset 0 2px 5px rgb(0 0 0 / 0.14),
+      inset 0 -1px 0 rgb(255 255 255 / 0.24);
+  }
+
+  .dark [data-slot='button'] {
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+  }
+
+  .dark [data-slot='button']:hover:not(:disabled) {
+    box-shadow:
+      0 4px 8px rgb(0 0 0 / 0.4),
+      0 0 8px rgb(139 92 246 / 0.15);
+  }
+
+  .dark [data-slot='button']:active:not(:disabled) {
+    box-shadow:
+      inset 0 1px 2px rgb(0 0 0 / 0.3),
+      0 1px 0 rgb(0 0 0 / 0.1);
+  }
+
+  .dark [data-slot='button'][data-variant='default'] {
+    color: oklch(0.12 0.01 240) !important;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, white 12%, transparent) 0%,
+        transparent 48%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--button-accent) 64%, white),
+        var(--button-accent) 64%,
+        color-mix(in srgb, var(--button-accent) 78%, black)
+      ) !important;
+    background-clip: border-box !important;
+    border-color: color-mix(in srgb, var(--button-accent) 58%, white);
+    border-bottom-color: color-mix(in srgb, var(--button-accent) 64%, black);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.12),
+      inset 0 -1px 0 rgb(0 0 0 / 0.28),
+      0 1px 3px rgb(0 0 0 / 0.22);
+  }
+
+  .dark [data-slot='button'][data-variant='default']:hover:not(:disabled) {
+    color: oklch(0.12 0.01 240) !important;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, white 16%, transparent) 0%,
+        transparent 48%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--button-accent) 58%, white),
+        color-mix(in srgb, var(--button-accent) 92%, white) 64%,
+        color-mix(in srgb, var(--button-accent) 78%, black)
+      ) !important;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.16),
+      inset 0 -1px 0 rgb(0 0 0 / 0.24),
+      0 2px 5px rgb(0 0 0 / 0.28);
+  }
+
+  .dark [data-slot='button'][data-variant='secondary'] {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.08),
+      0 1px 2px rgb(0 0 0 / 0.28);
+  }
+
+  .dark [data-slot='button'][data-variant='secondary']:hover:not(:disabled) {
+    box-shadow:
+      inset 0 1px 4px rgb(0 0 0 / 0.32),
+      inset 0 -1px 0 rgb(255 255 255 / 0.06),
+      0 1px 0 rgb(0 0 0 / 0.18);
+  }
+
+  /* Input & Form Elements - Soft Focus Glow */
+  [data-slot='input'] {
+    @apply transition-all duration-200;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.02);
+  }
+
+  [data-slot='input']:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 8px rgb(139 92 246 / 0.24),
+      inset 0 1px 2px rgb(0 0 0 / 0.04);
+  }
+
+  [data-slot='input']:hover:not(:disabled) {
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.04),
+      0 0 4px rgb(139 92 246 / 0.08);
+  }
+
+  .dark [data-slot='input'] {
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+  }
+
+  .dark [data-slot='input']:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 8px rgb(139 92 246 / 0.28),
+      inset 0 1px 2px rgb(0 0 0 / 0.2);
+  }
+
+  .dark [data-slot='input']:hover:not(:disabled) {
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.3),
+      0 0 4px rgb(139 92 246 / 0.1);
+  }
+
+  /* Checkbox & Radio - Tactile */
+  [data-slot='checkbox'],
+  [data-slot='radio'] {
+    @apply transition-all duration-200;
+  }
+
+  [data-slot='checkbox']:hover,
+  [data-slot='radio']:hover {
+    box-shadow: 0 0 6px rgb(139 92 246 / 0.12);
+  }
+
+  [data-slot='checkbox']:focus-visible,
+  [data-slot='radio']:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 8px rgb(139 92 246 / 0.2);
+  }
+
+  .dark [data-slot='checkbox']:hover,
+  .dark [data-slot='radio']:hover {
+    box-shadow: 0 0 6px rgb(139 92 246 / 0.15);
+  }
+
+  .dark [data-slot='checkbox']:focus-visible,
+  .dark [data-slot='radio']:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 8px rgb(139 92 246 / 0.25);
+  }
+}

@@ -12,7 +12,7 @@ export default function ClassroomQuestions() {
     <>
       <Head title="Q&A" />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
+      <main className="toy-pink min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             {currentTeam?.name ?? 'Classroom'}

@@ -34,7 +34,6 @@ export default function ChapterSectionNav({
     <Card className="sticky top-4 bg-card shadow-[0_14px_34px_rgb(0_0_0/0.08)]">
       <CardHeader>
         <CardTitle>In This Chapter</CardTitle>
-        <CardDescription>Jump to a part of this chapter.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="border-t">

@@ -75,7 +75,7 @@ export default function SupportTeacher({ supportTeacher, classrooms }: Props) {
     <>
       <Head title={`${supportTeacher.name} Course Summary`} />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
+      <main className="toy-purple min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div className="space-y-3">
           <Link
             href="/support"

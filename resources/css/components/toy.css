@@ -1,0 +1,151 @@
+@layer components {
+  .toy-surface {
+    --toy-accent: var(--accent-cyan);
+    @apply relative overflow-hidden border transition-all duration-200;
+    border-color: color-mix(in srgb, var(--toy-accent) 42%, rgb(0 0 0 / 0.18));
+    background:
+      radial-gradient(
+        circle at 88% 14%,
+        color-mix(in srgb, white 62%, var(--toy-accent)) 0 10%,
+        transparent 11%
+      ),
+      radial-gradient(
+        circle at -4% 96%,
+        color-mix(in srgb, var(--toy-accent) 28%, transparent) 0 16%,
+        transparent 17%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, white 82%, var(--toy-accent)),
+        color-mix(in srgb, white 88%, var(--toy-accent)) 54%,
+        color-mix(in srgb, white 78%, var(--toy-accent))
+      );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.72),
+      inset 0 -8px 16px color-mix(in oklch, var(--toy-accent) 18%, transparent);
+  }
+
+  .toy-surface::after {
+    content: '';
+    @apply pointer-events-none absolute right-2 bottom-2;
+    width: 16px;
+    height: 16px;
+    border-right: 2px solid color-mix(in srgb, var(--toy-accent) 50%, white);
+    border-bottom: 2px solid color-mix(in srgb, var(--toy-accent) 50%, white);
+    opacity: 0.58;
+  }
+
+  .toy-surface-link {
+    @apply hover:-translate-y-0.5;
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.06),
+      0 8px 18px color-mix(in oklch, var(--toy-accent) 16%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 0.72),
+      inset 0 -8px 16px color-mix(in oklch, var(--toy-accent) 18%, transparent);
+  }
+
+  .toy-surface-link:hover {
+    background:
+      radial-gradient(
+        circle at 88% 14%,
+        color-mix(in srgb, white 66%, var(--toy-accent)) 0 10%,
+        transparent 11%
+      ),
+      radial-gradient(
+        circle at -4% 96%,
+        color-mix(in srgb, var(--toy-accent) 34%, transparent) 0 16%,
+        transparent 17%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, white 78%, var(--toy-accent)),
+        color-mix(in srgb, white 84%, var(--toy-accent)) 54%,
+        color-mix(in srgb, white 72%, var(--toy-accent))
+      );
+    box-shadow:
+      0 6px 14px rgb(0 0 0 / 0.1),
+      0 12px 24px color-mix(in oklch, var(--toy-accent) 24%, transparent),
+      inset 0 1px 0 rgb(255 255 255 / 0.82),
+      inset 0 -8px 16px color-mix(in oklch, var(--toy-accent) 22%, transparent);
+  }
+
+  .toy-surface-link:active {
+    @apply translate-y-0;
+    box-shadow:
+      inset 0 2px 6px rgb(0 0 0 / 0.12),
+      inset 0 -1px 0 rgb(255 255 255 / 0.4);
+  }
+
+  .toy-cyan {
+    --toy-accent: var(--accent-cyan);
+    --page-accent: var(--accent-cyan);
+    --panel-accent: var(--accent-cyan);
+  }
+
+  .toy-purple {
+    --toy-accent: var(--accent-purple);
+    --page-accent: var(--accent-purple);
+    --panel-accent: var(--accent-purple);
+  }
+
+  .toy-green {
+    --toy-accent: var(--accent-green);
+    --page-accent: var(--accent-green);
+    --panel-accent: var(--accent-green);
+  }
+
+  .toy-yellow {
+    --toy-accent: var(--accent-orange);
+    --page-accent: var(--accent-orange);
+    --panel-accent: var(--accent-orange);
+  }
+
+  .toy-pink {
+    --toy-accent: var(--accent-pink);
+    --page-accent: var(--accent-pink);
+    --panel-accent: var(--accent-pink);
+  }
+
+  .toy-red {
+    --toy-accent: var(--accent-red);
+    --page-accent: var(--accent-red);
+    --panel-accent: var(--accent-red);
+  }
+
+  [data-sidebar='menu-button'] {
+    --sidebar-button-accent: var(--accent-cyan);
+  }
+
+  [data-sidebar='menu-button']:hover,
+  [data-sidebar='menu-button'][data-active='true'] {
+    color: var(--sidebar-foreground) !important;
+    background:
+      radial-gradient(
+        circle at 14% 20%,
+        color-mix(in oklch, white 46%, var(--sidebar-button-accent)) 0 14%,
+        transparent 15%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in oklch, var(--sidebar-button-accent) 20%, var(--sidebar)),
+        color-mix(in oklch, var(--sidebar-button-accent) 34%, var(--sidebar))
+      ) !important;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.42),
+      inset 0 -6px 10px
+        color-mix(in oklch, var(--sidebar-button-accent) 14%, transparent);
+  }
+
+  [data-sidebar='menu-button'][data-active='true'] {
+    border: 1px solid
+      color-mix(
+        in oklch,
+        var(--sidebar-button-accent) 44%,
+        var(--sidebar-border)
+      );
+  }
+
+  [data-sidebar='menu-button'][data-size='lg'] {
+    --sidebar-button-accent: var(--accent-purple);
+  }
+}

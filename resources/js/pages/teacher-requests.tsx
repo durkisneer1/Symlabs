@@ -38,7 +38,7 @@ export default function TeacherRequests({ teacherAccountRequests }: Props) {
     <>
       <Head title="Teacher Requests" />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
+      <main className="toy-pink min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             {isAdmin ? 'Admin review' : 'Account upgrade'}

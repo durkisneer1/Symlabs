@@ -59,7 +59,7 @@ export default function AdminUsers({
     <>
       <Head title="Admin Users" />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
+      <main className="toy-green min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             Admin console

@@ -1,0 +1,102 @@
+@layer components {
+  .app-shell-surface {
+    @apply border bg-muted/40;
+  }
+
+  [data-slot='card'] {
+    @apply bg-card;
+  }
+
+  .app-panel {
+    --panel-accent: var(--page-accent, var(--accent-cyan));
+    @apply relative border bg-card transition-all duration-200;
+    border-color: var(--border);
+    background: linear-gradient(
+      135deg,
+      var(--card) 0%,
+      color-mix(in oklch, var(--card) 98%, var(--panel-accent)) 100%
+    );
+    box-shadow: none;
+  }
+
+  .app-panel::before {
+    content: '';
+    @apply pointer-events-none absolute top-0 left-0;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid var(--panel-accent);
+    border-left: 2px solid var(--panel-accent);
+    border-radius: 2px;
+    opacity: 0.3;
+  }
+
+  .app-panel-header {
+    @apply border-b p-4;
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(
+          in oklch,
+          var(--panel-accent, var(--accent-cyan)) 8%,
+          transparent
+        ),
+        transparent 60%
+      ),
+      linear-gradient(
+        135deg,
+        color-mix(
+          in oklch,
+          var(--card) 98%,
+          var(--panel-accent, var(--accent-cyan))
+        ),
+        color-mix(in oklch, var(--card) 96%, var(--accent-purple))
+      );
+    box-shadow: inset 0 1px 2px rgb(139 92 246 / 0.1);
+  }
+
+  .app-card {
+    --panel-accent: var(--page-accent, var(--accent-cyan));
+    @apply relative border bg-background transition-all duration-200;
+    border-color: var(--border);
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--background) 98%, var(--panel-accent)),
+      var(--background)
+    );
+    box-shadow: none;
+  }
+
+  .app-card::after {
+    content: '';
+    @apply pointer-events-none absolute right-0 bottom-0;
+    width: 10px;
+    height: 10px;
+    border-bottom: 2px solid var(--accent-purple);
+    border-right: 2px solid var(--accent-purple);
+    border-radius: 0 2px 0 0;
+    opacity: 0.2;
+  }
+
+  .app-card-link {
+    @apply relative transition-all duration-200 hover:-translate-y-0.5;
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.05),
+      0 0 6px rgb(139 92 246 / 0.06),
+      inset 0 1px 0 rgb(255 255 255 / 0.2);
+  }
+
+  .app-card-link:hover {
+    box-shadow:
+      0 6px 12px rgb(0 0 0 / 0.1),
+      0 0 16px rgb(139 92 246 / 0.12),
+      inset 0 1px 0 rgb(255 255 255 / 0.3);
+  }
+
+  .app-card-link:active {
+    @apply translate-y-0;
+    box-shadow:
+      inset 0 1px 3px rgb(0 0 0 / 0.06),
+      inset 0 1px 0 rgb(139 92 246 / 0.08),
+      0 1px 2px rgb(0 0 0 / 0.03);
+  }
+}

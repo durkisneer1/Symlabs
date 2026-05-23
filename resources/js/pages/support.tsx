@@ -53,7 +53,7 @@ export default function Support({ supportTickets, supportTeachers }: Props) {
     <>
       <Head title="Support" />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
+      <main className="toy-purple min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             {isAdmin ? 'Admin console' : 'Teacher help'}

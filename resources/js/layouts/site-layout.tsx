@@ -1,4 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
+import { Braces, CodeXml, Database, Palette } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -11,6 +12,37 @@ import {
 import AppearanceMenu from '@/components/appearance-menu';
 import { dashboard, login } from '@/routes';
 
+const lessonItems = [
+  {
+    title: 'HTML',
+    href: '/courses/html',
+    description: 'Build the page skeleton.',
+    icon: CodeXml,
+    className: 'toy-yellow',
+  },
+  {
+    title: 'CSS',
+    href: '/courses/css',
+    description: 'Shape layouts and surfaces.',
+    icon: Palette,
+    className: 'toy-cyan',
+  },
+  {
+    title: 'PHP',
+    href: '/courses/php',
+    description: 'Make pages think and respond.',
+    icon: Braces,
+    className: 'toy-purple',
+  },
+  {
+    title: 'MySQL',
+    href: '/courses/mysql',
+    description: 'Store and retrieve data.',
+    icon: Database,
+    className: 'toy-green',
+  },
+];
+
 export default function SiteLayout({
   children,
 }: {
@@ -20,7 +52,7 @@ export default function SiteLayout({
   const dashboardUrl = currentTeam ? dashboard(currentTeam.slug) : '/dashboard';
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-muted/45 p-6 text-foreground lg:p-8">
+    <div className="flex min-h-screen flex-col items-center bg-background p-6 text-foreground lg:p-8">
       <header className="w-full">
         <NavigationMenu
           viewport={false}
@@ -37,19 +69,32 @@ export default function SiteLayout({
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuTrigger>Lessons</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <NavigationMenuLink asChild>
-                  <Link href="/courses/html">HTML</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link href="/courses/css">CSS</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link href="/courses/php">PHP</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link href="/courses/mysql">MySQL</Link>
-                </NavigationMenuLink>
+              <NavigationMenuContent
+                className="p-3"
+                style={{ width: '28rem', maxWidth: 'calc(100vw - 3rem)' }}
+              >
+                <div className="grid grid-cols-2 gap-3">
+                  {lessonItems.map((item) => (
+                    <NavigationMenuLink key={item.title} asChild>
+                      <Link
+                        href={item.href}
+                        className={`toy-surface toy-surface-link ${item.className} min-h-32 flex-col items-start justify-between gap-3 p-4`}
+                      >
+                        <span className="ink-accent-icon">
+                          <item.icon className="size-5" />
+                        </span>
+                        <span>
+                          <span className="block text-base font-semibold">
+                            {item.title}
+                          </span>
+                          <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
+                            {item.description}
+                          </span>
+                        </span>
+                      </Link>
+                    </NavigationMenuLink>
+                  ))}
+                </div>
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>

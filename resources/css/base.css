@@ -1,0 +1,70 @@
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(
+        color-mix(in oklch, var(--accent-cyan) 16%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        color-mix(in oklch, var(--accent-cyan) 14%, transparent) 1px,
+        transparent 1px
+      ),
+      radial-gradient(
+        circle at 1px 1px,
+        color-mix(in oklch, var(--accent-purple) 16%, transparent) 1px,
+        transparent 1.6px
+      );
+    background-size:
+      34px 34px,
+      34px 34px,
+      19px 23px;
+    mask-image:
+      radial-gradient(ellipse at 14% 12%, black 0 12%, transparent 34%),
+      radial-gradient(ellipse at 72% 22%, black 0 10%, transparent 31%),
+      radial-gradient(ellipse at 42% 72%, black 0 9%, transparent 29%),
+      radial-gradient(ellipse at 92% 84%, black 0 8%, transparent 24%);
+    -webkit-mask-image:
+      radial-gradient(ellipse at 14% 12%, black 0 12%, transparent 34%),
+      radial-gradient(ellipse at 72% 22%, black 0 10%, transparent 31%),
+      radial-gradient(ellipse at 42% 72%, black 0 9%, transparent 29%),
+      radial-gradient(ellipse at 92% 84%, black 0 8%, transparent 24%);
+    opacity: 0.52;
+  }
+
+  .dark body::before {
+    opacity: 0.32;
+  }
+
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [role='button'][aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  html {
+    @apply font-mono;
+  }
+}

@@ -65,7 +65,7 @@ export default function ClassroomSettings() {
     <>
       <Head title="Classroom" />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
+      <main className="toy-yellow min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             {currentTeam?.name ?? 'Classroom'}

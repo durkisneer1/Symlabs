@@ -14,6 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { htmlCourse } from '@/data/html-course';
 
 const firstChapter = htmlCourse.chapters[0];
+const chapterAccentClasses = ['toy-yellow', 'toy-cyan', 'toy-green', 'toy-purple'];
 
 export default function HtmlCourse() {
   const [lastChapterSlug, setLastChapterSlug] = useState<string | null>(null);
@@ -30,7 +31,7 @@ export default function HtmlCourse() {
     <>
       <Head title="HTML Course" />
 
-      <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-12">
+      <main className="toy-yellow mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-12">
         <section className="space-y-6">
           <div className="space-y-3">
             <Badge variant="outline">Course</Badge>
@@ -69,16 +70,20 @@ export default function HtmlCourse() {
           </div>
 
           <div className="relative space-y-3 before:absolute before:top-2 before:left-5 before:h-[calc(100%-1rem)] before:w-px before:bg-border">
-            {htmlCourse.chapters.map((chapter) => (
+            {htmlCourse.chapters.map((chapter, index) => (
               <Link
                 key={chapter.slug}
                 href={`/courses/html/${chapter.slug}`}
                 className="group relative grid gap-3 pl-14"
               >
-                <span className="absolute top-4 left-0 z-10 flex size-10 items-center justify-center border bg-background text-sm font-medium">
+                <span
+                  className={`chapter-marker ${chapterAccentClasses[index % chapterAccentClasses.length]} absolute top-4 left-0.5 z-10`}
+                >
                   {chapter.number}
                 </span>
-                <Card className="transition-colors group-hover:bg-muted/50">
+                <Card
+                  className={`toy-surface toy-surface-link ${chapterAccentClasses[index % chapterAccentClasses.length]}`}
+                >
                   <CardHeader>
                     <CardTitle>{chapter.title}</CardTitle>
                     <CardDescription>{chapter.summary}</CardDescription>

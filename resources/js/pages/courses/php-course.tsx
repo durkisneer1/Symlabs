@@ -13,13 +13,14 @@ import { Separator } from '@/components/ui/separator';
 import { phpCourse } from '@/data/php-course';
 
 const firstChapter = phpCourse.chapters[0];
+const chapterAccentClasses = ['toy-purple', 'toy-green', 'toy-yellow', 'toy-cyan'];
 
 export default function PhpCourse() {
   return (
     <>
       <Head title="PHP Course" />
 
-      <main className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-12">
+      <main className="toy-purple mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-12">
         <section className="space-y-6">
           <div className="space-y-3">
             <Badge variant="outline">Course</Badge>
@@ -49,16 +50,20 @@ export default function PhpCourse() {
           </div>
 
           <div className="relative space-y-3 before:absolute before:left-5 before:top-2 before:h-[calc(100%-1rem)] before:w-px before:bg-border">
-            {phpCourse.chapters.map((chapter) => (
+            {phpCourse.chapters.map((chapter, index) => (
               <Link
                 key={chapter.slug}
                 href={`/courses/php/${chapter.slug}`}
                 className="group relative grid gap-3 pl-14"
               >
-                <span className="absolute left-0 top-4 z-10 flex size-10 items-center justify-center border bg-background text-sm font-medium">
+                <span
+                  className={`chapter-marker ${chapterAccentClasses[index % chapterAccentClasses.length]} absolute left-0.5 top-4 z-10`}
+                >
                   {chapter.number}
                 </span>
-                <Card className="transition-colors group-hover:bg-muted/50">
+                <Card
+                  className={`toy-surface toy-surface-link ${chapterAccentClasses[index % chapterAccentClasses.length]}`}
+                >
                   <CardHeader>
                     <CardTitle>{chapter.title}</CardTitle>
                     <CardDescription>{chapter.summary}</CardDescription>
