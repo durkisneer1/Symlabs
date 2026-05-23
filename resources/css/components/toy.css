@@ -114,6 +114,43 @@
 
   [data-sidebar='menu-button'] {
     --sidebar-button-accent: var(--accent-cyan);
+    --nav-orb-x: 88%;
+    --nav-orb-y: 50%;
+    --nav-orb-size: 18%;
+  }
+
+  [data-sidebar='menu-button'].toy-purple {
+    --sidebar-button-accent: var(--accent-purple);
+  }
+
+  [data-sidebar='menu-button'].toy-green {
+    --sidebar-button-accent: var(--accent-green);
+  }
+
+  [data-sidebar='menu-button'].toy-yellow {
+    --sidebar-button-accent: var(--accent-orange);
+  }
+
+  [data-sidebar='menu-button'].toy-pink {
+    --sidebar-button-accent: var(--accent-pink);
+  }
+
+  [data-sidebar='menu-button'].nav-orb-2 {
+    --nav-orb-x: 84%;
+    --nav-orb-y: 32%;
+    --nav-orb-size: 14%;
+  }
+
+  [data-sidebar='menu-button'].nav-orb-3 {
+    --nav-orb-x: 92%;
+    --nav-orb-y: 68%;
+    --nav-orb-size: 20%;
+  }
+
+  [data-sidebar='menu-button'].nav-orb-4 {
+    --nav-orb-x: 80%;
+    --nav-orb-y: 58%;
+    --nav-orb-size: 16%;
   }
 
   [data-sidebar='menu-button']:hover,
@@ -121,25 +158,26 @@
     color: var(--sidebar-foreground) !important;
     background:
       radial-gradient(
-        circle at 14% 20%,
-        color-mix(in oklch, white 46%, var(--sidebar-button-accent)) 0 14%,
-        transparent 15%
+        circle at var(--nav-orb-x) var(--nav-orb-y),
+        color-mix(in srgb, white 38%, var(--sidebar-button-accent)) 0
+          var(--nav-orb-size),
+        transparent calc(var(--nav-orb-size) + 1%)
       ),
       linear-gradient(
         145deg,
-        color-mix(in oklch, var(--sidebar-button-accent) 20%, var(--sidebar)),
-        color-mix(in oklch, var(--sidebar-button-accent) 34%, var(--sidebar))
+        color-mix(in srgb, var(--sidebar-button-accent) 14%, var(--sidebar)),
+        color-mix(in srgb, var(--sidebar-button-accent) 28%, var(--sidebar))
       ) !important;
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 0.42),
       inset 0 -6px 10px
-        color-mix(in oklch, var(--sidebar-button-accent) 14%, transparent);
+        color-mix(in srgb, var(--sidebar-button-accent) 14%, transparent);
   }
 
   [data-sidebar='menu-button'][data-active='true'] {
     border: 1px solid
       color-mix(
-        in oklch,
+        in srgb,
         var(--sidebar-button-accent) 44%,
         var(--sidebar-border)
       );

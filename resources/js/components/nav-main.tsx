@@ -22,11 +22,12 @@ export function NavMain({
     <SidebarGroup className="px-2 py-0">
       <SidebarGroupLabel>{label}</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {items.map((item, index) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
               asChild
               isActive={isCurrentUrl(item.href)}
+              className={`${item.className ?? ''} nav-orb-${(index % 4) + 1}`}
               tooltip={{ children: item.title }}
             >
               <Link href={item.href} prefetch>

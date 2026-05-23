@@ -52,7 +52,7 @@ export default function SiteLayout({
   const dashboardUrl = currentTeam ? dashboard(currentTeam.slug) : '/dashboard';
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-background p-6 text-foreground lg:p-8">
+    <div className="flex min-h-screen flex-col items-center p-6 text-foreground lg:p-8">
       <header className="w-full">
         <NavigationMenu
           viewport={false}

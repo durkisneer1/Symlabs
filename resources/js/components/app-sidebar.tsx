@@ -37,6 +37,7 @@ export function AppSidebar() {
       title: 'Overview',
       href: dashboardUrl,
       icon: LayoutGrid,
+      className: 'toy-cyan',
     },
   ];
 
@@ -45,6 +46,7 @@ export function AppSidebar() {
       title: 'Work',
       href: `/${currentTeam.slug}/work`,
       icon: ClipboardList,
+      className: 'toy-cyan',
     });
   }
 
@@ -53,6 +55,7 @@ export function AppSidebar() {
       title: 'Teacher Request',
       href: '/teacher-requests',
       icon: UserPlus,
+      className: 'toy-pink',
     });
   }
 
@@ -61,11 +64,13 @@ export function AppSidebar() {
       title: 'Roster',
       href: `/${currentTeam.slug}/roster`,
       icon: Users,
+      className: 'toy-green',
     });
     mainNavItems.push({
       title: 'Classroom',
       href: `/${currentTeam.slug}/classroom`,
       icon: Settings2,
+      className: 'toy-yellow',
     });
   }
 
@@ -74,6 +79,7 @@ export function AppSidebar() {
       title: 'Q&A',
       href: `/${currentTeam.slug}/questions`,
       icon: MessageSquareText,
+      className: 'toy-pink',
     });
   }
 
@@ -82,6 +88,7 @@ export function AppSidebar() {
       title: 'Support',
       href: '/support',
       icon: LifeBuoy,
+      className: 'toy-purple',
     });
   }
 
@@ -91,21 +98,25 @@ export function AppSidebar() {
         title: 'Quiz Bank',
         href: '/admin/quizzes',
         icon: LibraryBig,
+        className: 'toy-purple',
       },
       {
         title: 'Users',
         href: '/admin/users',
         icon: ShieldCheck,
+        className: 'toy-green',
       },
       {
         title: 'Support',
         href: '/support',
         icon: LifeBuoy,
+        className: 'toy-purple',
       },
       {
         title: 'Teacher Requests',
         href: '/teacher-requests',
         icon: UserPlus,
+        className: 'toy-pink',
       },
     );
   }

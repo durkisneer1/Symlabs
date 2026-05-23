@@ -335,23 +335,29 @@ function AdminTicket({ ticket }: { ticket: SupportTicket }) {
             {form.errors.admin_response}
           </p>
         ) : null}
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            type="button"
-            variant={form.data.status === 'open' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => form.setData('status', 'open')}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div
+            className="inline-flex items-center gap-1 border border-border/70 bg-background p-0.5"
+            role="group"
+            aria-label="Ticket status"
           >
-            Open
-          </Button>
-          <Button
-            type="button"
-            variant={form.data.status === 'resolved' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => form.setData('status', 'resolved')}
-          >
-            Resolved
-          </Button>
+            <Button
+              type="button"
+              variant={form.data.status === 'open' ? 'secondary' : 'ghost'}
+              size="sm"
+              onClick={() => form.setData('status', 'open')}
+            >
+              Open
+            </Button>
+            <Button
+              type="button"
+              variant={form.data.status === 'resolved' ? 'secondary' : 'ghost'}
+              size="sm"
+              onClick={() => form.setData('status', 'resolved')}
+            >
+              Resolved
+            </Button>
+          </div>
           <Button type="submit" size="sm" disabled={form.processing}>
             Save response
           </Button>
