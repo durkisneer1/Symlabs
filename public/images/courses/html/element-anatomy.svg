@@ -1,15 +1,58 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" role="img" aria-labelledby="title desc">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#faf8f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f3f0ed;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="lineGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5eb3d6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c5cdb;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="ruleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#5eb3d6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c5cdb;stop-opacity:1" />
+    </linearGradient>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.08"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
   <title id="title">HTML element anatomy</title>
-  <desc id="desc">A paragraph element showing an opening tag, text content, and a closing tag.</desc>
-  <rect width="920" height="360" fill="#f6f2ea"/>
-  <rect x="64" y="74" width="792" height="160" fill="#fffaf0" stroke="#dfd2bd" stroke-width="2"/>
-  <text x="120" y="172" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#1f1f24">&lt;p&gt;</text>
-  <text x="340" y="172" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#c4632d">Hello</text>
-  <text x="646" y="172" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#1f1f24">&lt;/p&gt;</text>
-  <line x1="160" y1="208" x2="160" y2="278" stroke="#b86a1f" stroke-width="3"/>
-  <line x1="430" y1="208" x2="430" y2="278" stroke="#b86a1f" stroke-width="3"/>
-  <line x1="704" y1="208" x2="704" y2="278" stroke="#b86a1f" stroke-width="3"/>
-  <text x="88" y="314" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#4b4650">opening tag</text>
-  <text x="338" y="314" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#4b4650">text content</text>
-  <text x="628" y="314" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#4b4650">closing tag</text>
+  <desc id="desc">A paragraph element showing an opening tag, text content, and a closing tag with SymLabs cool-toned design.</desc>
+
+  <!-- Main content card with shadow -->
+  <g filter="url(#softShadow)">
+    <rect x="64" y="74" width="792" height="160" fill="url(#cardGradient)" stroke="#dce4e8" stroke-width="2" rx="6"/>
+  </g>
+
+  <!-- Inset top highlight (Wii-style depth) -->
+  <rect x="64" y="74" width="792" height="1" fill="rgba(255,255,255,0.6)" rx="6"/>
+
+  <!-- Code content -->
+  <text x="148" y="172" text-anchor="start" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#1a1f2e" font-weight="500">&lt;p&gt;</text>
+  <text x="460" y="172" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#3da5d9">Hello</text>
+  <text x="772" y="172" text-anchor="end" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#1a1f2e" font-weight="500">&lt;/p&gt;</text>
+
+  <!-- Decorative corner accent (top-left) -->
+  <path d="M 64 86 L 64 74 L 76 74" stroke="#5eb3d6" stroke-width="3" fill="none" opacity="0.3"/>
+
+  <!-- Decorative corner accent (bottom-right) -->
+  <path d="M 844 234 L 856 234 L 856 222" stroke="#7c5cdb" stroke-width="3" fill="none" opacity="0.2"/>
+
+  <!-- Labels with cool tones -->
+  <text x="124" y="302" text-anchor="start" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#3a4452" font-weight="500">opening tag</text>
+  <text x="460" y="302" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#3a4452" font-weight="500">text content</text>
+  <text x="786" y="302" text-anchor="end" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#3a4452" font-weight="500">closing tag</text>
 </svg>

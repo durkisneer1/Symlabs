@@ -65,7 +65,7 @@ export default function ClassroomSettings() {
     <>
       <Head title="Classroom" />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 bg-muted/30 p-4">
+      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             {currentTeam?.name ?? 'Classroom'}
@@ -87,7 +87,7 @@ export default function ClassroomSettings() {
             <form className="app-panel" onSubmit={submit}>
               <div className="app-panel-header">
                 <span className="ink-accent-icon mb-4">
-                  <Percent className="size-5 text-black" />
+                  <Percent className="size-5" />
                 </span>
                 <h2 className="font-medium">Grade Weights</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
@@ -153,7 +153,7 @@ export default function ClassroomSettings() {
             <aside className="space-y-4">
               <section className="app-card p-4">
                 <span className="ink-accent-icon mb-4">
-                  <Settings2 className="size-5 text-black" />
+                  <Settings2 className="size-5" />
                 </span>
                 <h2 className="font-medium">Assignment Defaults</h2>
                 <div className="mt-4 space-y-3 text-sm">
@@ -165,7 +165,7 @@ export default function ClassroomSettings() {
 
               <section className="app-card p-4">
                 <span className="ink-accent-icon mb-4">
-                  <ClipboardCheck className="size-5 text-black" />
+                  <ClipboardCheck className="size-5" />
                 </span>
                 <h2 className="font-medium">Setup Tasks</h2>
                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
@@ -180,7 +180,7 @@ export default function ClassroomSettings() {
 
               <section className="app-card p-4">
                 <span className="ink-accent-icon mb-4">
-                  <CalendarClock className="size-5 text-black" />
+                  <CalendarClock className="size-5" />
                 </span>
                 <h2 className="font-medium">Semester Window</h2>
                 <div className="mt-4 space-y-3">

@@ -53,7 +53,7 @@ export default function Support({ supportTickets, supportTeachers }: Props) {
     <>
       <Head title="Support" />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 bg-muted/30 p-4">
+      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             {isAdmin ? 'Admin console' : 'Teacher help'}
@@ -63,10 +63,7 @@ export default function Support({ supportTickets, supportTeachers }: Props) {
         </div>
 
         {isAdmin ? (
-          <AdminSupport
-            tickets={supportTickets}
-            teachers={supportTeachers}
-          />
+          <AdminSupport tickets={supportTickets} teachers={supportTeachers} />
         ) : (
           <TeacherSupport tickets={supportTickets} />
         )}
@@ -102,7 +99,7 @@ function AdminSupport({
       <section className="app-panel">
         <div className="app-panel-header">
           <span className="ink-accent-icon mb-4">
-            <LifeBuoy className="size-5 text-black" />
+            <LifeBuoy className="size-5" />
           </span>
           <h2 className="font-medium">Teacher Tickets</h2>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -115,7 +112,7 @@ function AdminSupport({
       <section className="app-panel">
         <div className="app-panel-header">
           <span className="ink-accent-icon mb-4">
-            <UserCog className="size-5 text-black" />
+            <UserCog className="size-5" />
           </span>
           <h2 className="font-medium">Dashboard Review</h2>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -124,7 +121,7 @@ function AdminSupport({
         </div>
         <div className="space-y-3 p-3">
           <label className="relative block">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               className="bg-background pl-9"
               value={teacherSearch}
@@ -169,7 +166,9 @@ function AdminSupport({
           </div>
 
           {teachers.length === 0 ? (
-            <p className="p-4 text-sm text-muted-foreground">No teachers yet.</p>
+            <p className="p-4 text-sm text-muted-foreground">
+              No teachers yet.
+            </p>
           ) : null}
           {teachers.length > 0 && filteredTeachers.length === 0 ? (
             <p className="p-4 text-sm text-muted-foreground">
@@ -201,7 +200,7 @@ function TeacherSupport({ tickets }: { tickets: SupportTicket[] }) {
       <section className="max-w-3xl space-y-3">
         <div className="flex items-start gap-3">
           <div className="ink-accent-icon mt-0.5">
-            <Send className="size-5 text-black" />
+            <Send className="size-5" />
           </div>
           <div>
             <h2 className="font-medium">Contact Admins</h2>

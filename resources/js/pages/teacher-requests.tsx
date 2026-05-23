@@ -30,9 +30,7 @@ type Props = {
   teacherAccountRequests: TeacherAccountRequest[];
 };
 
-export default function TeacherRequests({
-  teacherAccountRequests,
-}: Props) {
+export default function TeacherRequests({ teacherAccountRequests }: Props) {
   const { auth } = usePage().props;
   const isAdmin = auth.user.role === 'admin';
 
@@ -40,7 +38,7 @@ export default function TeacherRequests({
     <>
       <Head title="Teacher Requests" />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 bg-muted/30 p-4">
+      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             {isAdmin ? 'Admin review' : 'Account upgrade'}
@@ -61,11 +59,7 @@ export default function TeacherRequests({
   );
 }
 
-function StudentRequest({
-  requests,
-}: {
-  requests: TeacherAccountRequest[];
-}) {
+function StudentRequest({ requests }: { requests: TeacherAccountRequest[] }) {
   const form = useForm({
     institution: '',
     instructor_title: '',
@@ -85,7 +79,7 @@ function StudentRequest({
       <section className="max-w-3xl space-y-3">
         <div className="flex items-start gap-3">
           <div className="ink-accent-icon mt-0.5">
-            <ShieldQuestion className="size-5 text-black" />
+            <ShieldQuestion className="size-5" />
           </div>
           <div>
             <h2 className="font-medium">Request Teacher Access</h2>
@@ -152,16 +146,12 @@ function StudentRequest({
   );
 }
 
-function AdminRequests({
-  requests,
-}: {
-  requests: TeacherAccountRequest[];
-}) {
+function AdminRequests({ requests }: { requests: TeacherAccountRequest[] }) {
   return (
     <section className="app-panel">
       <div className="app-panel-header">
         <span className="ink-accent-icon mb-4">
-          <BadgeCheck className="size-5 text-black" />
+          <BadgeCheck className="size-5" />
         </span>
         <h2 className="font-medium">Pending Teacher Reviews</h2>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -255,9 +245,7 @@ function AdminRequestCard({ request }: { request: TeacherAccountRequest }) {
           placeholder="Optional notes for the requester"
         />
         {form.errors.admin_notes ? (
-          <p className="text-sm text-destructive">
-            {form.errors.admin_notes}
-          </p>
+          <p className="text-sm text-destructive">{form.errors.admin_notes}</p>
         ) : null}
         <div className="flex flex-wrap gap-2">
           <Button
@@ -307,7 +295,7 @@ function ProofBlock({ request }: { request: TeacherAccountRequest }) {
       <p className="text-xs font-medium text-muted-foreground">
         Employment proof
       </p>
-      <p className="mt-1 whitespace-pre-wrap text-sm">{request.proof}</p>
+      <p className="mt-1 text-sm whitespace-pre-wrap">{request.proof}</p>
     </div>
   );
 }

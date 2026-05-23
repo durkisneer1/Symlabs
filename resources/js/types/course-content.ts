@@ -25,6 +25,7 @@ export type CourseImageBlock = {
   type: 'image';
   title: string;
   src: string;
+  darkSrc?: string;
   alt: string;
   caption?: string;
 };

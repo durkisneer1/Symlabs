@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" role="img" aria-labelledby="title desc">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#202226;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#202226;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#272a30;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1f2126;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="lineGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#69d5f3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9a83ff;stop-opacity:0.72" />
+    </linearGradient>
+    <linearGradient id="ruleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#69d5f3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9a83ff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="4" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.28"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <title id="title">HTML element anatomy</title>
+  <desc id="desc">A paragraph element showing an opening tag, text content, and a closing tag with SymLabs dark mode colors.</desc>
+
+  <g filter="url(#softShadow)">
+    <rect x="64" y="74" width="792" height="160" fill="url(#cardGradient)" stroke="#383b42" stroke-width="2" rx="6"/>
+  </g>
+
+  <rect x="64" y="74" width="792" height="1" fill="#ffffff" opacity="0.08" rx="6"/>
+
+  <text x="148" y="172" text-anchor="start" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#e5e7eb" font-weight="500">&lt;p&gt;</text>
+  <text x="460" y="172" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#69d5f3">Hello</text>
+  <text x="772" y="172" text-anchor="end" font-family="JetBrains Mono, Consolas, monospace" font-size="52" fill="#e5e7eb" font-weight="500">&lt;/p&gt;</text>
+
+  <line x1="160" y1="208" x2="160" y2="278" stroke="url(#lineGradient1)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="430" y1="208" x2="430" y2="278" stroke="url(#lineGradient1)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="704" y1="208" x2="704" y2="278" stroke="url(#lineGradient1)" stroke-width="3" stroke-linecap="round"/>
+
+  <path d="M 64 86 L 64 74 L 76 74" stroke="#69d5f3" stroke-width="3" fill="none" opacity="0.6"/>
+  <path d="M 844 234 L 856 234 L 856 222" stroke="#9a83ff" stroke-width="3" fill="none" opacity="0.6"/>
+
+  <text x="124" y="302" text-anchor="start" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#c4c7cc" font-weight="500">opening tag</text>
+  <text x="460" y="302" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#c4c7cc" font-weight="500">text content</text>
+  <text x="786" y="302" text-anchor="end" font-family="JetBrains Mono, Consolas, monospace" font-size="22" fill="#c4c7cc" font-weight="500">closing tag</text>
+</svg>

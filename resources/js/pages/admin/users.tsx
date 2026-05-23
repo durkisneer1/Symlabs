@@ -59,7 +59,7 @@ export default function AdminUsers({
     <>
       <Head title="Admin Users" />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 bg-muted/30 p-4">
+      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             Admin console
@@ -74,7 +74,7 @@ export default function AdminUsers({
               <>
                 <div className="app-panel p-4">
                   <span className="ink-accent-icon mb-4">
-                    <UserRoundPlus className="size-5 text-black" />
+                    <UserRoundPlus className="size-5" />
                   </span>
                   <h2 className="font-medium">Invite Admin</h2>
                   <p className="mt-1 text-sm text-muted-foreground">
@@ -152,7 +152,7 @@ export default function AdminUsers({
             ) : (
               <div className="app-panel p-4">
                 <span className="ink-accent-icon mb-4">
-                  <ShieldCheck className="size-5 text-black" />
+                  <ShieldCheck className="size-5" />
                 </span>
                 <h2 className="font-medium">Admin Invitations</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
@@ -166,7 +166,7 @@ export default function AdminUsers({
             <div className="app-panel-header flex flex-wrap items-start justify-between gap-3">
               <div>
                 <span className="ink-accent-icon mb-4">
-                  <Users className="size-5 text-black" />
+                  <Users className="size-5" />
                 </span>
                 <h2 className="font-medium">Accounts</h2>
                 <p className="mt-1 text-sm text-muted-foreground">

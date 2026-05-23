@@ -1,5 +1,6 @@
 import CodeBlock from '@/components/code-block';
 import CourseActivityBlock from '@/components/course-activity';
+import { useAppearance } from '@/hooks/use-appearance';
 import type { CourseContentBlock } from '@/types/course-content';
 
 export default function CourseContentBlockRenderer({
@@ -13,6 +14,8 @@ export default function CourseContentBlockRenderer({
   codeLanguage: 'html' | 'php';
   onActivityComplete?: () => void;
 }) {
+  const { resolvedAppearance } = useAppearance();
+
   if (block.type === 'activity') {
     return (
       <section id={id} className="scroll-mt-6">
@@ -25,10 +28,13 @@ export default function CourseContentBlockRenderer({
   }
 
   if (block.type === 'image') {
+    const imageSrc =
+      resolvedAppearance === 'dark' && block.darkSrc ? block.darkSrc : block.src;
+
     return (
       <figure id={id} className="activity-card scroll-mt-6 border bg-card p-3">
         <img
-          src={block.src}
+          src={imageSrc}
           alt={block.alt}
           className="max-h-[460px] w-full object-contain"
           loading="lazy"

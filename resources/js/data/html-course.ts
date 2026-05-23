@@ -36,6 +36,7 @@ export const htmlCourse = {
           type: 'image',
           title: 'Element Anatomy',
           src: '/images/courses/html/element-anatomy.svg',
+          darkSrc: '/images/courses/html/element-anatomy-dark.svg',
           alt: 'A paragraph element split into opening tag, text content, and closing tag.',
           caption:
             'Most beginner HTML bugs come from mixing up the tag pieces with the complete element.',

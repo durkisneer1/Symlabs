@@ -36,7 +36,7 @@ export default function Dashboard() {
     <>
       <Head title="Overview" />
 
-      <div className="min-h-[calc(100vh-5rem)] space-y-6 bg-muted/30 p-4">
+      <div className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-sm font-medium text-muted-foreground">
@@ -130,22 +130,22 @@ function TeacherDashboard({
 
   return (
     <div className="space-y-4">
-      <div className="grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link
           href={`/${currentTeam.slug}/roster`}
-          className="app-card app-card-link block p-4"
+          className="app-panel app-card-link block p-4"
         >
           <span className="ink-accent-icon mb-4">
-            <Users className="size-5 text-black" />
+            <Users className="size-5" />
           </span>
           <p className="text-2xl font-semibold">{students.length}</p>
           <p className="text-sm text-muted-foreground">
             {students.length === 1 ? 'Student' : 'Students'}
           </p>
         </Link>
-        <div className="app-card p-4">
+        <div className="app-panel p-4">
           <span className="ink-accent-icon mb-4">
-            <GraduationCap className="size-5 text-black" />
+            <GraduationCap className="size-5" />
           </span>
           <p className="text-2xl font-semibold">
             {averageGrade === null ? '--' : `${averageGrade}%`}
@@ -156,10 +156,10 @@ function TeacherDashboard({
         </div>
         <Link
           href={`/${currentTeam.slug}/questions`}
-          className="app-card app-card-link block p-4"
+          className="app-panel app-card-link block p-4"
         >
           <span className="ink-accent-icon mb-4">
-            <MessageSquareText className="size-5 text-black" />
+            <MessageSquareText className="size-5" />
           </span>
           <p className="text-2xl font-semibold">{questions.length}</p>
           <p className="text-sm text-muted-foreground">
@@ -335,10 +335,10 @@ function StudentDashboard({
       ) : null}
 
       {currentTeam ? (
-        <div className="grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Link
             href={`/${currentTeam.slug}/work`}
-            className="app-card app-card-link block p-4"
+            className="app-panel app-card-link block p-4"
           >
             <span className="ink-accent-icon mb-4">
               <ClipboardList className="size-5" />
@@ -350,7 +350,7 @@ function StudentDashboard({
           </Link>
           <Link
             href={`/${currentTeam.slug}/questions`}
-            className="app-card app-card-link block p-4"
+            className="app-panel app-card-link block p-4"
           >
             <span className="ink-accent-icon mb-4">
               <MessageSquareText className="size-5" />
@@ -360,7 +360,7 @@ function StudentDashboard({
               {answeredQuestions} answered
             </p>
           </Link>
-          <div className="app-card p-4">
+          <div className="app-panel p-4">
             <span className="ink-accent-icon mb-4">
               <GraduationCap className="size-5" />
             </span>

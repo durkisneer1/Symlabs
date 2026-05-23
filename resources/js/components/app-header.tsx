@@ -148,7 +148,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
               >
                 <SheetTitle className="sr-only">Navigation menu</SheetTitle>
                 <SheetHeader className="flex justify-start text-left">
-                  <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" />
+                  <AppLogoIcon className="h-6 w-6 fill-current text-foreground" />
                 </SheetHeader>
                 <div className="flex h-full flex-1 flex-col space-y-4 p-4">
                   <div className="flex h-full flex-col justify-between text-sm">
@@ -209,7 +209,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                 <Button variant="ghost" className="size-10 rounded-full p-1">
                   <Avatar className="size-8 overflow-hidden rounded-full">
                     <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
-                    <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                    <AvatarFallback className="rounded-lg bg-neutral-200 text-foreground dark:bg-neutral-700">
                       {getInitials(auth.user.name)}
                     </AvatarFallback>
                   </Avatar>

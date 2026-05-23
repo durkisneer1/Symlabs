@@ -19,7 +19,7 @@ export default function ClassroomRoster() {
     <>
       <Head title="Roster" />
 
-      <main className="min-h-[calc(100vh-5rem)] space-y-6 bg-muted/30 p-4">
+      <main className="min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
             {currentTeam?.name ?? 'Classroom'}
@@ -65,7 +65,7 @@ function RosterTable({
   return (
     <div className="space-y-4">
       <div className="grid gap-4 md:grid-cols-3">
-        <div className="app-card p-4">
+        <div className="app-panel p-4">
           <span className="ink-accent-icon mb-4">
             <Users className="size-5" />
           </span>
@@ -74,13 +74,13 @@ function RosterTable({
             {students.length === 1 ? 'Student' : 'Students'}
           </p>
         </div>
-        <div className="app-card p-4">
+        <div className="app-panel p-4">
           <p className="text-2xl font-semibold">
             {averageCompletion === null ? '--' : `${averageCompletion}%`}
           </p>
           <p className="text-sm text-muted-foreground">Average completion</p>
         </div>
-        <div className="app-card p-4">
+        <div className="app-panel p-4">
           <p className="text-2xl font-semibold">
             {averageGrade === null ? '--' : `${averageGrade}%`}
           </p>
