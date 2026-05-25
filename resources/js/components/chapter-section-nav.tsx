@@ -6,11 +6,13 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { PencilRuler } from 'lucide-react';
 
 export type ChapterNavItem = {
   id: string;
   title: string;
   depth?: number;
+  kind?: 'section' | 'image' | 'activity';
 };
 
 export default function ChapterSectionNav({
@@ -36,15 +38,25 @@ export default function ChapterSectionNav({
         <CardTitle>In This Chapter</CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
-        <div className="border-t">
+        <div className="border-t pt-2">
           {items.map((item) => (
             <a
               key={item.id}
               href={`#${item.id}`}
-              className="block py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="group flex items-center justify-between gap-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
               style={{ paddingLeft: `${(item.depth ?? 0) * 16}px` }}
             >
-              {item.title}
+              <span>{item.title}</span>
+              {item.kind === 'activity' ? (
+                <span className="chapter-nav-activity-icon" title="Activity">
+                  <PencilRuler
+                    className="size-3"
+                    strokeWidth={2.1}
+                    aria-hidden="true"
+                  />
+                  <span className="sr-only">Activity</span>
+                </span>
+              ) : null}
             </a>
           ))}
         </div>

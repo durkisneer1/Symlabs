@@ -1,5 +1,6 @@
 import CodeBlock from '@/components/code-block';
 import CourseActivityBlock from '@/components/course-activity';
+import InlineCodeText from '@/components/inline-code-text';
 import { useAppearance } from '@/hooks/use-appearance';
 import type { CourseContentBlock } from '@/types/course-content';
 
@@ -29,14 +30,16 @@ export default function CourseContentBlockRenderer({
 
   if (block.type === 'image') {
     const imageSrc =
-      resolvedAppearance === 'dark' && block.darkSrc ? block.darkSrc : block.src;
+      resolvedAppearance === 'dark' && block.darkSrc
+        ? block.darkSrc
+        : block.src;
 
     return (
       <figure id={id} className="activity-card scroll-mt-6 border bg-card p-3">
         <img
           src={imageSrc}
           alt={block.alt}
-          className="max-h-[460px] w-full object-contain"
+          className="max-h-115 w-full object-contain"
           loading="lazy"
         />
         {block.caption ? (
@@ -53,12 +56,19 @@ export default function CourseContentBlockRenderer({
       <h2 className="text-xl font-semibold tracking-tight">{block.title}</h2>
       {block.body.map((paragraph) => (
         <p key={paragraph} className="leading-7 text-muted-foreground">
-          {paragraph}
+          <InlineCodeText text={paragraph} />
         </p>
       ))}
       {block.example ? (
         <CodeBlock code={block.example} language={codeLanguage} />
       ) : null}
+      {block.examples?.map((example, index) => (
+        <CodeBlock
+          key={`${example.language ?? codeLanguage}-${index}`}
+          code={example.code}
+          language={example.language ?? codeLanguage}
+        />
+      ))}
     </section>
   );
 }

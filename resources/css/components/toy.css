@@ -95,6 +95,12 @@
   }
 
   .toy-yellow {
+    --toy-accent: var(--accent-yellow);
+    --page-accent: var(--accent-yellow);
+    --panel-accent: var(--accent-yellow);
+  }
+
+  .toy-orange {
     --toy-accent: var(--accent-orange);
     --page-accent: var(--accent-orange);
     --panel-accent: var(--accent-orange);
@@ -110,6 +116,12 @@
     --toy-accent: var(--accent-red);
     --page-accent: var(--accent-red);
     --panel-accent: var(--accent-red);
+  }
+
+  .toy-black {
+    --toy-accent: oklch(0.24 0.01 240);
+    --page-accent: oklch(0.24 0.01 240);
+    --panel-accent: oklch(0.24 0.01 240);
   }
 
   [data-sidebar='menu-button'] {
@@ -128,6 +140,10 @@
   }
 
   [data-sidebar='menu-button'].toy-yellow {
+    --sidebar-button-accent: var(--accent-yellow);
+  }
+
+  [data-sidebar='menu-button'].toy-orange {
     --sidebar-button-accent: var(--accent-orange);
   }
 

@@ -229,6 +229,7 @@ class HandleInertiaRequests extends Middleware
         }
 
         $chapterLabels = [
+            'intro-to-web' => 'Introduction to Web Dev',
             'elements-and-tags' => 'Elements and Tags',
         ];
 

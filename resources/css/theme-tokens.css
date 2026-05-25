@@ -59,6 +59,7 @@
 :root {
   /* Cool tone accent palette */
   --accent-orange: oklch(0.76 0.12 58);
+  --accent-yellow: oklch(0.84 0.14 92);
   --accent-red: oklch(0.62 0.22 15);
   --accent-green: oklch(0.62 0.15 142);
   --accent-purple: oklch(0.62 0.18 275);
@@ -104,6 +105,7 @@
 .dark {
   /* Dark mode accent palette */
   --accent-orange: oklch(0.78 0.12 60);
+  --accent-yellow: oklch(0.84 0.13 92);
   --accent-red: oklch(0.68 0.18 15);
   --accent-green: oklch(0.7 0.12 140);
   --accent-purple: oklch(0.7 0.15 270);

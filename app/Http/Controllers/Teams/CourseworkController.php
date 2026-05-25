@@ -24,6 +24,7 @@ class CourseworkController extends Controller
 
     private const CHAPTERS = [
         'html' => [
+            ['value' => 'intro-to-web', 'label' => 'Introduction to Web Dev'],
             ['value' => 'elements-and-tags', 'label' => 'Elements and Tags'],
             ['value' => 'document-structure', 'label' => 'Document Structure'],
             ['value' => 'semantic-html', 'label' => 'Semantic HTML'],

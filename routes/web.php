@@ -20,7 +20,7 @@ Route::inertia('/', 'welcome')->name('home');
 Route::inertia('/courses/html', 'courses/html-course')->name('courses.html');
 Route::get('/courses/html/{chapter}', fn (string $chapter) => Inertia::render('courses/html-chapter', [
     'chapterSlug' => $chapter,
-]))->whereIn('chapter', ['elements-and-tags', 'document-structure', 'semantic-html'])->name('courses.html.chapter');
+]))->name('courses.html.chapter');
 Route::inertia('/courses/css', 'courses/course-shell', ['course' => 'CSS'])->name('courses.css');
 Route::inertia('/courses/php', 'courses/php-course')->name('courses.php');
 Route::get('/courses/php/{chapter}', fn (string $chapter) => Inertia::render('courses/php-chapter', [

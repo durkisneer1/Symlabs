@@ -71,7 +71,7 @@ type Props = {
 
 const courseChapters: Record<string, ChapterOption[]> = {
   html: [
-    { value: 'intro-to-html', label: 'Intro to HTML' },
+    { value: 'intro-to-web', label: 'Introduction to Web Dev' },
     { value: 'elements-and-tags', label: 'Elements and Tags' },
     { value: 'semantic-html', label: 'Semantic HTML' },
     { value: 'forms-and-inputs', label: 'Forms and Inputs' },

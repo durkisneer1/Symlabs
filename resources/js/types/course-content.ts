@@ -16,13 +16,16 @@ export type CourseContentBlock =
 
 export type CourseSectionBlock = {
   type: 'section';
+  id?: string;
   title: string;
   body: string[];
   example?: string;
+  examples?: CourseCodeExample[];
 };
 
 export type CourseImageBlock = {
   type: 'image';
+  id?: string;
   title: string;
   src: string;
   darkSrc?: string;
@@ -32,5 +35,11 @@ export type CourseImageBlock = {
 
 export type CourseActivityBlock = {
   type: 'activity';
+  id?: string;
   activity: CourseActivity;
+};
+
+export type CourseCodeExample = {
+  code: string;
+  language?: 'html' | 'php' | 'markup';
 };

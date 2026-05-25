@@ -13,7 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { phpCourse } from '@/data/php-course';
 
 const firstChapter = phpCourse.chapters[0];
-const chapterAccentClasses = ['toy-purple', 'toy-green', 'toy-yellow', 'toy-cyan'];
+const chapterAccentClass = 'toy-purple';
 
 export default function PhpCourse() {
   return (
@@ -50,19 +50,19 @@ export default function PhpCourse() {
           </div>
 
           <div className="relative space-y-3 before:absolute before:left-5 before:top-2 before:h-[calc(100%-1rem)] before:w-px before:bg-border">
-            {phpCourse.chapters.map((chapter, index) => (
+            {phpCourse.chapters.map((chapter) => (
               <Link
                 key={chapter.slug}
                 href={`/courses/php/${chapter.slug}`}
                 className="group relative grid gap-3 pl-14"
               >
                 <span
-                  className={`chapter-marker ${chapterAccentClasses[index % chapterAccentClasses.length]} absolute left-0.5 top-4 z-10`}
+                  className={`chapter-marker ${chapterAccentClass} absolute left-0.5 top-4 z-10`}
                 >
                   {chapter.number}
                 </span>
                 <Card
-                  className={`toy-surface toy-surface-link ${chapterAccentClasses[index % chapterAccentClasses.length]}`}
+                  className={`toy-surface toy-surface-link ${chapterAccentClass}`}
                 >
                   <CardHeader>
                     <CardTitle>{chapter.title}</CardTitle>

@@ -157,7 +157,7 @@ export default function HtmlChapter({ chapterSlug }: Props) {
                 <CourseContentBlockRenderer
                   key={contentKey(block)}
                   block={block}
-                  id={sectionId(blockTitle(block))}
+                  id={blockId(block)}
                   codeLanguage="html"
                   onActivityComplete={
                     isCompletableActivityBlock(block)
@@ -211,10 +211,15 @@ export default function HtmlChapter({ chapterSlug }: Props) {
 
 function navItemFor(block: CourseContentBlock) {
   return {
-    id: sectionId(blockTitle(block)),
+    id: blockId(block),
     title: blockTitle(block),
     depth: block.type === 'activity' ? 1 : 0,
+    kind: block.type,
   };
+}
+
+function blockId(block: CourseContentBlock) {
+  return block.id ?? sectionId(blockTitle(block));
 }
 
 function blockTitle(block: CourseContentBlock) {
@@ -222,7 +227,7 @@ function blockTitle(block: CourseContentBlock) {
 }
 
 function contentKey(block: CourseContentBlock) {
-  return `${block.type}-${blockTitle(block)}`;
+  return block.id ?? `${block.type}-${blockTitle(block)}`;
 }
 
 function buildChapterProgress({
