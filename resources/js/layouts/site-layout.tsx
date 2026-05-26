@@ -41,7 +41,7 @@ type LessonItem = {
 
 const lessonItems: LessonItem[] = [
   {
-    title: 'HTML',
+    title: 'HTML 5',
     href: '/courses/html',
     description: "Build the web's skeleton.",
     icon: CodeXml,
@@ -69,14 +69,14 @@ const lessonItems: LessonItem[] = [
     availability: 'coming-soon',
   },
   {
-    title: 'Python',
+    title: 'Python 3',
     description: 'Automate ideas and scripts.',
     icon: FileCode2,
     className: 'toy-yellow',
     availability: 'planned',
   },
   {
-    title: 'C++',
+    title: 'Modern C++',
     description: 'Build fast, low-level programs.',
     icon: Binary,
     className: 'toy-black',

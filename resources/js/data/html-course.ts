@@ -14,7 +14,7 @@ const chapterSources = import.meta.glob<string>(
 ) as Record<string, string>;
 
 export const htmlCourse = {
-  title: 'HTML',
+  title: 'HTML 5',
   description:
     'Learn the structure of web pages: elements, attributes, semantic markup, forms, and accessible document flow.',
   chapters: Object.entries(chapterSources)
