@@ -35,6 +35,22 @@
     opacity: 0.58;
   }
 
+  .lesson-card-description {
+    border: none;
+    border-radius: 0.4rem;
+    padding: 0;
+    box-shadow: 0 0 14px 8px rgb(255 255 255 / 0.52);
+    background: rgb(255 255 255 / 0.48);
+  }
+
+  .dark .lesson-card-description {
+    border: none;
+    border-radius: 0.4rem;
+    padding: 0;
+    box-shadow: 0 0 14px 8px rgba(8 13 18 / 0.42);
+    background: rgb(8 13 18 / 0.38);
+  }
+
   .toy-surface-link {
     @apply hover:-translate-y-0.5;
     box-shadow:

@@ -1,61 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 300" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 320" role="img" aria-labelledby="title desc">
   <defs>
-    <pattern id="dotBurst" width="18" height="18" patternUnits="userSpaceOnUse">
-      <circle cx="5" cy="5" r="3.5" fill="#f15a24"/>
-    </pattern>
-    <marker id="arrowHead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#ffffff" stroke="#111111" stroke-width="1.8"/>
-    </marker>
+    <linearGradient id="shellGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8feff;stop-opacity:1" />
+      <stop offset="48%" style="stop-color:#e8f8f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d7f0ee;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glassGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.96" />
+      <stop offset="46%" style="stop-color:#edf9fb;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#cfecea;stop-opacity:0.92" />
+    </linearGradient>
+    <linearGradient id="topGloss" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.08" />
+    </linearGradient>
+    <linearGradient id="aquaRule" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#24a8d8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#42bf88;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="connectorGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#24a8d8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#42bf88;stop-opacity:0.7" />
+    </linearGradient>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="7" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.16"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
 
   <title id="title">URL anatomy</title>
-  <desc id="desc">A transparent URL anatomy diagram with orange Frutiger Metro accents.</desc>
+  <desc id="desc">A URL split into its scheme, domain name, and path with a glossy blue and green interface style.</desc>
 
-  <g opacity="0.9">
-    <rect x="36" y="44" width="156" height="86" fill="url(#dotBurst)" opacity="0.65" transform="rotate(-8 114 87)"/>
-    <path d="M 704 42 H 842 V 78 H 704 Z" fill="#ffb000" opacity="0.72" transform="rotate(8 773 60)"/>
-    <path d="M 64 240 L 212 184" stroke="#111111" stroke-width="10" stroke-linecap="round" marker-end="url(#arrowHead)"/>
-    <path d="M 64 240 L 212 184" stroke="#ffffff" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowHead)"/>
-    <path d="M 734 238 C 780 182 832 256 880 198" fill="none" stroke="#111111" stroke-width="7" stroke-linecap="round"/>
-    <path d="M 734 238 C 780 182 832 256 880 198" fill="none" stroke="#f15a24" stroke-width="3.5" stroke-linecap="round"/>
-    <circle cx="814" cy="58" r="31" fill="#ffffff" stroke="#111111" stroke-width="7"/>
-    <circle cx="814" cy="58" r="15" fill="#f15a24" stroke="#111111" stroke-width="3.5"/>
-    <circle cx="118" cy="216" r="26" fill="#f15a24" stroke="#111111" stroke-width="7"/>
-    <circle cx="118" cy="216" r="10" fill="#ffcf24" stroke="#111111" stroke-width="3.5"/>
+  <rect x="32" y="40" width="856" height="240" fill="url(#shellGradient)" stroke="#b9dde1" stroke-width="1.5" rx="8"/>
+  <path d="M 34 49 Q 460 20 886 49 L 886 110 Q 460 88 34 110 Z" fill="#ffffff" opacity="0.48"/>
+  <path d="M 32 216 C 190 184 298 246 456 214 C 604 184 698 214 888 188 L 888 280 L 32 280 Z" fill="#56c99a" opacity="0.12"/>
+
+  <g filter="url(#softShadow)">
+    <rect x="70" y="76" width="780" height="142" fill="url(#glassGradient)" stroke="#acd8dc" stroke-width="2" rx="8"/>
   </g>
+  <rect x="82" y="86" width="756" height="48" fill="url(#topGloss)" rx="6"/>
 
-  <g stroke="#111111" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.92">
-    <path d="M 206 68 C 252 26 286 104 330 64"/>
-    <path d="M 590 72 C 642 28 686 112 734 62"/>
-    <path d="M 194 236 C 248 270 302 206 354 242"/>
-  </g>
-  <g stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round">
-    <path d="M 206 68 C 252 26 286 104 330 64"/>
-    <path d="M 590 72 C 642 28 686 112 734 62"/>
-    <path d="M 194 236 C 248 270 302 206 354 242"/>
-  </g>
+  <text x="108" y="166" text-anchor="start" font-family="JetBrains Mono, Consolas, monospace" font-size="34" fill="#147eb5" font-weight="600">https://</text>
+  <text x="432" y="166" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="34" fill="#123142" font-weight="600">symlabs.net</text>
+  <text x="812" y="166" text-anchor="end" font-family="JetBrains Mono, Consolas, monospace" font-size="34" fill="#229968" font-weight="600">/courses/html</text>
 
-  <g>
-    <path d="M 78 104 H 274 L 298 150 L 274 196 H 78 Z" fill="#111111"/>
-    <path d="M 288 82 H 604 L 628 150 L 604 218 H 288 L 312 150 Z" fill="#ffffff" stroke="#111111" stroke-width="8"/>
-    <path d="M 618 104 H 842 V 196 H 618 L 642 150 Z" fill="#111111"/>
-    <path d="M 86 112 H 264 L 278 139 H 86 Z" fill="#f15a24"/>
-    <path d="M 316 94 H 590 L 600 122 H 326 Z" fill="#ffcf24"/>
-    <path d="M 638 112 H 834 V 139 H 652 Z" fill="#f15a24"/>
-  </g>
+  <line x1="180" y1="218" x2="180" y2="260" stroke="url(#connectorGradient)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="432" y1="218" x2="432" y2="260" stroke="url(#connectorGradient)" stroke-width="3" stroke-linecap="round"/>
+  <line x1="724" y1="218" x2="724" y2="260" stroke="url(#connectorGradient)" stroke-width="3" stroke-linecap="round"/>
 
-  <text x="176" y="164" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="31" fill="#ffffff" font-weight="800">https://</text>
-  <text x="458" y="164" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="32" fill="#111111" font-weight="800">symlabs.net</text>
-  <text x="738" y="164" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="24" fill="#ffffff" font-weight="800">/courses/html</text>
-
-  <line x1="176" y1="196" x2="176" y2="224" stroke="#111111" stroke-width="5" stroke-linecap="square"/>
-  <line x1="458" y1="218" x2="458" y2="236" stroke="#111111" stroke-width="5" stroke-linecap="square"/>
-  <line x1="734" y1="196" x2="734" y2="224" stroke="#111111" stroke-width="5" stroke-linecap="square"/>
-
-  <rect x="119" y="224" width="114" height="36" fill="#ffffff" stroke="#111111" stroke-width="6"/>
-  <rect x="371" y="236" width="174" height="36" fill="#111111"/>
-  <rect x="674" y="224" width="120" height="36" fill="#ffffff" stroke="#111111" stroke-width="6"/>
-  <text x="176" y="248" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="18" fill="#111111" font-weight="800">scheme</text>
-  <text x="458" y="260" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="18" fill="#ffffff" font-weight="800">domain name</text>
-  <text x="734" y="248" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="18" fill="#111111" font-weight="800">path</text>
+  <text x="180" y="258" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="21" fill="#2c5661" font-weight="600">scheme</text>
+  <text x="432" y="258" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="21" fill="#2c5661" font-weight="600">domain name</text>
+  <text x="724" y="258" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="21" fill="#2c5661" font-weight="600">path</text>
 </svg>

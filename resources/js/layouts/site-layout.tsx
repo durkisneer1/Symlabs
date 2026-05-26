@@ -111,7 +111,7 @@ function LessonCard({
         <span className="block text-base leading-tight font-semibold">
           {item.title}
         </span>
-        <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
+        <span className="lesson-card-description mt-1 block w-fit max-w-full text-xs leading-relaxed text-muted-foreground">
           {item.description}
         </span>
       </span>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, CodeXml } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,31 +31,38 @@ export default function HtmlCourse() {
     <>
       <Head title="HTML Course" />
 
-      <main className="toy-orange mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-12">
-        <section className="space-y-6">
-          <div className="space-y-3">
-            <Badge variant="outline">Course</Badge>
-            <h1 className="text-4xl font-semibold tracking-tight">
-              {htmlCourse.title}
-            </h1>
-            <p className="max-w-2xl text-muted-foreground">
-              {htmlCourse.description}
-            </p>
-          </div>
+      <main className="html-metro-page toy-orange mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-12">
+        <section className="html-metro-hero grid gap-6 overflow-hidden p-5 sm:grid-cols-[minmax(0,1fr)_13rem] sm:p-6">
+          <div className="relative z-10 space-y-5">
+            <div className="space-y-3">
+              <Badge variant="outline">Course</Badge>
+              <h1 className="text-4xl font-semibold tracking-tight">
+                {htmlCourse.title}
+              </h1>
+              <p className="max-w-2xl text-muted-foreground">
+                {htmlCourse.description}
+              </p>
+            </div>
 
-          <div className="flex flex-wrap gap-2">
-            <Button asChild>
-              <Link href={`/courses/html/${firstChapter.slug}`}>
-                Start Learning <ArrowRight />
-              </Link>
-            </Button>
-            {lastChapter ? (
-              <Button asChild variant="outline">
-                <Link href={`/courses/html/${lastChapter.slug}`}>
-                  Continue: {lastChapter.title}
+            <div className="flex flex-wrap gap-2">
+              <Button asChild>
+                <Link href={`/courses/html/${firstChapter.slug}`}>
+                  Start Learning <ArrowRight />
                 </Link>
               </Button>
-            ) : null}
+              {lastChapter ? (
+                <Button asChild variant="outline">
+                  <Link href={`/courses/html/${lastChapter.slug}`}>
+                    Continue: {lastChapter.title}
+                  </Link>
+                </Button>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="html-metro-token" aria-hidden="true">
+            <CodeXml className="size-14" strokeWidth={2.4} />
+            <span>HTML</span>
           </div>
         </section>
 
@@ -82,7 +89,7 @@ export default function HtmlCourse() {
                   {chapter.number}
                 </span>
                 <Card
-                  className={`toy-surface toy-surface-link ${chapterAccentClass}`}
+                  className={`html-chapter-card toy-surface toy-surface-link ${chapterAccentClass}`}
                 >
                   <CardHeader>
                     <CardTitle>{chapter.title}</CardTitle>
