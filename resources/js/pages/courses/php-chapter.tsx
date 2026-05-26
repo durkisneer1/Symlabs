@@ -30,7 +30,7 @@ export default function PhpChapter({ chapterSlug }: Props) {
     <>
       <Head title={`${chapter.title} | PHP`} />
 
-      <main className="mx-auto grid w-full max-w-3xl gap-8 px-0 py-8 sm:px-4 lg:max-w-6xl lg:grid-cols-[minmax(0,1fr)_280px] lg:py-10">
+      <main className="toy-purple mx-auto grid w-full max-w-3xl gap-8 px-0 py-8 sm:px-4 lg:max-w-6xl lg:grid-cols-[minmax(0,1fr)_280px] lg:py-10">
         <article className="min-w-0 space-y-8">
           <div className="space-y-4">
             <Button asChild variant="ghost" size="sm">

@@ -36,11 +36,7 @@ A standard and consistent format for linking documents within the World Wide Web
 
 A URL is formatted as follows:
 
-<ol>
-    <li>The scheme</li>
-    <li>The domain name</li>
-    <li>The path</li>
-</ol>
+<Image id="url-anatomy" />
 
 ## Secure HTTP
 

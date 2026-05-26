@@ -2,10 +2,8 @@ import { sectionId } from '@/components/chapter-section-nav';
 import type { CourseActivity } from '@/types/course-activities';
 import type {
   CourseChapter,
-  CourseCodeExample,
   CourseContentBlock,
   CourseImageBlock,
-  CourseSectionBlock,
 } from '@/types/course-content';
 
 type CourseImageDefinition = Omit<CourseImageBlock, 'type' | 'id'>;
@@ -20,8 +18,7 @@ type ChapterFrontmatter = Omit<CourseChapter, 'content'>;
 
 type SectionDraft = {
   title: string;
-  body: string[];
-  examples: CourseCodeExample[];
+  markdownLines: string[];
 };
 
 export function parseCourseChapterMarkdown({
@@ -102,26 +99,14 @@ function parseContent(
   const blocks: CourseContentBlock[] = [];
   const usedIds = new Map<string, number>();
   let section: SectionDraft | null = null;
-  let paragraph: string[] = [];
-  let codeFence: { language?: string; lines: string[] } | null = null;
-
-  const flushParagraph = () => {
-    if (!section || paragraph.length === 0) {
-      paragraph = [];
-      return;
-    }
-
-    section.body.push(paragraph.join(' '));
-    paragraph = [];
-  };
+  let inCodeFence = false;
 
   const flushSection = () => {
-    flushParagraph();
+    const sectionMarkdown = trimBlankLines(section?.markdownLines ?? []).join(
+      '\n',
+    );
 
-    if (
-      !section ||
-      (section.body.length === 0 && section.examples.length === 0)
-    ) {
+    if (!section || sectionMarkdown.length === 0) {
       section = null;
       return;
     }
@@ -130,47 +115,30 @@ function parseContent(
       type: 'section',
       id: uniqueId(section.title, usedIds),
       title: section.title,
-      body: section.body,
-      examples: section.examples,
+      markdown: sectionMarkdown,
     });
     section = null;
   };
 
   for (const line of markdown.replace(/\r\n/g, '\n').split('\n')) {
-    const fenceMatch = line.match(/^```([a-z0-9-]+)?\s*$/i);
-
-    if (fenceMatch) {
-      if (codeFence) {
-        section ??= { title: 'Example', body: [], examples: [] };
-        section.examples.push({
-          code: codeFence.lines.join('\n'),
-          language: normalizeLanguage(codeFence.language),
-        });
-        codeFence = null;
-      } else {
-        flushParagraph();
-        codeFence = { language: fenceMatch[1], lines: [] };
-      }
-
+    if (line.match(/^```/)) {
+      section ??= { title: 'Example', markdownLines: [] };
+      section.markdownLines.push(line);
+      inCodeFence = !inCodeFence;
       continue;
     }
 
-    if (codeFence) {
-      codeFence.lines.push(line);
-      continue;
-    }
-
-    const headingMatch = line.match(/^##\s+(.+)$/);
+    const headingMatch = inCodeFence ? null : line.match(/^##\s+(.+)$/);
 
     if (headingMatch) {
       flushSection();
-      section = { title: headingMatch[1].trim(), body: [], examples: [] };
+      section = { title: headingMatch[1].trim(), markdownLines: [] };
       continue;
     }
 
-    const activityMatch = line.match(
-      /^<Activity\s+id=["']([^"']+)["']\s*\/>$/,
-    );
+    const activityMatch = inCodeFence
+      ? null
+      : line.match(/^<Activity\s+id=["']([^"']+)["']\s*\/>$/);
 
     if (activityMatch) {
       flushSection();
@@ -189,7 +157,9 @@ function parseContent(
       continue;
     }
 
-    const imageMatch = line.match(/^<Image\s+id=["']([^"']+)["']\s*\/>$/);
+    const imageMatch = inCodeFence
+      ? null
+      : line.match(/^<Image\s+id=["']([^"']+)["']\s*\/>$/);
 
     if (imageMatch) {
       flushSection();
@@ -208,16 +178,11 @@ function parseContent(
       continue;
     }
 
-    if (line.trim() === '') {
-      flushParagraph();
-      continue;
-    }
-
-    section ??= { title: 'Overview', body: [], examples: [] };
-    paragraph.push(line.trim());
+    section ??= { title: 'Overview', markdownLines: [] };
+    section.markdownLines.push(line);
   }
 
-  if (codeFence) {
+  if (inCodeFence) {
     throw new Error('Course chapter markdown has an unclosed code fence.');
   }
 
@@ -235,14 +200,20 @@ function uniqueId(value: string, usedIds: Map<string, number>) {
   return count === 0 ? baseId : `${baseId}-${count + 1}`;
 }
 
-function normalizeLanguage(language?: string) {
-  if (language === 'html' || language === 'php' || language === 'markup') {
-    return language;
-  }
-
-  return undefined;
-}
-
 function stripQuotes(value: string) {
   return value.replace(/^['"]|['"]$/g, '');
+}
+
+function trimBlankLines(lines: string[]) {
+  const nextLines = [...lines];
+
+  while (nextLines[0]?.trim() === '') {
+    nextLines.shift();
+  }
+
+  while (nextLines.at(-1)?.trim() === '') {
+    nextLines.pop();
+  }
+
+  return nextLines;
 }

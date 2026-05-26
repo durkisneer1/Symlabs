@@ -50,6 +50,31 @@
       0 2px 4px rgb(0 0 0 / 0.1);
   }
 
+  [data-slot='button'][data-variant='outline']:hover:not(:disabled) {
+    border-color: color-mix(
+      in srgb,
+      var(--page-accent, var(--accent-cyan)) 34%,
+      var(--border)
+    ) !important;
+    box-shadow:
+      0 3px 6px rgb(0 0 0 / 0.08),
+      0 0 8px
+        color-mix(
+          in oklch,
+          var(--page-accent, var(--accent-cyan)) 10%,
+          transparent
+        );
+  }
+
+  [data-slot='button'][data-variant='ghost'],
+  [data-slot='button'][data-variant='ghost']:hover:not(:disabled),
+  [data-slot='button'][data-variant='ghost']:active:not(:disabled),
+  .dark [data-slot='button'][data-variant='ghost'],
+  .dark [data-slot='button'][data-variant='ghost']:hover:not(:disabled),
+  .dark [data-slot='button'][data-variant='ghost']:active:not(:disabled) {
+    box-shadow: none;
+  }
+
   [data-slot='button'][data-variant='secondary'] {
     translate: 0 1px;
     box-shadow:

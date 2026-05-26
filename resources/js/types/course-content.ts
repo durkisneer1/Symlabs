@@ -18,7 +18,8 @@ export type CourseSectionBlock = {
   type: 'section';
   id?: string;
   title: string;
-  body: string[];
+  markdown?: string;
+  body?: string[];
   example?: string;
   examples?: CourseCodeExample[];
 };
@@ -30,7 +31,6 @@ export type CourseImageBlock = {
   src: string;
   darkSrc?: string;
   alt: string;
-  caption?: string;
 };
 
 export type CourseActivityBlock = {

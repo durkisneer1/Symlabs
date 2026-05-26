@@ -29,12 +29,24 @@ const getStoredAppearance = (): Appearance => {
   return (localStorage.getItem('appearance') as Appearance) || 'system';
 };
 
-const isDarkMode = (): boolean => {
-  if (currentAppearance === 'dark') {
+const resolveAppearance = (appearance: Appearance): ResolvedAppearance => {
+  if (appearance === 'dark') {
+    return 'dark';
+  }
+
+  if (appearance === 'light') {
+    return 'light';
+  }
+
+  return mediaQuery()?.matches ? 'dark' : 'light';
+};
+
+const isDarkMode = (appearance = currentAppearance): boolean => {
+  if (appearance === 'dark') {
     return true;
   }
 
-  if (currentAppearance === 'light') {
+  if (appearance === 'light') {
     return false;
   }
 
@@ -101,9 +113,11 @@ export function useAppearance(): UseAppearanceReturn {
     () => 'system',
   );
 
-  const resolvedAppearance: ResolvedAppearance = isDarkMode()
-    ? 'dark'
-    : 'light';
+  const resolvedAppearance: ResolvedAppearance = useSyncExternalStore(
+    subscribe,
+    () => resolveAppearance(currentAppearance),
+    () => 'light',
+  );
 
   const updateAppearance = (mode: Appearance): void => {
     currentAppearance = mode;

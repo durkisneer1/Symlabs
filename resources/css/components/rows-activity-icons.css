@@ -26,7 +26,11 @@
         var(--background) 94%,
         var(--page-accent, var(--accent-cyan))
       ),
-      color-mix(in oklch, var(--background) 98%, var(--accent-purple))
+      color-mix(
+        in oklch,
+        var(--background) 98%,
+        var(--page-highlight, var(--accent-purple))
+      )
     );
   }
 
@@ -38,7 +42,12 @@
   .app-row-link:hover {
     box-shadow:
       0 4px 8px rgb(0 0 0 / 0.08),
-      0 0 12px rgb(139 92 246 / 0.08);
+      0 0 12px
+        color-mix(
+          in oklch,
+          var(--page-highlight, var(--accent-purple)) 10%,
+          transparent
+        );
   }
 
   .app-row-link:active {
@@ -278,7 +287,7 @@
     background: linear-gradient(
       90deg,
       var(--page-accent, var(--accent-cyan)),
-      var(--accent-purple)
+      var(--page-highlight, var(--accent-purple))
     );
   }
 

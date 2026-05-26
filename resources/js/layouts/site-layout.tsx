@@ -84,7 +84,13 @@ const lessonItems: LessonItem[] = [
   },
 ];
 
-function LessonCard({ item }: { item: LessonItem }) {
+function LessonCard({
+  item,
+  onSelect,
+}: {
+  item: LessonItem;
+  onSelect?: () => void;
+}) {
   const Icon = item.icon;
   const availabilityLabel =
     item.availability === 'coming-soon'
@@ -122,7 +128,7 @@ function LessonCard({ item }: { item: LessonItem }) {
 
   if (item.href) {
     return (
-      <Link href={item.href} className={className}>
+      <Link href={item.href} className={className} onClick={onSelect}>
         {content}
       </Link>
     );
@@ -139,11 +145,14 @@ export default function SiteLayout({
   const { auth, currentTeam } = usePage().props;
   const dashboardUrl = currentTeam ? dashboard(currentTeam.slug) : '/dashboard';
   const [isLessonsOpen, setIsLessonsOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState('');
 
   return (
     <div className="flex min-h-screen flex-col items-center p-6 text-foreground lg:p-8">
       <header className="w-full">
         <NavigationMenu
+          value={activeMenu}
+          onValueChange={setActiveMenu}
           viewport={false}
           className="flex w-full max-w-none items-center justify-between"
         >
@@ -157,7 +166,7 @@ export default function SiteLayout({
               </NavigationMenuLink>
             </NavigationMenuItem>
             {/* Desktop Lessons Dropdown */}
-            <NavigationMenuItem className="hidden md:flex">
+            <NavigationMenuItem className="hidden md:flex" value="lessons">
               <NavigationMenuTrigger>Lessons</NavigationMenuTrigger>
               <NavigationMenuContent
                 className="p-3"
@@ -167,7 +176,10 @@ export default function SiteLayout({
                   {lessonItems.map((item) =>
                     item.href ? (
                       <NavigationMenuLink key={item.title} asChild>
-                        <LessonCard item={item} />
+                        <LessonCard
+                          item={item}
+                          onSelect={() => setActiveMenu('')}
+                        />
                       </NavigationMenuLink>
                     ) : (
                       <LessonCard key={item.title} item={item} />
@@ -196,7 +208,10 @@ export default function SiteLayout({
                   {lessonItems.map((item) =>
                     item.href ? (
                       <SheetClose asChild key={item.title}>
-                        <LessonCard item={item} />
+                        <LessonCard
+                          item={item}
+                          onSelect={() => setIsLessonsOpen(false)}
+                        />
                       </SheetClose>
                     ) : (
                       <LessonCard key={item.title} item={item} />
