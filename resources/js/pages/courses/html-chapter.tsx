@@ -213,7 +213,7 @@ function navItemFor(block: CourseContentBlock) {
   return {
     id: blockId(block),
     title: blockTitle(block),
-    depth: block.type === 'activity' ? 1 : 0,
+    depth: block.type === 'activity' || block.type === 'image' ? 1 : 0,
     kind: block.type,
   };
 }

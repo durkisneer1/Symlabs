@@ -148,8 +148,8 @@ export default function SiteLayout({
   const [activeMenu, setActiveMenu] = useState('');
 
   return (
-    <div className="flex min-h-screen flex-col items-center p-6 text-foreground lg:p-8">
-      <header className="w-full">
+    <div className="flex min-h-screen flex-col items-center px-6 pb-6 text-foreground lg:px-8 lg:pb-8">
+      <header className="sticky top-0 z-50 -mx-6 w-[calc(100%+3rem)] border-b bg-background/90 px-6 py-2 shadow-sm backdrop-blur supports-backdrop-filter:bg-background/78 lg:-mx-8 lg:w-[calc(100%+4rem)] lg:px-8">
         <NavigationMenu
           value={activeMenu}
           onValueChange={setActiveMenu}

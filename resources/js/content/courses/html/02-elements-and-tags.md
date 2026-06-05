@@ -2,8 +2,8 @@
 number: 2
 slug: elements-and-tags
 title: Elements and Tags
-summary: Start with the core vocabulary of HTML: tags, elements, attributes, nesting, and text content.
-duration: 25 min
+summary: The core vocabulary of HTML; tags, elements, attributes, and nesting.
+duration: TBA
 ---
 
 ## HTML Describes Meaning

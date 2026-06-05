@@ -2,7 +2,7 @@
 number: 1
 slug: intro-to-web
 title: Introduction to Web Dev
-summary: Learn history of the web and how the internet communicates.
+summary: A quick tour of the web, URLs, domains, and how browsers reach pages.
 duration: TBA
 ---
 

@@ -122,6 +122,50 @@
     --panel-accent: var(--accent-orange);
   }
 
+  .toy-surface.toy-orange {
+    border-color: color-mix(in srgb, var(--toy-accent) 58%, rgb(0 0 0 / 0.2));
+    background:
+      radial-gradient(
+        circle at 88% 14%,
+        color-mix(in srgb, white 46%, var(--toy-accent)) 0 11%,
+        transparent 12%
+      ),
+      radial-gradient(
+        circle at -4% 96%,
+        color-mix(in srgb, var(--toy-accent) 36%, transparent) 0 18%,
+        transparent 19%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, white 72%, var(--toy-accent)),
+        color-mix(in srgb, white 80%, var(--toy-accent)) 54%,
+        color-mix(in srgb, white 66%, var(--toy-accent))
+      );
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.68),
+      inset 0 -8px 16px color-mix(in oklch, var(--toy-accent) 24%, transparent);
+  }
+
+  .toy-surface-link.toy-orange:hover {
+    background:
+      radial-gradient(
+        circle at 88% 14%,
+        color-mix(in srgb, white 40%, var(--toy-accent)) 0 11%,
+        transparent 12%
+      ),
+      radial-gradient(
+        circle at -4% 96%,
+        color-mix(in srgb, var(--toy-accent) 42%, transparent) 0 18%,
+        transparent 19%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, white 66%, var(--toy-accent)),
+        color-mix(in srgb, white 76%, var(--toy-accent)) 54%,
+        color-mix(in srgb, white 60%, var(--toy-accent))
+      );
+  }
+
   .toy-pink {
     --toy-accent: var(--accent-pink);
     --page-accent: var(--accent-pink);

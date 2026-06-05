@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { PencilRuler } from 'lucide-react';
+import { Image as ImageIcon, PencilRuler } from 'lucide-react';
 
 export type ChapterNavItem = {
   id: string;
@@ -32,6 +32,24 @@ export default function ChapterSectionNav({
       ? Math.round((progress.completed / progress.total) * 100)
       : 0;
 
+  const navIconFor = (item: ChapterNavItem) => {
+    if (item.kind === 'activity') {
+      return {
+        Icon: PencilRuler,
+        label: 'Activity',
+      };
+    }
+
+    if (item.kind === 'image') {
+      return {
+        Icon: ImageIcon,
+        label: 'Image',
+      };
+    }
+
+    return null;
+  };
+
   return (
     <Card className="sticky top-4 bg-card shadow-[0_14px_34px_rgb(0_0_0/0.08)]">
       <CardHeader>
@@ -39,26 +57,34 @@ export default function ChapterSectionNav({
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="border-t pt-2">
-          {items.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className="group flex items-center justify-between gap-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-              style={{ paddingLeft: `${(item.depth ?? 0) * 16}px` }}
-            >
-              <span>{item.title}</span>
-              {item.kind === 'activity' ? (
-                <span className="chapter-nav-activity-icon" title="Activity">
-                  <PencilRuler
-                    className="size-3"
-                    strokeWidth={2.1}
-                    aria-hidden="true"
-                  />
-                  <span className="sr-only">Activity</span>
-                </span>
-              ) : null}
-            </a>
-          ))}
+          {items.map((item) => {
+            const navIcon = navIconFor(item);
+            const Icon = navIcon?.Icon;
+
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className="group flex items-center justify-between gap-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                style={{ paddingLeft: `${(item.depth ?? 0) * 16}px` }}
+              >
+                <span>{item.title}</span>
+                {navIcon && Icon ? (
+                  <span
+                    className="chapter-nav-activity-icon"
+                    title={navIcon.label}
+                  >
+                    <Icon
+                      className="size-3"
+                      strokeWidth={2.1}
+                      aria-hidden="true"
+                    />
+                    <span className="sr-only">{navIcon.label}</span>
+                  </span>
+                ) : null}
+              </a>
+            );
+          })}
         </div>
         {progress?.visible ? (
           <div className="space-y-3 border-t pt-4">

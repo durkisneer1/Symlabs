@@ -197,10 +197,10 @@
     color: var(--foreground);
     background:
       radial-gradient(
-        circle at 30% 22%,
+        circle at 23% 23%,
         color-mix(in oklch, white 76%, var(--toy-accent, var(--accent-cyan))) 0
-          20%,
-        transparent 21%
+          14%,
+        transparent 15%
       ),
       linear-gradient(
         145deg,

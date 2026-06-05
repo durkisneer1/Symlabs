@@ -1,26 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 320" role="img" aria-labelledby="title desc">
   <defs>
     <linearGradient id="shellGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f8feff;stop-opacity:1" />
-      <stop offset="48%" style="stop-color:#e8f8f6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#d7f0ee;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#fffaf2;stop-opacity:1" />
+      <stop offset="48%" style="stop-color:#ffe8c8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffc37c;stop-opacity:1" />
     </linearGradient>
     <linearGradient id="glassGradient" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.96" />
-      <stop offset="46%" style="stop-color:#edf9fb;stop-opacity:0.9" />
-      <stop offset="100%" style="stop-color:#cfecea;stop-opacity:0.92" />
+      <stop offset="46%" style="stop-color:#fff3e1;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#ffd49a;stop-opacity:0.92" />
     </linearGradient>
     <linearGradient id="topGloss" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.95" />
       <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.08" />
     </linearGradient>
     <linearGradient id="aquaRule" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#24a8d8;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#42bf88;stop-opacity:1" />
+      <stop offset="0%" style="stop-color:#e84a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
     </linearGradient>
     <linearGradient id="connectorGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#24a8d8;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#42bf88;stop-opacity:0.7" />
+      <stop offset="0%" style="stop-color:#e84a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a84312;stop-opacity:0.76" />
     </linearGradient>
     <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
@@ -36,26 +36,22 @@
   </defs>
 
   <title id="title">URL anatomy</title>
-  <desc id="desc">A URL split into its scheme, domain name, and path with a glossy blue and green interface style.</desc>
+  <desc id="desc">A URL split into its scheme, domain name, and path with a glossy orange interface style.</desc>
 
-  <rect x="32" y="40" width="856" height="240" fill="url(#shellGradient)" stroke="#b9dde1" stroke-width="1.5" rx="8"/>
+  <rect x="32" y="40" width="856" height="240" fill="url(#shellGradient)" stroke="#de7f32" stroke-width="1.5" rx="8"/>
   <path d="M 34 49 Q 460 20 886 49 L 886 110 Q 460 88 34 110 Z" fill="#ffffff" opacity="0.48"/>
-  <path d="M 32 216 C 190 184 298 246 456 214 C 604 184 698 214 888 188 L 888 280 L 32 280 Z" fill="#56c99a" opacity="0.12"/>
+  <path d="M 32 216 C 190 184 298 246 456 214 C 604 184 698 214 888 188 L 888 280 L 32 280 Z" fill="#e84a1a" opacity="0.14"/>
 
   <g filter="url(#softShadow)">
-    <rect x="70" y="76" width="780" height="142" fill="url(#glassGradient)" stroke="#acd8dc" stroke-width="2" rx="8"/>
+    <rect x="70" y="76" width="780" height="142" fill="url(#glassGradient)" stroke="#e19a55" stroke-width="2" rx="8"/>
   </g>
   <rect x="82" y="86" width="756" height="48" fill="url(#topGloss)" rx="6"/>
 
-  <text x="108" y="166" text-anchor="start" font-family="JetBrains Mono, Consolas, monospace" font-size="34" fill="#147eb5" font-weight="600">https://</text>
-  <text x="432" y="166" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="34" fill="#123142" font-weight="600">symlabs.net</text>
-  <text x="812" y="166" text-anchor="end" font-family="JetBrains Mono, Consolas, monospace" font-size="34" fill="#229968" font-weight="600">/courses/html</text>
+  <text x="108" y="166" text-anchor="start" font-family="JetBrains Mono, Consolas, monospace" font-size="34" fill="#c2410c" font-weight="600">https://</text>
+  <text x="408" y="166" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="34" fill="#3f2413" font-weight="600">symlabs.net</text>
+  <text x="812" y="166" text-anchor="end" font-family="JetBrains Mono, Consolas, monospace" font-size="34" fill="#a84312" font-weight="600">/courses/html</text>
 
-  <line x1="180" y1="218" x2="180" y2="260" stroke="url(#connectorGradient)" stroke-width="3" stroke-linecap="round"/>
-  <line x1="432" y1="218" x2="432" y2="260" stroke="url(#connectorGradient)" stroke-width="3" stroke-linecap="round"/>
-  <line x1="724" y1="218" x2="724" y2="260" stroke="url(#connectorGradient)" stroke-width="3" stroke-linecap="round"/>
-
-  <text x="180" y="258" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="21" fill="#2c5661" font-weight="600">scheme</text>
-  <text x="432" y="258" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="21" fill="#2c5661" font-weight="600">domain name</text>
-  <text x="724" y="258" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="21" fill="#2c5661" font-weight="600">path</text>
+  <text x="180" y="256" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="21" fill="#6b3a16" font-weight="600">scheme</text>
+  <text x="408" y="256" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="21" fill="#6b3a16" font-weight="600">domain name</text>
+  <text x="680" y="256" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="21" fill="#6b3a16" font-weight="600">path</text>
 </svg>
