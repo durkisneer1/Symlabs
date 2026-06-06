@@ -22,7 +22,7 @@ Artisan::command('symlabs:admin
     }
 
     $email = Str::lower(trim($this->argument('email')));
-    $name = trim($this->option('name') ?: 'SymLabs Admin');
+    $name = trim($this->option('name') ?: 'Symlabs Admin');
     $password = $this->option('password') ?: Str::password(24);
     $verifiedAt = $this->option('unverified') ? null : now();
 
@@ -47,7 +47,7 @@ Artisan::command('symlabs:admin
         $this->warn("Temporary password: {$password}");
         $this->warn('Change this password after the first login.');
     }
-})->purpose('Create or promote a SymLabs admin account');
+})->purpose('Create or promote a Symlabs admin account');
 
 Artisan::command('symlabs:prune-users
     {--email=* : Exact email address to delete}

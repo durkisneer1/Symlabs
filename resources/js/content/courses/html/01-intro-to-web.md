@@ -15,7 +15,22 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ## IP Addresses
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The internet must follow a specified set of rules to send and recieve data to and from devices across the planet.
+This set of rules is referred to as an _Internet Protocol_ (IP), and defines the home address format, provides forwarding instructions, and packet delivery.
+Every device has an IP which analogically serves as the mailing address of the internet's postal service.
+
+### IPv4 and IPv6
+
+IPv4 is the most common home address format, utilizing a 32-bit address.
+It is typically displayed as four numbers seperated by periods, like `192.168.1.1` and `127.0.0.1`.
+
+IPv6 is newer and essentially exists as a means for more unique home addresses.
+Instead of only 32 bits, this format uses 128 bits.
+To put that in perspective, the largest 128-bit integer is **79 octillion times larger** than the largest 32-bit integer!
+
+### HTTP and HTTPS
+
+### TCP vs UDP
 
 ## Domain Names
 

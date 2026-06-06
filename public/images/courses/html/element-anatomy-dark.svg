@@ -30,7 +30,7 @@
   </defs>
 
   <title id="title">HTML element anatomy</title>
-  <desc id="desc">A paragraph element showing an opening tag, text content, and a closing tag with SymLabs dark mode colors.</desc>
+  <desc id="desc">A paragraph element showing an opening tag, text content, and a closing tag with Symlabs dark mode colors.</desc>
 
   <g filter="url(#softShadow)">
     <rect x="64" y="74" width="792" height="160" fill="url(#cardGradient)" stroke="#383b42" stroke-width="2" rx="6"/>

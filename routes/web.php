@@ -28,6 +28,39 @@ Route::get('/courses/php/{chapter}', fn (string $chapter) => Inertia::render('co
 ]))->whereIn('chapter', ['variables-and-flow'])->name('courses.php.chapter');
 Route::inertia('/courses/mysql', 'courses/course-shell', ['course' => 'MySQL'])->name('courses.mysql');
 
+Route::get('/sitemap.xml', function () {
+    $urls = collect([
+        route('home'),
+        route('courses.html'),
+        route('courses.css'),
+        route('courses.php'),
+        route('courses.mysql'),
+    ]);
+
+    $htmlChapters = [
+        'intro-to-web',
+        'elements-and-tags',
+        'text-formatting-and-special-characters',
+        'images',
+        'links',
+        'lists',
+        'tables',
+        'containers-and-semantic-tags',
+        'forms',
+        'audio-and-video',
+        'developer-guidelines-and-best-practices',
+    ];
+
+    $chapterUrls = collect($htmlChapters)
+        ->map(fn (string $chapter) => route('courses.html.chapter', $chapter));
+
+    return response()
+        ->view('sitemap', [
+            'urls' => $urls->merge($chapterUrls),
+        ])
+        ->header('Content-Type', 'application/xml');
+})->name('sitemap');
+
 // When in a classroom as teacher or student
 Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])

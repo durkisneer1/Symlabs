@@ -30,7 +30,7 @@
   </defs>
 
   <title id="title">HTML element anatomy</title>
-  <desc id="desc">A paragraph element showing an opening tag, text content, and a closing tag with SymLabs cool-toned design.</desc>
+  <desc id="desc">A paragraph element showing an opening tag, text content, and a closing tag with Symlabs cool-toned design.</desc>
 
   <!-- Main content card with shadow -->
   <g filter="url(#softShadow)">

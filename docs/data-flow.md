@@ -1,6 +1,6 @@
 # Frontend and Backend Data Flow
 
-SymLabs uses Inertia to connect Laravel/PHP to React/TSX.
+Symlabs uses Inertia to connect Laravel/PHP to React/TSX.
 
 The short version:
 

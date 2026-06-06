@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Symlabs courseware preview</title>
+  <desc id="desc">Placeholder Open Graph image for Symlabs.</desc>
+  <rect width="1200" height="630" fill="#fff7ed"/>
+  <path d="M0 508c142-74 271-94 387-60 116 33 224 32 324-4 100-37 263-29 489 24v162H0z" fill="#fed7aa"/>
+  <circle cx="1015" cy="122" r="84" fill="#fb923c" opacity=".42"/>
+  <circle cx="174" cy="492" r="126" fill="#22d3ee" opacity=".28"/>
+  <rect x="96" y="96" width="1008" height="438" rx="36" fill="#ffffff" stroke="#fdba74" stroke-width="6"/>
+  <rect x="142" y="142" width="916" height="74" rx="18" fill="#ffedd5"/>
+  <circle cx="184" cy="179" r="12" fill="#fb7185"/>
+  <circle cx="224" cy="179" r="12" fill="#facc15"/>
+  <circle cx="264" cy="179" r="12" fill="#4ade80"/>
+  <text x="142" y="305" fill="#431407" font-family="JetBrains Mono, ui-monospace, SFMono-Regular, Consolas, monospace" font-size="82" font-weight="800">Symlabs</text>
+  <text x="146" y="376" fill="#7c2d12" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="600">Interactive web development courseware</text>
+  <g fill="none" stroke="#ea580c" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" opacity=".9">
+    <path d="m846 305-58 58 58 58"/>
+    <path d="m953 305 58 58-58 58"/>
+    <path d="m920 286-40 154"/>
+  </g>
+</svg>
