@@ -55,7 +55,7 @@
   }
 
   .dark body {
-    background-color: color-mix(in oklch, var(--background) 92%, black);
+    background-color: color-mix(in oklch, var(--background) 94%, black);
   }
 
   body > * {

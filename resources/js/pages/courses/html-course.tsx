@@ -165,7 +165,7 @@ export default function HtmlCourse() {
                       <Link
                         key={chapter.slug}
                         href={`/courses/html/${chapter.slug}`}
-                        className={`group relative grid min-h-44 gap-3 rounded-lg border bg-background/95 p-4 shadow-sm transition-[background-color,border-color,box-shadow] duration-200 hover:border-[color-mix(in_oklch,var(--toy-accent)_70%,var(--border))] hover:bg-background hover:shadow-md ${
+                        className={`group relative grid min-h-44 gap-3 rounded-lg border bg-background/95 p-4 shadow-sm transition-[background-color,border-color,box-shadow] duration-200 hover:border-[color-mix(in_oklch,var(--toy-accent)_70%,var(--border))] hover:bg-background hover:shadow-md dark:bg-[oklch(0.16_0.006_240)] dark:hover:bg-[oklch(0.18_0.006_240)] ${
                           isLastChapter
                             ? 'ring-2 ring-[color-mix(in_oklch,var(--toy-accent)_42%,transparent)]'
                             : ''

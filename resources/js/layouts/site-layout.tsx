@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
+import { BrandWordmark } from '@/components/brand-images';
+import { SiteFooter } from '@/components/site-footer';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -148,28 +150,35 @@ export default function SiteLayout({
   const [activeMenu, setActiveMenu] = useState('');
 
   return (
-    <div className="flex min-h-screen flex-col items-center px-6 pb-6 text-foreground lg:px-8 lg:pb-8">
-      <header className="sticky top-0 z-50 -mx-6 w-[calc(100%+3rem)] border-b bg-background/90 px-6 py-2 shadow-sm backdrop-blur supports-backdrop-filter:bg-background/78 lg:-mx-8 lg:w-[calc(100%+4rem)] lg:px-8">
+    <div className="flex min-h-screen w-full flex-col items-center overflow-x-clip px-6 text-foreground lg:px-8">
+      <header className="sticky top-0 z-50 -mx-6 w-[calc(100%+3rem)] border-b bg-white/85 px-6 py-2 shadow-sm backdrop-blur supports-backdrop-filter:bg-white/72 lg:-mx-8 lg:w-[calc(100%+4rem)] lg:px-8 dark:bg-black/90 dark:supports-backdrop-filter:bg-black/84">
         <NavigationMenu
           value={activeMenu}
           onValueChange={setActiveMenu}
           viewport={false}
-          className="flex w-full max-w-none items-center justify-between"
+          className="mx-auto flex w-full max-w-6xl items-center justify-between pr-12 xl:pr-0"
         >
-          <NavigationMenuList>
+          <NavigationMenuList className="flex-none justify-start">
             <NavigationMenuItem>
               <NavigationMenuLink
                 asChild
-                className={navigationMenuTriggerStyle()}
+                className={`${navigationMenuTriggerStyle()} site-home-link h-10 px-0`}
               >
-                <Link href="/">Home</Link>
+                <Link href="/" aria-label="Home">
+                  <BrandWordmark className="h-7 w-auto max-w-36" />
+                </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
+          </NavigationMenuList>
+
+          <NavigationMenuList className="flex-none items-center justify-end gap-1">
             {/* Desktop Lessons Dropdown */}
             <NavigationMenuItem className="hidden md:flex" value="lessons">
-              <NavigationMenuTrigger>Lessons</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="rounded-lg">
+                Lessons
+              </NavigationMenuTrigger>
               <NavigationMenuContent
-                className="p-3"
+                className="right-0 left-auto origin-top-right p-3"
                 style={{ width: '28rem', maxWidth: 'calc(100vw - 3rem)' }}
               >
                 <div className="grid grid-cols-2 gap-3">
@@ -192,7 +201,7 @@ export default function SiteLayout({
             <Sheet open={isLessonsOpen} onOpenChange={setIsLessonsOpen}>
               <SheetTrigger asChild>
                 <NavigationMenuLink
-                  className={`${navigationMenuTriggerStyle()} cursor-pointer md:hidden`}
+                  className={`${navigationMenuTriggerStyle()} cursor-pointer rounded-lg md:hidden`}
                 >
                   Lessons
                 </NavigationMenuLink>
@@ -220,14 +229,11 @@ export default function SiteLayout({
                 </div>
               </SheetContent>
             </Sheet>
-          </NavigationMenuList>
-          <NavigationMenuList className="items-center gap-1">
-            <AppearanceMenu />
             {auth.user ? (
               <NavigationMenuItem>
                 <NavigationMenuLink
                   asChild
-                  className={navigationMenuTriggerStyle()}
+                  className={`${navigationMenuTriggerStyle()} rounded-lg`}
                 >
                   <Link href={dashboardUrl}>Dashboard</Link>
                 </NavigationMenuLink>
@@ -236,7 +242,7 @@ export default function SiteLayout({
               <NavigationMenuItem>
                 <NavigationMenuLink
                   asChild
-                  className={navigationMenuTriggerStyle()}
+                  className={`${navigationMenuTriggerStyle()} rounded-lg`}
                 >
                   <Link href={login()}>Log in</Link>
                 </NavigationMenuLink>
@@ -244,11 +250,14 @@ export default function SiteLayout({
             )}
           </NavigationMenuList>
         </NavigationMenu>
+        <div className="absolute top-1/2 right-4 -translate-y-1/2">
+          <AppearanceMenu />
+        </div>
       </header>
 
       <main className="w-full flex-1">{children}</main>
 
-      <footer className="w-full py-6" />
+      <SiteFooter className="-mx-6 w-[calc(100%+3rem)] lg:-mx-8 lg:w-[calc(100%+4rem)]" />
     </div>
   );
 }

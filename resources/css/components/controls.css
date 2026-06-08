@@ -234,4 +234,13 @@
       0 0 0 2px var(--background),
       0 0 8px rgb(139 92 246 / 0.25);
   }
+
+  .site-home-link,
+  .site-home-link:hover,
+  .site-home-link:focus,
+  .site-home-link[data-active],
+  .site-home-link[data-active]:hover {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
 }

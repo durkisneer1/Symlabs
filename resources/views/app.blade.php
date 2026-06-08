@@ -15,7 +15,7 @@
                         '@id' => $siteUrl.'/#organization',
                         'name' => $siteName,
                         'url' => $siteUrl,
-                        'logo' => url('/favicon.svg'),
+                        'logo' => url('/images/brand/icon@4x.png'),
                     ],
                     [
                         '@type' => 'WebSite',
@@ -40,6 +40,10 @@
         <link rel="canonical" href="{{ $canonicalUrl }}">
         <link rel="alternate" href="{{ $canonicalUrl }}" hreflang="{{ str_replace('_', '-', app()->getLocale()) }}">
         <link rel="alternate" href="{{ $siteUrl }}" hreflang="x-default">
+        <link rel="icon" type="image/webp" sizes="40x40" href="/images/brand/icon@0.5x.webp">
+        <link rel="icon" type="image/png" sizes="40x40" href="/images/brand/icon@0.5x.png">
+        <link rel="icon" type="image/png" sizes="79x79" href="/images/brand/icon@1x.png">
+        <link rel="apple-touch-icon" sizes="317x317" href="/images/brand/icon@4x.png">
         <meta property="og:site_name" content="{{ $siteName }}">
         <meta property="og:type" content="website">
         <meta property="og:title" content="{{ $siteName }} | Interactive Web Development Courseware">
