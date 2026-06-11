@@ -4,6 +4,7 @@ use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Str;
 
 Artisan::command('inspire', function () {
@@ -137,3 +138,11 @@ Artisan::command('symlabs:prune-users
 
     return 0;
 })->purpose('Preview or delete bot accounts with guardrails');
+
+$deleteUnverifiedAfterHours = (int) config('auth.delete_unverified_after_hours', 72);
+
+if ($deleteUnverifiedAfterHours > 0) {
+    Schedule::command("symlabs:prune-users --unverified-older-than={$deleteUnverifiedAfterHours} --force")
+        ->hourly()
+        ->withoutOverlapping();
+}

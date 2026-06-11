@@ -39,6 +39,7 @@ class AdminInvitationNotification extends Notification implements ShouldQueue
 
         return (new MailMessage)
             ->subject(__('You have been invited to administer Symlabs'))
+            ->greeting(__('You are invited to administer Symlabs'))
             ->line(__(':inviterName invited you to become a Symlabs admin.', [
                 'inviterName' => $inviter->name,
             ]))

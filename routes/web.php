@@ -137,7 +137,9 @@ Route::middleware(['auth'])->group(function () {
         ->only(['store', 'update', 'destroy'])
         ->shallow(false);
 
-    Route::get('invitations/{invitation}/accept', [TeamInvitationController::class, 'accept'])->name('invitations.accept');
+    Route::get('invitations/{invitation}/accept', [TeamInvitationController::class, 'accept'])
+        ->middleware('verified')
+        ->name('invitations.accept');
 });
 
 require __DIR__.'/settings.php';

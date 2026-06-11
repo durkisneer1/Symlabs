@@ -114,4 +114,17 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Unverified Account Cleanup
+    |--------------------------------------------------------------------------
+    |
+    | Unverified public registrations are allowed to log in only long enough to
+    | verify their email address. Accounts that remain unverified past this
+    | window are pruned so the email can be registered again later.
+    |
+    */
+
+    'delete_unverified_after_hours' => env('AUTH_DELETE_UNVERIFIED_AFTER_HOURS', 72),
+
 ];

@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         $this->configureRateLimiting();
+        $this->configureNotifications();
     }
 
     /**
@@ -80,6 +83,19 @@ class AppServiceProvider extends ServiceProvider
             Limit::perHour(5)->by($request->ip()),
             Limit::perDay(3)->by($this->normalizedEmail($request)),
         ]);
+    }
+
+    /**
+     * Configure application notification copy.
+     */
+    protected function configureNotifications(): void
+    {
+        VerifyEmail::toMailUsing(fn ($notifiable, string $url) => (new MailMessage)
+            ->subject(__('Verify your Symlabs email address'))
+            ->greeting(__('Hello, :name!', ['name' => $notifiable->name]))
+            ->line(__('Welcome to Symlabs. Please verify your email address before joining or creating classrooms.'))
+            ->action(__('Verify email address'), $url)
+            ->line(__('If you did not create a Symlabs account, no further action is required.')));
     }
 
     protected function rateLimitActor(Request $request): string
