@@ -3,10 +3,14 @@
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SetTeamUrlDefaults;
+use App\Http\Middleware\ThrottlePasswordResetRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
         $middleware->web(append: [
+            'throttle:web',
+            ThrottlePasswordResetRequests::class,
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
@@ -25,5 +31,17 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (ThrottleRequestsException $exception, Request $request) {
+            if ($request->expectsJson()) {
+                return null;
+            }
+
+            $response = Inertia::render('errors/too-many-requests')
+                ->toResponse($request)
+                ->setStatusCode(429);
+
+            $response->headers->add($exception->getHeaders());
+
+            return $response;
+        });
     })->create();

@@ -92,6 +92,11 @@ export default function Login({ status, canResetPassword }: Props) {
           {status}
         </div>
       )}
+
+      <div className="text-center text-sm text-muted-foreground">
+        <span>Don&apos;t have an account?</span>{' '}
+        <TextLink href="/register">Create one</TextLink>
+      </div>
     </>
   );
 }

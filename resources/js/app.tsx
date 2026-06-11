@@ -1,4 +1,5 @@
 import { createInertiaApp } from '@inertiajs/react';
+import type { PropsWithChildren } from 'react';
 import FlashToastListener from '@/components/flash-toast-listener';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -9,6 +10,7 @@ import SettingsLayout from '@/layouts/settings/layout';
 import SiteLayout from '@/layouts/site-layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Symlabs';
+const PlainLayout = ({ children }: PropsWithChildren) => <>{children}</>;
 
 createInertiaApp({
   title: (title) => (title ? `${title} - ${appName}` : appName),
@@ -17,6 +19,8 @@ createInertiaApp({
       case name === 'welcome':
       case name.startsWith('courses/'):
         return SiteLayout;
+      case name.startsWith('errors/'):
+        return PlainLayout;
       case name.startsWith('auth/'):
         return AuthLayout;
       case name.startsWith('settings/'):
