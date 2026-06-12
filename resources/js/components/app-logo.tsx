@@ -4,8 +4,8 @@ import { BrandWordmark } from '@/components/brand-images';
 export default function AppLogo() {
   return (
     <>
-      <div className="flex aspect-square size-8 items-center justify-center overflow-hidden">
-        <AppLogoIcon className="size-8" />
+      <div className="flex aspect-square size-8 shrink-0 items-center justify-center overflow-hidden">
+        <AppLogoIcon className="size-8 object-contain" />
       </div>
       <div className="ml-1 grid min-w-0 flex-1">
         <span className="block min-w-0 truncate">

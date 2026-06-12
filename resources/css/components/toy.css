@@ -189,6 +189,7 @@
     --nav-orb-x: 88%;
     --nav-orb-y: 50%;
     --nav-orb-size: 18%;
+    border: 1px solid transparent;
   }
 
   [data-sidebar='menu-button'].toy-purple {
@@ -251,15 +252,47 @@
   }
 
   [data-sidebar='menu-button'][data-active='true'] {
-    border: 1px solid
-      color-mix(
-        in srgb,
-        var(--sidebar-button-accent) 44%,
-        var(--sidebar-border)
-      );
+    border-color: color-mix(
+      in srgb,
+      var(--sidebar-button-accent) 44%,
+      var(--sidebar-border)
+    );
   }
 
   [data-sidebar='menu-button'][data-size='lg'] {
     --sidebar-button-accent: var(--accent-purple);
+  }
+
+  [data-collapsible='icon'] [data-sidebar='menu-button']:hover,
+  [data-collapsible='icon'] [data-sidebar='menu-button'][data-active='true'] {
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--sidebar-button-accent) 12%, var(--sidebar)),
+      color-mix(in srgb, var(--sidebar-button-accent) 22%, var(--sidebar))
+    ) !important;
+    box-shadow: none;
+  }
+
+  [data-collapsible='icon'] [data-sidebar='menu-button'][data-active='true'] {
+    border-color: color-mix(
+      in srgb,
+      var(--sidebar-button-accent) 34%,
+      var(--sidebar-border)
+    );
+  }
+
+  [data-collapsible='icon'] [data-sidebar='menu'].classroom-switcher-menu {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--sidebar-border);
+  }
+
+  [data-sidebar='menu-button'].app-logo-button,
+  [data-sidebar='menu-button'].app-logo-button:hover,
+  [data-sidebar='menu-button'].app-logo-button:active,
+  [data-sidebar='menu-button'].app-logo-button[data-active='true'] {
+    color: var(--sidebar-foreground) !important;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
   }
 }

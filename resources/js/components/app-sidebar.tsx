@@ -126,7 +126,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
+            <SidebarMenuButton size="lg" asChild className="app-logo-button">
               <Link href={home()} prefetch>
                 <AppLogo />
               </Link>
@@ -134,7 +134,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
         {userRole !== 'admin' ? (
-          <SidebarMenu>
+          <SidebarMenu className="classroom-switcher-menu">
             <SidebarMenuItem>
               <TeamSwitcher />
             </SidebarMenuItem>
