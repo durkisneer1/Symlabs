@@ -67,6 +67,23 @@ test('user can delete their account', function () {
     expect($user->fresh())->toBeNull();
 });
 
+test('unverified user can delete their account', function () {
+    $user = User::factory()->unverified()->create();
+
+    $response = $this
+        ->actingAs($user)
+        ->delete(route('profile.destroy'), [
+            'password' => 'password',
+        ]);
+
+    $response
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(route('home'));
+
+    $this->assertGuest();
+    expect($user->fresh())->toBeNull();
+});
+
 test('correct password must be provided to delete account', function () {
     $user = User::factory()->create();
 
