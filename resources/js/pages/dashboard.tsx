@@ -30,7 +30,11 @@ export default function Dashboard() {
     pendingTeamInvitations,
     teams,
   } = usePage().props;
-  const effectiveRole = auth.user.role;
+  const accountRole = auth.user.role;
+  const classroomRole = currentTeam?.role;
+  const isAdmin = accountRole === 'admin';
+  const canManageCurrentClassroom =
+    classroomRole === 'teacher' || classroomRole === 'admin';
 
   return (
     <>
@@ -40,14 +44,14 @@ export default function Dashboard() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-sm font-medium text-muted-foreground">
-              {currentTeam?.name ?? roleLabel(effectiveRole)}
+              {currentTeam?.name ?? roleLabel(accountRole)}
             </p>
             <h1 className="text-2xl font-semibold tracking-tight">Overview</h1>
           </div>
         </div>
 
-        {effectiveRole === 'admin' ? <AdminDashboard /> : null}
-        {effectiveRole === 'teacher' ? (
+        {isAdmin && !currentTeam ? <AdminDashboard /> : null}
+        {canManageCurrentClassroom ? (
           <TeacherDashboard
             assignments={currentTeamAssignments}
             currentTeam={currentTeam}
@@ -56,7 +60,7 @@ export default function Dashboard() {
             teams={teams}
           />
         ) : null}
-        {effectiveRole === 'student' ? (
+        {!isAdmin && (!currentTeam || classroomRole === 'student') ? (
           <StudentDashboard
             assignments={currentTeamAssignments}
             currentTeam={currentTeam}

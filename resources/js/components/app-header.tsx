@@ -51,6 +51,12 @@ const activeItemStyles =
 export function AppHeader({ breadcrumbs = [] }: Props) {
   const page = usePage();
   const { auth, currentTeam } = page.props;
+  const accountRole = auth.user.role;
+  const classroomRole = currentTeam?.role;
+  const isAdmin = accountRole === 'admin';
+  const hasTeacherClassroom = (page.props.teams ?? []).some(
+    (team) => team.role === 'teacher',
+  );
   const getInitials = useInitials();
   const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
   const dashboardUrl = currentTeam ? dashboard(currentTeam.slug) : '/dashboard';
@@ -63,7 +69,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     },
   ];
 
-  if (auth.user.role === 'student' && currentTeam) {
+  if (classroomRole === 'student' && currentTeam) {
     mainNavItems.push({
       title: 'Work',
       href: `/${currentTeam.slug}/work`,
@@ -71,15 +77,18 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     });
   }
 
-  if (auth.user.role === 'student') {
+  if (!isAdmin) {
     mainNavItems.push({
-      title: 'Teacher Request',
+      title: 'Request Classroom',
       href: '/teacher-requests',
       icon: UserPlus,
     });
   }
 
-  if (auth.user.role === 'teacher' && currentTeam) {
+  if (
+    (classroomRole === 'teacher' || classroomRole === 'admin') &&
+    currentTeam
+  ) {
     mainNavItems.push({
       title: 'Roster',
       href: `/${currentTeam.slug}/roster`,
@@ -92,7 +101,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     });
   }
 
-  if (auth.user.role !== 'admin' && currentTeam) {
+  if (currentTeam) {
     mainNavItems.push({
       title: 'Q&A',
       href: `/${currentTeam.slug}/questions`,
@@ -100,7 +109,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     });
   }
 
-  if (auth.user.role === 'teacher') {
+  if (hasTeacherClassroom) {
     mainNavItems.push({
       title: 'Support',
       href: '/support',
@@ -108,7 +117,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     });
   }
 
-  if (auth.user.role === 'admin') {
+  if (isAdmin) {
     mainNavItems.push({
       title: 'Users',
       href: '/admin/users',
@@ -120,7 +129,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
       icon: LifeBuoy,
     });
     mainNavItems.push({
-      title: 'Teacher Requests',
+      title: 'Classroom Requests',
       href: '/teacher-requests',
       icon: UserPlus,
     });
@@ -220,7 +229,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {auth.user.role !== 'admin' ? <TeamSwitcher inHeader /> : null}
+            {page.props.teams.length > 0 ? <TeamSwitcher inHeader /> : null}
           </div>
         </div>
       </div>

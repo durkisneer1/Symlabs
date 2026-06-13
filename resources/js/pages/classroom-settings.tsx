@@ -17,8 +17,9 @@ const classroomTasks = [
 ];
 
 export default function ClassroomSettings() {
-  const { auth, currentTeam } = usePage().props;
-  const isTeacher = auth.user.role === 'teacher';
+  const { currentTeam } = usePage().props;
+  const canManageClassroom =
+    currentTeam?.role === 'teacher' || currentTeam?.role === 'admin';
   const form = useForm({
     grade_weights: {
       chapter_reading: currentTeam?.gradeWeights?.chapter_reading ?? 20,
@@ -78,9 +79,9 @@ export default function ClassroomSettings() {
           <div className="app-panel p-4 text-sm text-muted-foreground">
             Choose a classroom to manage its grading setup.
           </div>
-        ) : !isTeacher ? (
+        ) : !canManageClassroom ? (
           <div className="app-panel p-4 text-sm text-muted-foreground">
-            Classroom setup is available to teachers.
+            Classroom setup is available to classroom teachers and admins.
           </div>
         ) : (
           <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">

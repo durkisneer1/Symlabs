@@ -28,7 +28,9 @@ class TeamController extends Controller
         $user = $request->user();
 
         return Inertia::render('teams/index', [
-            'teams' => $user->toUserTeams(includeCurrent: true),
+            'teams' => $user->role->isAdmin()
+                ? $this->adminTeamList($user)
+                : $user->toUserTeams(includeCurrent: true),
         ]);
     }
 
@@ -116,6 +118,52 @@ class TeamController extends Controller
     }
 
     /**
+     * Join a classroom as an admin.
+     */
+    public function join(Request $request, Team $team): RedirectResponse
+    {
+        abort_unless($request->user()?->role->isAdmin(), 403);
+
+        $team->memberships()->firstOrCreate(
+            ['user_id' => $request->user()->id],
+            ['role' => TeamRole::Admin],
+        );
+
+        $request->user()->switchTeam($team);
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Joined classroom as admin.')]);
+
+        return back();
+    }
+
+    /**
+     * Leave a classroom admin membership.
+     */
+    public function leave(Request $request, Team $team): RedirectResponse
+    {
+        $user = $request->user();
+
+        abort_unless($user?->role->isAdmin(), 403);
+
+        $team->memberships()
+            ->where('user_id', $user->id)
+            ->where('role', TeamRole::Admin->value)
+            ->delete();
+
+        if ($user->isCurrentTeam($team)) {
+            if ($fallbackTeam = $user->fallbackTeam($team)) {
+                $user->switchTeam($fallbackTeam);
+            } else {
+                $user->update(['current_team_id' => null]);
+            }
+        }
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Left classroom.')]);
+
+        return back();
+    }
+
+    /**
      * Delete the specified team.
      */
     public function destroy(DeleteTeamRequest $request, Team $team): RedirectResponse
@@ -150,5 +198,36 @@ class TeamController extends Controller
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Team deleted.')]);
 
         return to_route('teams.index');
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    protected function adminTeamList(User $user): array
+    {
+        return Team::query()
+            ->orderBy('name')
+            ->get()
+            ->map(function (Team $team) use ($user) {
+                $membership = $team->memberships()
+                    ->where('user_id', $user->id)
+                    ->first();
+
+                return [
+                    'id' => $team->id,
+                    'name' => $team->name,
+                    'slug' => $team->slug,
+                    'isPersonal' => $team->is_personal,
+                    'role' => $membership?->role?->value,
+                    'roleLabel' => $membership?->role?->label(),
+                    'isCurrent' => $user->isCurrentTeam($team),
+                    'viewModes' => $membership?->role?->viewModes() ?? [],
+                    'gradeWeights' => $team->grade_weights,
+                    'semesterStartsAt' => $team->semester_starts_at?->toISOString(),
+                    'semesterEndsAt' => $team->semester_ends_at?->toISOString(),
+                    'semesterActive' => $team->semesterIsActive(),
+                ];
+            })
+            ->all();
     }
 }

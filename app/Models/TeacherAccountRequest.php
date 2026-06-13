@@ -7,7 +7,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['requester_id', 'institution', 'instructor_title', 'proof', 'status', 'admin_notes', 'reviewed_by', 'reviewed_at'])]
+#[Fillable([
+    'requester_id',
+    'team_id',
+    'institution',
+    'instructor_title',
+    'course_name',
+    'expected_student_count',
+    'proof',
+    'status',
+    'admin_notes',
+    'reviewed_by',
+    'reviewed_at',
+])]
 class TeacherAccountRequest extends Model
 {
     use HasFactory;
@@ -20,6 +32,16 @@ class TeacherAccountRequest extends Model
     public function requester(): BelongsTo
     {
         return $this->belongsTo(User::class, 'requester_id');
+    }
+
+    /**
+     * Get the classroom created by this request.
+     *
+     * @return BelongsTo<Team, $this>
+     */
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
     }
 
     /**

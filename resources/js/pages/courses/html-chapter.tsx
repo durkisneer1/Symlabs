@@ -24,7 +24,7 @@ type Props = {
 };
 
 export default function HtmlChapter({ chapterSlug }: Props) {
-  const { auth, currentTeam, currentTeamAssignments } = usePage().props;
+  const { currentTeam, currentTeamAssignments } = usePage().props;
   const chapter = findHtmlChapter(chapterSlug) ?? htmlCourse.chapters[0];
   const chapterIndex = htmlCourse.chapters.findIndex(
     (candidate) => candidate.slug === chapter.slug,
@@ -66,7 +66,7 @@ export default function HtmlChapter({ chapterSlug }: Props) {
     completedActivities,
     totalActivities: completableActivities.length,
     visible:
-      auth.user?.role === 'student' &&
+      currentTeam?.role === 'student' &&
       Boolean(currentTeam) &&
       currentTeam?.semesterActive !== false &&
       Boolean(assignedChapterReading),

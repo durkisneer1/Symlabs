@@ -22,11 +22,11 @@ class SupportTicketController extends Controller
     {
         $user = $request->user();
 
-        abort_unless(in_array($user?->role, [UserRole::Admin, UserRole::Teacher], true), 403);
+        abort_unless($user && ($user->role->isAdmin() || $this->isClassroomTeacher($user)), 403);
 
         return Inertia::render('support', [
             'supportTickets' => $this->ticketsFor($request),
-            'supportTeachers' => $user->role === UserRole::Admin
+            'supportTeachers' => $user->role->isAdmin()
                 ? $this->supportTeachers()
                 : [],
         ]);
@@ -38,7 +38,7 @@ class SupportTicketController extends Controller
     public function teacher(Request $request, User $teacher): Response
     {
         abort_unless($request->user()?->role === UserRole::Admin, 403);
-        abort_unless($teacher->role === UserRole::Teacher, 404);
+        abort_unless($this->isClassroomTeacher($teacher), 404);
 
         return Inertia::render('support-teacher', [
             'supportTeacher' => [
@@ -56,7 +56,7 @@ class SupportTicketController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        abort_unless($request->user()?->role === UserRole::Teacher, 403);
+        abort_unless($this->isClassroomTeacher($request->user()), 403);
 
         $data = $request->validate([
             'subject' => ['required', 'string', 'max:120'],
@@ -110,7 +110,7 @@ class SupportTicketController extends Controller
         return SupportTicket::query()
             ->with(['requester:id,name,email,role', 'respondent:id,name,email'])
             ->when(
-                $request->user()?->role === UserRole::Teacher,
+                $request->user()?->role->isMember(),
                 fn ($query) => $query->where('requester_id', $request->user()->id),
             )
             ->latest()
@@ -149,7 +149,7 @@ class SupportTicketController extends Controller
                 ->withCount(['members as students_count' => fn ($members) => $members
                     ->where('team_members.role', TeamRole::Student->value)])
                 ->orderBy('name')])
-            ->where('role', UserRole::Teacher->value)
+            ->whereHas('teams', fn ($query) => $query->wherePivot('role', TeamRole::Teacher->value))
             ->orderBy('name')
             ->get(['id', 'name', 'email', 'role', 'created_at'])
             ->map(fn (User $user) => [
@@ -166,6 +166,13 @@ class SupportTicketController extends Controller
                 'created_at' => $user->created_at?->toISOString(),
             ])
             ->all();
+    }
+
+    protected function isClassroomTeacher(?User $user): bool
+    {
+        return $user?->teams()
+            ->wherePivot('role', TeamRole::Teacher->value)
+            ->exists() ?? false;
     }
 
     /**

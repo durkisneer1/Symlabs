@@ -29,7 +29,12 @@ import type { NavItem } from '@/types';
 export function AppSidebar() {
   const page = usePage();
   const currentTeam = page.props.currentTeam;
-  const userRole = page.props.auth.user.role;
+  const accountRole = page.props.auth.user.role;
+  const classroomRole = currentTeam?.role;
+  const isAdmin = accountRole === 'admin';
+  const hasTeacherClassroom = (page.props.teams ?? []).some(
+    (team) => team.role === 'teacher',
+  );
   const dashboardUrl = currentTeam ? dashboard(currentTeam.slug) : '/dashboard';
 
   const mainNavItems: NavItem[] = [
@@ -41,7 +46,7 @@ export function AppSidebar() {
     },
   ];
 
-  if (userRole === 'student' && currentTeam) {
+  if (classroomRole === 'student' && currentTeam) {
     mainNavItems.push({
       title: 'Work',
       href: `/${currentTeam.slug}/work`,
@@ -50,16 +55,19 @@ export function AppSidebar() {
     });
   }
 
-  if (userRole === 'student') {
+  if (!isAdmin) {
     mainNavItems.push({
-      title: 'Teacher Request',
+      title: 'Request Classroom',
       href: '/teacher-requests',
       icon: UserPlus,
       className: 'toy-pink',
     });
   }
 
-  if (userRole === 'teacher' && currentTeam) {
+  if (
+    (classroomRole === 'teacher' || classroomRole === 'admin') &&
+    currentTeam
+  ) {
     mainNavItems.push({
       title: 'Roster',
       href: `/${currentTeam.slug}/roster`,
@@ -74,7 +82,7 @@ export function AppSidebar() {
     });
   }
 
-  if (userRole !== 'admin' && currentTeam) {
+  if (currentTeam) {
     mainNavItems.push({
       title: 'Q&A',
       href: `/${currentTeam.slug}/questions`,
@@ -83,7 +91,7 @@ export function AppSidebar() {
     });
   }
 
-  if (userRole === 'teacher') {
+  if (hasTeacherClassroom) {
     mainNavItems.push({
       title: 'Support',
       href: '/support',
@@ -92,7 +100,7 @@ export function AppSidebar() {
     });
   }
 
-  if (userRole === 'admin') {
+  if (isAdmin) {
     mainNavItems.push(
       {
         title: 'Quiz Bank',
@@ -113,7 +121,7 @@ export function AppSidebar() {
         className: 'toy-purple',
       },
       {
-        title: 'Teacher Requests',
+        title: 'Classroom Requests',
         href: '/teacher-requests',
         icon: UserPlus,
         className: 'toy-pink',
@@ -133,7 +141,7 @@ export function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        {userRole !== 'admin' ? (
+        {page.props.teams.length > 0 ? (
           <SidebarMenu className="classroom-switcher-menu">
             <SidebarMenuItem>
               <TeamSwitcher />

@@ -12,9 +12,15 @@ class CreateTeam
     /**
      * Create a new team and add the user as owner.
      */
-    public function handle(User $user, string $name, bool $isPersonal = false): Team
+    public function handle(
+        User $user,
+        string $name,
+        bool $isPersonal = false,
+        TeamRole $role = TeamRole::Teacher,
+        bool $makeCurrent = true,
+    ): Team
     {
-        return DB::transaction(function () use ($user, $name, $isPersonal) {
+        return DB::transaction(function () use ($user, $name, $isPersonal, $role, $makeCurrent) {
             $team = Team::create([
                 'name' => $name,
                 'is_personal' => $isPersonal,
@@ -22,10 +28,14 @@ class CreateTeam
 
             $membership = $team->memberships()->create([
                 'user_id' => $user->id,
-                'role' => TeamRole::Teacher,
+                'role' => $role,
             ]);
 
-            $user->switchTeam($team);
+            if ($makeCurrent) {
+                $user->switchTeam($team);
+            } else {
+                $user->update(['current_team_id' => $team->id]);
+            }
 
             return $team;
         });

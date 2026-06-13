@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import type { ClassroomQuestion, Team } from '@/types';
 
 export default function ClassroomQuestions() {
-  const { auth, currentTeam, currentTeamQuestions } = usePage().props;
+  const { currentTeam, currentTeamQuestions } = usePage().props;
 
   return (
     <>
@@ -25,10 +25,16 @@ export default function ClassroomQuestions() {
           <div className="app-panel p-4 text-sm text-muted-foreground">
             Choose a classroom to use Q&amp;A.
           </div>
-        ) : auth.user.role === 'student' ? (
-          <StudentQuestions team={currentTeam} questions={currentTeamQuestions} />
+        ) : currentTeam.role === 'student' ? (
+          <StudentQuestions
+            team={currentTeam}
+            questions={currentTeamQuestions}
+          />
         ) : (
-          <TeacherQuestions team={currentTeam} questions={currentTeamQuestions} />
+          <TeacherQuestions
+            team={currentTeam}
+            questions={currentTeamQuestions}
+          />
         )}
       </main>
     </>
@@ -229,7 +235,9 @@ function TeacherQuestionResponse({
   );
 }
 
-ClassroomQuestions.layout = (props: { currentTeam?: { slug: string } | null }) => ({
+ClassroomQuestions.layout = (props: {
+  currentTeam?: { slug: string } | null;
+}) => ({
   breadcrumbs: [
     {
       title: 'Q&A',

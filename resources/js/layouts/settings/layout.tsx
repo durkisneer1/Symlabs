@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import type { PropsWithChildren } from 'react';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
@@ -36,11 +36,7 @@ const sidebarNavItems: NavItem[] = [
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
   const { isCurrentOrParentUrl } = useCurrentUrl();
-  const { auth } = usePage().props;
-  const navItems =
-    auth.user.role === 'admin'
-      ? sidebarNavItems.filter((item) => item.title !== 'Classrooms')
-      : sidebarNavItems;
+  const navItems = sidebarNavItems;
 
   return (
     <div className="px-4 py-6">

@@ -1,6 +1,5 @@
-import { Head, Link, usePage } from '@inertiajs/react';
-import { Eye, Pencil, Plus } from 'lucide-react';
-import CreateTeamModal from '@/components/create-team-modal';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Eye, LogIn, LogOut, Pencil } from 'lucide-react';
 import Heading from '@/components/heading';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,7 +18,7 @@ type Props = {
 
 export default function TeamsIndex({ teams }: Props) {
   const { auth } = usePage().props;
-  const canCreateClassroom = auth.user.role === 'teacher';
+  const isAdmin = auth.user.role === 'admin';
 
   return (
     <>
@@ -34,14 +33,6 @@ export default function TeamsIndex({ teams }: Props) {
             title="Classrooms"
             description="Manage your classrooms and classroom memberships"
           />
-
-          {canCreateClassroom ? (
-            <CreateTeamModal>
-              <Button data-test="teams-new-team-button">
-                <Plus /> New classroom
-              </Button>
-            </CreateTeamModal>
-          ) : null}
         </div>
 
         <div className="space-y-3">
@@ -60,14 +51,32 @@ export default function TeamsIndex({ teams }: Props) {
                     ) : null}
                   </div>
                   <span className="text-sm text-muted-foreground">
-                    {team.roleLabel}
+                    {team.roleLabel ?? (isAdmin ? 'Not joined' : 'Member')}
                   </span>
                 </div>
               </div>
 
               <TooltipProvider>
                 <div className="flex items-center gap-2">
-                  {team.role === 'student' ? (
+                  {isAdmin && !team.role ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          data-test="team-join-button"
+                          onClick={() =>
+                            router.post(`/settings/teams/${team.slug}/join`)
+                          }
+                        >
+                          <LogIn className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Join classroom as admin</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : team.role === 'student' ? (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
@@ -85,7 +94,7 @@ export default function TeamsIndex({ teams }: Props) {
                         <p>View classroom</p>
                       </TooltipContent>
                     </Tooltip>
-                  ) : (
+                  ) : team.role ? (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
@@ -103,7 +112,26 @@ export default function TeamsIndex({ teams }: Props) {
                         <p>Edit classroom</p>
                       </TooltipContent>
                     </Tooltip>
-                  )}
+                  ) : null}
+                  {isAdmin && team.role === 'admin' ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          data-test="team-leave-button"
+                          onClick={() =>
+                            router.delete(`/settings/teams/${team.slug}/leave`)
+                          }
+                        >
+                          <LogOut className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Leave classroom</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : null}
                 </div>
               </TooltipProvider>
             </div>

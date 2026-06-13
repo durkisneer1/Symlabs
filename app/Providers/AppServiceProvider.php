@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -61,6 +62,16 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function configureRateLimiting(): void
     {
+        if (app()->isLocal()) {
+            RateLimiter::for('web', fn () => Limit::none());
+            RateLimiter::for('heavy', fn () => Limit::none());
+            RateLimiter::for('classroom-questions', fn () => Limit::none());
+            RateLimiter::for('password-resets', fn () => Limit::none());
+            RateLimiter::for('registration', fn () => Limit::none());
+
+            return;
+        }
+
         RateLimiter::for('web', fn (Request $request) => [
             Limit::perMinute(120)->by($request->ip()),
             Limit::perMinutes(5, 300)->by($request->ip()),
@@ -96,6 +107,16 @@ class AppServiceProvider extends ServiceProvider
             ->line(__('Welcome to Symlabs. Please verify your email address before joining or creating classrooms.'))
             ->action(__('Verify email address'), $url)
             ->line(__('If you did not create a Symlabs account, no further action is required.')));
+
+        ResetPassword::toMailUsing(fn ($notifiable, string $token) => (new MailMessage)
+            ->subject(__('Reset your Symlabs password'))
+            ->greeting(__('Hello, :name!', ['name' => $notifiable->name]))
+            ->line(__('We received a request to reset the password for your Symlabs account.'))
+            ->action(__('Reset password'), url(route('password.reset', [
+                'token' => $token,
+                'email' => $notifiable->getEmailForPasswordReset(),
+            ], false)))
+            ->line(__('If you did not request a password reset, no further action is required.')));
     }
 
     protected function rateLimitActor(Request $request): string

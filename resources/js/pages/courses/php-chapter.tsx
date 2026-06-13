@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function PhpChapter({ chapterSlug }: Props) {
-  const { auth, currentTeam, currentTeamAssignments } = usePage().props;
+  const { currentTeam, currentTeamAssignments } = usePage().props;
   const chapter = findPhpChapter(chapterSlug) ?? phpCourse.chapters[0];
   const navItems = chapter.content.map((block) => navItemFor(block));
   const chapterProgress = buildChapterProgress({
@@ -21,7 +21,7 @@ export default function PhpChapter({ chapterSlug }: Props) {
     chapterSlug: chapter.slug,
     courseSlug: 'php',
     visible:
-      auth.user?.role === 'student' &&
+      currentTeam?.role === 'student' &&
       Boolean(currentTeam) &&
       currentTeam?.semesterActive !== false,
   });

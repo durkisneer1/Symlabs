@@ -65,7 +65,7 @@ export default function Welcome() {
               href="/teacher-requests"
               className="inline-flex h-10 items-center rounded-lg border border-border bg-background px-4 text-sm font-semibold transition-colors hover:bg-muted"
             >
-              Request teacher tools
+              Request a classroom
             </Link>
           </div>
 

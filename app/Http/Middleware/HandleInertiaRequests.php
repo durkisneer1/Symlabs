@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\TeamPermission;
 use App\Enums\TeamRole;
 use App\Models\Assignments\Assignment;
 use App\Models\ClassroomQuestion;
@@ -51,7 +52,7 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'currentTeam' => fn () => $user?->currentTeam ? $user->toUserTeam($user->currentTeam) : null,
             'teams' => fn () => $user?->toUserTeams(includeCurrent: true) ?? [],
-            'currentTeamStudents' => fn () => $user?->currentTeam && $user->teamRole($user->currentTeam) === TeamRole::Teacher
+            'currentTeamStudents' => fn () => $user?->currentTeam && $user->hasTeamPermission($user->currentTeam, TeamPermission::ViewStudentProgress)
                 ? $user->currentTeam
                     ->members()
                     ->wherePivot('role', TeamRole::Student->value)
@@ -93,7 +94,7 @@ class HandleInertiaRequests extends Middleware
                             'title' => $assignment->title,
                             'description' => $assignment->description,
                             'settings' => $assignment->settings ?? [],
-                            'actions' => $this->assignmentActions($assignment),
+                            'actions' => $this->assignmentActions($request, $assignment),
                             'opens_at' => $assignment->opens_at?->toISOString(),
                             'due_at' => $assignment->due_at?->toISOString(),
                             'points' => (float) $assignment->points,
@@ -180,8 +181,12 @@ class HandleInertiaRequests extends Middleware
     /**
      * @return array<int, array{label: string, href: string}>
      */
-    protected function assignmentActions(Assignment $assignment): array
+    protected function assignmentActions(Request $request, Assignment $assignment): array
     {
+        if (! $request->user()?->hasTeamPermission($assignment->team, TeamPermission::TakeAssignments)) {
+            return [];
+        }
+
         if (in_array($assignment->type->value, ['homework', 'quiz'], true)) {
             $submission = $assignment->submissions()
                 ->where('user_id', request()->user()?->id)

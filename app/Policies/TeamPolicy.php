@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Enums\TeamPermission;
-use App\Enums\UserRole;
 use App\Models\Team;
 use App\Models\User;
 
@@ -14,7 +13,7 @@ class TeamPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role !== UserRole::Admin;
+        return true;
     }
 
     /**
@@ -30,7 +29,7 @@ class TeamPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role === UserRole::Teacher;
+        return false;
     }
 
     /**

@@ -56,7 +56,7 @@ class UserController extends Controller
             ->whereRaw('lower(email) = ?', [$data['email']])
             ->first();
 
-        if ($existingUser?->role === UserRole::Admin) {
+        if ($existingUser?->role->isAdmin()) {
             throw ValidationException::withMessages([
                 'email' => __('That user is already an admin.'),
             ]);
@@ -129,7 +129,7 @@ class UserController extends Controller
     {
         $this->authorizeAdmin($request);
 
-        abort_unless($user->role !== UserRole::Admin, 403);
+        abort_unless(! $user->role->isAdmin(), 403);
 
         $user->delete();
 
@@ -140,7 +140,7 @@ class UserController extends Controller
 
     protected function authorizeAdmin(Request $request): void
     {
-        abort_unless($request->user()?->role === UserRole::Admin, 403);
+        abort_unless($request->user()?->role->isAdmin(), 403);
     }
 
     protected function authorizeAdminInviter(Request $request): void

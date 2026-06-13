@@ -27,6 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('settings/teams', [TeamController::class, 'index'])->name('teams.index');
     Route::post('settings/teams', [TeamController::class, 'store'])->name('teams.store');
+    Route::post('settings/teams/{team}/join', [TeamController::class, 'join'])->name('teams.join');
+    Route::delete('settings/teams/{team}/leave', [TeamController::class, 'leave'])->name('teams.leave');
 
     Route::middleware(EnsureTeamMembership::class)->group(function () {
         Route::get('settings/teams/{team}', [TeamController::class, 'edit'])->name('teams.edit');

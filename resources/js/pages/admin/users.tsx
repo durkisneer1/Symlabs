@@ -21,7 +21,7 @@ type User = {
   id: number;
   name: string;
   email: string;
-  role: 'admin' | 'teacher' | 'student';
+  role: 'admin' | 'member' | 'teacher' | 'student';
   can_invite_admins: boolean;
   email_verified_at: string | null;
   created_at: string | null;
@@ -247,7 +247,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 }
 
 function roleLabel(role: User['role']) {
-  return role.charAt(0).toUpperCase() + role.slice(1);
+  return role === 'admin' ? 'Admin' : 'Member';
 }
 
 function formatDate(value: string | null) {

@@ -10,13 +10,15 @@ type RequestUser = {
   id: number;
   name: string;
   email: string;
-  role: 'admin' | 'teacher' | 'student';
+  role: 'admin' | 'member' | 'teacher' | 'student';
 };
 
 type TeacherAccountRequest = {
   id: number;
   institution: string;
   instructor_title: string;
+  course_name: string;
+  expected_student_count: number | null;
   proof: string;
   status: 'pending' | 'approved' | 'denied';
   admin_notes: string | null;
@@ -24,6 +26,11 @@ type TeacherAccountRequest = {
   reviewed_at: string | null;
   requester: RequestUser | null;
   reviewer: RequestUser | null;
+  team: {
+    id: number;
+    name: string;
+    slug: string;
+  } | null;
 };
 
 type Props = {
@@ -36,15 +43,15 @@ export default function TeacherRequests({ teacherAccountRequests }: Props) {
 
   return (
     <>
-      <Head title="Teacher Requests" />
+      <Head title="Classroom Requests" />
 
       <main className="toy-pink min-h-[calc(100vh-5rem)] space-y-6 p-4">
         <div>
           <p className="text-sm font-medium text-muted-foreground">
-            {isAdmin ? 'Admin review' : 'Account upgrade'}
+            {isAdmin ? 'Admin review' : 'Classroom approval'}
           </p>
           <h1 className="text-2xl font-semibold tracking-tight">
-            Teacher Requests
+            Classroom Requests
           </h1>
           <div className="ink-accent-rule mt-3" />
         </div>
@@ -63,6 +70,8 @@ function StudentRequest({ requests }: { requests: TeacherAccountRequest[] }) {
   const form = useForm({
     institution: '',
     instructor_title: '',
+    course_name: '',
+    expected_student_count: '',
     proof: '',
   });
 
@@ -82,15 +91,28 @@ function StudentRequest({ requests }: { requests: TeacherAccountRequest[] }) {
             <ShieldQuestion className="size-5" />
           </div>
           <div>
-            <h2 className="font-medium">Request Teacher Access</h2>
+            <h2 className="font-medium">Request a Classroom</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Share proof that you are employed by an educational institution as
-              an instructor.
+              Share the course you teach and proof that you should manage its
+              classroom.
             </p>
           </div>
         </div>
 
         <form className="space-y-3" onSubmit={submit}>
+          <Input
+            value={form.data.course_name}
+            onChange={(event) =>
+              form.setData('course_name', event.target.value)
+            }
+            placeholder="Course name, e.g. CSCI 1301"
+            required
+          />
+          {form.errors.course_name ? (
+            <p className="text-sm text-destructive">
+              {form.errors.course_name}
+            </p>
+          ) : null}
           <Input
             value={form.data.institution}
             onChange={(event) =>
@@ -112,6 +134,20 @@ function StudentRequest({ requests }: { requests: TeacherAccountRequest[] }) {
             placeholder="Instructor title"
             required
           />
+          <Input
+            value={form.data.expected_student_count}
+            onChange={(event) =>
+              form.setData('expected_student_count', event.target.value)
+            }
+            placeholder="Expected student count (optional)"
+            type="number"
+            min={1}
+          />
+          {form.errors.expected_student_count ? (
+            <p className="text-sm text-destructive">
+              {form.errors.expected_student_count}
+            </p>
+          ) : null}
           {form.errors.instructor_title ? (
             <p className="text-sm text-destructive">
               {form.errors.instructor_title}
@@ -121,7 +157,7 @@ function StudentRequest({ requests }: { requests: TeacherAccountRequest[] }) {
             className="min-h-36 bg-background text-sm"
             value={form.data.proof}
             onChange={(event) => form.setData('proof', event.target.value)}
-            placeholder="Paste a faculty profile URL, institutional email context, department page, or other verification details."
+            placeholder="Paste a faculty profile URL, institutional email context, teacher ID details, department page, or other verification details."
             required
           />
           {form.errors.proof ? (
@@ -137,7 +173,7 @@ function StudentRequest({ requests }: { requests: TeacherAccountRequest[] }) {
         <div className="app-panel-header">
           <h2 className="font-medium">Your Requests</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Admin decisions will appear here.
+            Admin decisions and created classrooms will appear here.
           </p>
         </div>
         <RequestList requests={requests} />
@@ -153,10 +189,10 @@ function AdminRequests({ requests }: { requests: TeacherAccountRequest[] }) {
         <span className="ink-accent-icon mb-4">
           <BadgeCheck className="size-5" />
         </span>
-        <h2 className="font-medium">Pending Teacher Reviews</h2>
+        <h2 className="font-medium">Pending Classroom Reviews</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Approving a request upgrades the regular account into a teacher
-          account.
+          Approving a request creates the classroom and enrolls the requester as
+          its teacher.
         </p>
       </div>
       <RequestList requests={requests} admin />
@@ -174,7 +210,7 @@ function RequestList({
   if (requests.length === 0) {
     return (
       <p className="p-4 text-sm text-muted-foreground">
-        No teacher requests yet.
+        No classroom requests yet.
       </p>
     );
   }
@@ -196,6 +232,11 @@ function RequestCard({ request }: { request: TeacherAccountRequest }) {
   return (
     <article className="app-card space-y-3 p-4">
       <RequestHeader request={request} />
+      {request.team ? (
+        <p className="text-sm text-muted-foreground">
+          Created classroom: {request.team.name}
+        </p>
+      ) : null}
       <ProofBlock request={request} />
       {request.admin_notes ? (
         <div className="border-t border-border/70 pt-3">
@@ -277,10 +318,16 @@ function RequestHeader({ request }: { request: TeacherAccountRequest }) {
   return (
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div>
-        <h2 className="font-medium">{request.institution}</h2>
+        <h2 className="font-medium">{request.course_name}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          {request.instructor_title} - {formatDate(request.created_at)}
+          {request.instructor_title} at {request.institution} -{' '}
+          {formatDate(request.created_at)}
         </p>
+        {request.expected_student_count ? (
+          <p className="mt-1 text-xs text-muted-foreground">
+            Expected students: {request.expected_student_count}
+          </p>
+        ) : null}
       </div>
       <Badge variant={request.status === 'pending' ? 'outline' : 'secondary'}>
         {request.status}
@@ -293,7 +340,7 @@ function ProofBlock({ request }: { request: TeacherAccountRequest }) {
   return (
     <div>
       <p className="text-xs font-medium text-muted-foreground">
-        Employment proof
+        Teaching proof
       </p>
       <p className="mt-1 text-sm whitespace-pre-wrap">{request.proof}</p>
     </div>
@@ -315,7 +362,7 @@ function formatDate(value: string | null) {
 TeacherRequests.layout = {
   breadcrumbs: [
     {
-      title: 'Teacher Requests',
+      title: 'Classroom Requests',
       href: '/teacher-requests',
     },
   ],

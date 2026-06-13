@@ -11,7 +11,7 @@ type SupportTeacher = {
   id: number;
   name: string;
   email: string;
-  role: 'teacher';
+  role: 'member' | 'teacher' | 'student';
   classrooms: {
     id: number;
     name: string;
@@ -25,7 +25,7 @@ type TicketUser = {
   id: number;
   name: string;
   email: string;
-  role?: 'teacher' | 'student' | 'admin';
+  role?: 'admin' | 'member' | 'teacher' | 'student';
 };
 
 type SupportTicket = {

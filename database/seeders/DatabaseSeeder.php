@@ -208,12 +208,12 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Teacher User',
                 'email' => 'teacher@ink.edu',
-                'role' => UserRole::Teacher,
+                'role' => UserRole::Member,
             ],
             [
                 'name' => 'Student User',
                 'email' => 'student@ink.edu',
-                'role' => UserRole::Student,
+                'role' => UserRole::Member,
             ],
         ];
 

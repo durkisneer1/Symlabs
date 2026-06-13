@@ -116,12 +116,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('support/tickets/{ticket}', [SupportTicketController::class, 'update'])
         ->middleware('throttle:heavy')
         ->name('support.update');
-    Route::get('teacher-requests', [TeacherAccountRequestController::class, 'index'])->name('teacher-requests.index');
+    Route::get('teacher-requests', [TeacherAccountRequestController::class, 'index'])
+        ->middleware('verified')
+        ->name('teacher-requests.index');
     Route::post('teacher-requests', [TeacherAccountRequestController::class, 'store'])
-        ->middleware('throttle:heavy')
+        ->middleware(['verified', 'throttle:heavy'])
         ->name('teacher-requests.store');
     Route::put('teacher-requests/{teacherRequest}', [TeacherAccountRequestController::class, 'update'])
-        ->middleware('throttle:heavy')
+        ->middleware(['verified', 'throttle:heavy'])
         ->name('teacher-requests.update');
     Route::get('admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::post('admin/invitations', [AdminUserController::class, 'invite'])->name('admin.invitations.store');
