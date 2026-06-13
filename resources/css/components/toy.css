@@ -297,10 +297,11 @@
   }
 
   [data-sidebar='menu-button'].app-user-menu-button:hover,
+  [data-sidebar='menu-button'].app-user-menu-button[data-state='open']:hover,
   [data-sidebar='menu-button'].app-user-menu-button[data-state='open'],
   [data-sidebar='menu-button'].app-user-menu-button[data-open='true'] {
     color: var(--sidebar-foreground) !important;
-    background: var(--sidebar-accent) !important;
+    background: var(--muted) !important;
     border-color: var(--sidebar-border) !important;
     box-shadow: none !important;
   }

@@ -3,10 +3,10 @@
     <head>
         @php
             $siteName = config('app.name', 'Symlabs');
-            $siteDescription = 'Interactive courseware for learning web development with lessons, practice, quizzes, and classroom tools.';
+            $siteDescription = 'Free programming courseware with lessons, practice, quizzes, and classroom tools for web, software, and systems topics.';
             $siteUrl = rtrim(config('app.url'), '/');
             $canonicalUrl = url()->current();
-            $openGraphImage = url('/og-image.svg');
+            $openGraphImage = url('/images/symlabs-og.png');
             $schema = [
                 '@context' => 'https://schema.org',
                 '@graph' => [
@@ -15,7 +15,7 @@
                         '@id' => $siteUrl.'/#organization',
                         'name' => $siteName,
                         'url' => $siteUrl,
-                        'logo' => url('/images/brand/icon@4x.png'),
+                        'logo' => url('/images/brand/symlabs@2x.png'),
                     ],
                     [
                         '@type' => 'WebSite',
@@ -46,20 +46,21 @@
         <link rel="apple-touch-icon" sizes="317x317" href="/images/brand/icon@4x.png">
         <meta property="og:site_name" content="{{ $siteName }}">
         <meta property="og:type" content="website">
-        <meta property="og:title" content="{{ $siteName }} | Interactive Web Development Courseware">
+        <meta property="og:title" content="{{ $siteName }} | Free Programming Courseware">
         <meta property="og:description" content="{{ $siteDescription }}">
         <meta property="og:url" content="{{ $canonicalUrl }}">
         <meta property="og:image" content="{{ $openGraphImage }}">
-        <meta property="og:image:type" content="image/svg+xml">
+        <meta property="og:image:secure_url" content="{{ $openGraphImage }}">
+        <meta property="og:image:type" content="image/png">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">
-        <meta property="og:image:alt" content="{{ $siteName }} courseware preview">
+        <meta property="og:image:alt" content="{{ $siteName }} programming courseware preview">
         <meta property="og:locale" content="{{ str_replace('-', '_', str_replace('_', '-', app()->getLocale())) }}">
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{{ $siteName }} | Interactive Web Development Courseware">
+        <meta name="twitter:title" content="{{ $siteName }} | Free Programming Courseware">
         <meta name="twitter:description" content="{{ $siteDescription }}">
         <meta name="twitter:image" content="{{ $openGraphImage }}">
-        <meta name="twitter:image:alt" content="{{ $siteName }} courseware preview">
+        <meta name="twitter:image:alt" content="{{ $siteName }} programming courseware preview">
         <script type="application/ld+json">
             {!! json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
         </script>
