@@ -1,7 +1,8 @@
-# HTML Course Authoring
+# Course Authoring
 
-Each chapter is a Markdown file in this folder. Prefix filenames with a number
-so the course order is obvious, for example `02-document-structure.md`.
+Each chapter is a Markdown file in a course folder such as `html/` or `css/`.
+Prefix filenames with a number so the course order is obvious, for example
+`02-document-structure.md`.
 
 Start every chapter with frontmatter:
 
@@ -33,5 +34,5 @@ Write the lesson prose here. Inline code like `href` is supported.
 <Image id="element-anatomy" />
 ````
 
-Add new activity IDs to `htmlActivities`, and add reusable image IDs to
-`htmlImages`.
+Add new HTML activity IDs to `htmlActivities`, and add reusable HTML image IDs
+to `htmlImages`. CSS chapters use `cssActivities` and `cssImages`.

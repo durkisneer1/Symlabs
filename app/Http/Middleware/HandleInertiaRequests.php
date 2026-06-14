@@ -229,19 +229,41 @@ class HandleInertiaRequests extends Middleware
             return [];
         }
 
-        if ($assignment->type->value !== 'chapter_reading' || $assignment->course_slug !== 'html') {
+        if ($assignment->type->value !== 'chapter_reading') {
             return [];
         }
 
         $chapterLabels = [
-            'intro-to-web' => 'Introduction to Web Dev',
-            'elements-and-tags' => 'Elements and Tags',
+            'html' => [
+                'intro-to-web' => 'Introduction to Web Dev',
+                'elements-and-tags' => 'Elements and Tags',
+            ],
+            'css' => [
+                'styling-web-pages' => 'Styling Web Pages',
+                'selectors' => 'Selectors',
+                'combinators-and-pattern-matching' => 'Combinators and Pattern Matching',
+                'properties' => 'Properties',
+                'custom-properties' => 'Custom Properties',
+                'text-formatting' => 'Text Formatting',
+                'the-box-model' => 'The Box Model',
+                'flexbox' => 'Flexbox',
+                'grids' => 'Grids',
+                'positioning-elements' => 'Positioning Elements',
+                'special-effects' => 'Special Effects',
+                'animation' => 'Animation',
+                'styling-forms' => 'Styling Forms',
+            ],
         ];
+        $courseSlug = $assignment->course_slug;
+
+        if (! in_array($courseSlug, ['html', 'css'], true)) {
+            return [];
+        }
 
         return collect($assignment->settings['chapter_slugs'] ?? [])
             ->map(fn (string $slug) => [
-                'label' => $chapterLabels[$slug] ?? str($slug)->replace('-', ' ')->title()->toString(),
-                'href' => "/courses/html/{$slug}",
+                'label' => $chapterLabels[$courseSlug][$slug] ?? str($slug)->replace('-', ' ')->title()->toString(),
+                'href' => "/courses/{$courseSlug}/{$slug}",
             ])
             ->values()
             ->all();

@@ -56,10 +56,10 @@ const lessonItems: LessonItem[] = [
   },
   {
     title: 'CSS',
+    href: '/courses/css',
     description: 'Shape layouts and surfaces.',
     icon: Palette,
     className: 'toy-cyan',
-    availability: 'coming-soon',
   },
   {
     title: 'PHP',

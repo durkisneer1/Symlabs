@@ -13,7 +13,7 @@ export default function CourseContentBlockRenderer({
 }: {
   block: CourseContentBlock;
   id: string;
-  codeLanguage: 'html' | 'php';
+  codeLanguage: 'css' | 'html' | 'php';
   onActivityComplete?: () => void;
 }) {
   const { resolvedAppearance } = useAppearance();
@@ -80,7 +80,7 @@ export default function CourseContentBlockRenderer({
 }
 
 function markdownComponents(
-  defaultCodeLanguage: 'html' | 'php',
+  defaultCodeLanguage: 'css' | 'html' | 'php',
 ): Components {
   return {
     a: ({ children, href, rel, target, title }) => (
@@ -133,7 +133,12 @@ function markdownComponents(
 function markdownCodeLanguage(className?: string) {
   const language = className?.match(/language-([a-z0-9-]+)/i)?.[1];
 
-  if (language === 'html' || language === 'php' || language === 'markup') {
+  if (
+    language === 'css' ||
+    language === 'html' ||
+    language === 'php' ||
+    language === 'markup'
+  ) {
     return language;
   }
 

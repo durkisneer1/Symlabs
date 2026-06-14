@@ -21,7 +21,10 @@ Route::inertia('/courses/html', 'courses/html-course')->name('courses.html');
 Route::get('/courses/html/{chapter}', fn (string $chapter) => Inertia::render('courses/html-chapter', [
     'chapterSlug' => $chapter,
 ]))->name('courses.html.chapter');
-Route::inertia('/courses/css', 'courses/course-shell', ['course' => 'CSS'])->name('courses.css');
+Route::inertia('/courses/css', 'courses/css-course')->name('courses.css');
+Route::get('/courses/css/{chapter}', fn (string $chapter) => Inertia::render('courses/css-chapter', [
+    'chapterSlug' => $chapter,
+]))->name('courses.css.chapter');
 Route::inertia('/courses/php', 'courses/php-course')->name('courses.php');
 Route::get('/courses/php/{chapter}', fn (string $chapter) => Inertia::render('courses/php-chapter', [
     'chapterSlug' => $chapter,
@@ -51,12 +54,30 @@ Route::get('/sitemap.xml', function () {
         'developer-guidelines-and-best-practices',
     ];
 
+    $cssChapters = [
+        'styling-web-pages',
+        'selectors',
+        'combinators-and-pattern-matching',
+        'properties',
+        'custom-properties',
+        'text-formatting',
+        'the-box-model',
+        'flexbox',
+        'grids',
+        'positioning-elements',
+        'special-effects',
+        'animation',
+        'styling-forms',
+    ];
+
     $chapterUrls = collect($htmlChapters)
         ->map(fn (string $chapter) => route('courses.html.chapter', $chapter));
+    $cssChapterUrls = collect($cssChapters)
+        ->map(fn (string $chapter) => route('courses.css.chapter', $chapter));
 
     return response()
         ->view('sitemap', [
-            'urls' => $urls->merge($chapterUrls),
+            'urls' => $urls->merge($chapterUrls)->merge($cssChapterUrls),
         ])
         ->header('Content-Type', 'application/xml');
 })->name('sitemap');

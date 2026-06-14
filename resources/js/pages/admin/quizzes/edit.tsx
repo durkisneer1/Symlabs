@@ -6,7 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
-type QuestionType = 'multiple_choice' | 'true_false' | 'fill_blank' | 'matching';
+type QuestionType =
+  | 'multiple_choice'
+  | 'true_false'
+  | 'fill_blank'
+  | 'matching';
 type Difficulty = 'easy' | 'medium' | 'hard';
 
 type Quiz = {
@@ -77,9 +81,22 @@ const courseChapters: Record<string, ChapterOption[]> = {
     { value: 'forms-and-inputs', label: 'Forms and Inputs' },
   ],
   css: [
-    { value: 'selectors-and-cascade', label: 'Selectors and Cascade' },
-    { value: 'box-model', label: 'Box Model' },
-    { value: 'layout', label: 'Layout' },
+    { value: 'styling-web-pages', label: 'Styling Web Pages' },
+    { value: 'selectors', label: 'Selectors' },
+    {
+      value: 'combinators-and-pattern-matching',
+      label: 'Combinators and Pattern Matching',
+    },
+    { value: 'properties', label: 'Properties' },
+    { value: 'custom-properties', label: 'Custom Properties' },
+    { value: 'text-formatting', label: 'Text Formatting' },
+    { value: 'the-box-model', label: 'The Box Model' },
+    { value: 'flexbox', label: 'Flexbox' },
+    { value: 'grids', label: 'Grids' },
+    { value: 'positioning-elements', label: 'Positioning Elements' },
+    { value: 'special-effects', label: 'Special Effects' },
+    { value: 'animation', label: 'Animation' },
+    { value: 'styling-forms', label: 'Styling Forms' },
   ],
   php: [
     { value: 'php-basics', label: 'PHP Basics' },
@@ -437,9 +454,12 @@ function QuestionForm({
             variant="destructive"
             size="sm"
             onClick={() =>
-              router.delete(`/admin/quizzes/${quizId}/questions/${question.id}`, {
-                preserveScroll: true,
-              })
+              router.delete(
+                `/admin/quizzes/${quizId}/questions/${question.id}`,
+                {
+                  preserveScroll: true,
+                },
+              )
             }
           >
             Delete
@@ -587,7 +607,9 @@ function QuestionForm({
             <div key={index} className="grid gap-2 md:grid-cols-[1fr_1fr_auto]">
               <Input
                 value={option.text}
-                onChange={(event) => setOption(index, 'text', event.target.value)}
+                onChange={(event) =>
+                  setOption(index, 'text', event.target.value)
+                }
                 placeholder="Term"
                 required
               />
@@ -693,7 +715,10 @@ function ChoiceOptions({
       </div>
 
       {options.map((option, index) => (
-        <div key={index} className="grid gap-2 md:grid-cols-[auto_1fr_88px_auto]">
+        <div
+          key={index}
+          className="grid gap-2 md:grid-cols-[auto_1fr_88px_auto]"
+        >
           <input
             className="mt-2"
             type="radio"
@@ -737,7 +762,8 @@ function QuestionMinimap({ questions }: { questions: QuizQuestion[] }) {
         <div className="border-b p-3">
           <h2 className="text-sm font-medium">Question Map</h2>
           <p className="text-xs text-muted-foreground">
-            {questions.length} {questions.length === 1 ? 'question' : 'questions'}
+            {questions.length}{' '}
+            {questions.length === 1 ? 'question' : 'questions'}
           </p>
         </div>
 
@@ -777,7 +803,8 @@ function questionToFormData(
 
   return {
     course_slug: courseSlug,
-    chapter_slug: question?.chapter_slug ?? getChapters(courseSlug)[0]?.value ?? '',
+    chapter_slug:
+      question?.chapter_slug ?? getChapters(courseSlug)[0]?.value ?? '',
     type,
     topic: question?.topic ?? '',
     difficulty: question?.difficulty ?? 'easy',
@@ -798,7 +825,9 @@ function defaultOptionsForType(
 
   if (type === 'true_false') {
     const trueOption = existingOptions.find((option) => option.text === 'True');
-    const falseOption = existingOptions.find((option) => option.text === 'False');
+    const falseOption = existingOptions.find(
+      (option) => option.text === 'False',
+    );
 
     return [
       {
@@ -819,7 +848,7 @@ function defaultOptionsForType(
   if (existingOptions.length > 0) {
     return existingOptions.map((option, index) => ({
       text: option.text,
-      match_text: type === 'matching' ? option.match_text ?? '' : null,
+      match_text: type === 'matching' ? (option.match_text ?? '') : null,
       is_correct: type === 'matching' ? false : option.is_correct,
       position: option.position ?? index,
     }));
@@ -838,7 +867,8 @@ function getChapters(courseSlug: string): ChapterOption[] {
 }
 
 function questionTypeLabel(type: QuestionType) {
-  return questionTypes.find((questionType) => questionType.value === type)?.label;
+  return questionTypes.find((questionType) => questionType.value === type)
+    ?.label;
 }
 
 function truncatePrompt(prompt: string) {

@@ -31,6 +31,7 @@ export type CourseImageBlock = {
   src: string;
   darkSrc?: string;
   alt: string;
+  caption?: string;
 };
 
 export type CourseActivityBlock = {
@@ -41,5 +42,5 @@ export type CourseActivityBlock = {
 
 export type CourseCodeExample = {
   code: string;
-  language?: 'html' | 'php' | 'markup';
+  language?: 'css' | 'html' | 'php' | 'markup';
 };

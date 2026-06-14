@@ -1,4 +1,5 @@
 import Prism from 'prismjs';
+import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-markup-templating';
 import 'prismjs/components/prism-php';
@@ -6,7 +7,7 @@ import { cn } from '@/lib/utils';
 
 type CodeBlockProps = {
   code: string;
-  language?: 'markup' | 'html' | 'php';
+  language?: 'css' | 'markup' | 'html' | 'php';
   className?: string;
 };
 
