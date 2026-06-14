@@ -57,7 +57,7 @@ export default function HtmlCourse() {
       <Head title="HTML Course" />
 
       <main className="html-metro-page toy-orange mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 pb-12">
-        <section className="toy-surface toy-orange relative left-1/2 w-screen -translate-x-1/2 overflow-hidden border-none px-4 py-10 sm:px-6 lg:py-14">
+        <section className="toy-surface toy-orange relative left-1/2 grid w-screen -translate-x-1/2 items-center overflow-hidden border-none px-4 py-10 sm:px-6 lg:h-[26rem] lg:py-0">
           <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_24rem]">
             <div className="space-y-5">
               <div className="space-y-3">
@@ -95,29 +95,30 @@ export default function HtmlCourse() {
                 <span className="size-2.5 rounded-full bg-yellow-400" />
                 <span className="size-2.5 rounded-full bg-green-400" />
               </div>
-              <div className="grid min-h-56 grid-cols-[7rem_1fr]">
-                <div className="space-y-3 border-r bg-muted/35 p-4">
-                  <span className="block h-3 w-16 bg-foreground/25" />
-                  <span className="block h-3 w-20 bg-foreground/15" />
-                  <span className="block h-3 w-14 bg-foreground/15" />
-                  <span className="block h-3 w-18 bg-foreground/15" />
-                </div>
-                <div className="space-y-4 p-5">
+              <div className="min-h-56 space-y-4 p-5">
+                <div className="space-y-3">
                   <span className="block h-7 w-40 bg-foreground/25" />
                   <div className="space-y-2">
                     <span className="block h-2.5 w-full bg-foreground/12" />
                     <span className="block h-2.5 w-11/12 bg-foreground/12" />
                     <span className="block h-2.5 w-4/5 bg-foreground/12" />
                   </div>
-                  <div className="grid grid-cols-3 gap-3 pt-2">
-                    <span className="h-16 bg-[color-mix(in_oklch,var(--toy-accent)_24%,white)]" />
-                    <span className="h-16 bg-[color-mix(in_oklch,var(--accent-cyan)_22%,white)]" />
-                    <span className="h-16 bg-[color-mix(in_oklch,var(--accent-purple)_18%,white)]" />
-                  </div>
-                  <div className="grid grid-cols-[1fr_5rem] gap-3">
-                    <span className="h-12 bg-foreground/10" />
-                    <span className="h-12 bg-foreground/15" />
-                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-3 pt-2">
+                  <span className="grid h-16 place-items-center bg-[color-mix(in_oklch,var(--toy-accent)_24%,white)]">
+                    <span className="block h-2.5 w-9 bg-foreground/18" />
+                  </span>
+                  <span className="grid h-16 place-items-center bg-[color-mix(in_oklch,var(--accent-cyan)_22%,white)]">
+                    <span className="block h-2.5 w-9 bg-foreground/18" />
+                  </span>
+                  <span className="grid h-16 place-items-center bg-[color-mix(in_oklch,var(--accent-purple)_18%,white)]">
+                    <span className="block h-2.5 w-9 bg-foreground/18" />
+                  </span>
+                </div>
+                <div className="space-y-2 border-t pt-4">
+                  <span className="block h-3 w-28 bg-foreground/18" />
+                  <span className="block h-2.5 w-full bg-foreground/10" />
+                  <span className="block h-2.5 w-2/3 bg-foreground/10" />
                 </div>
               </div>
             </div>

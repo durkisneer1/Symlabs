@@ -54,7 +54,7 @@ export default function CssCourse() {
       <Head title="CSS Course" />
 
       <main className="toy-cyan mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 pb-12">
-        <section className="toy-surface toy-cyan relative left-1/2 w-screen -translate-x-1/2 overflow-hidden border-none px-4 py-10 sm:px-6 lg:py-14">
+        <section className="toy-surface toy-cyan relative left-1/2 grid w-screen -translate-x-1/2 items-center overflow-hidden border-none px-4 py-10 sm:px-6 lg:h-[26rem] lg:py-0">
           <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_24rem]">
             <div className="space-y-5">
               <div className="space-y-3">
@@ -94,19 +94,12 @@ export default function CssCourse() {
                 <span className="size-2.5 rounded-full bg-yellow-400" />
                 <span className="size-2.5 rounded-full bg-green-400" />
               </div>
-              <div className="grid min-h-56 grid-cols-[9.5rem_1fr]">
-                <div className="space-y-3 border-r bg-muted/35 p-4 font-mono text-[0.7rem] leading-5 text-foreground/70">
-                  <p>
-                    <span className="text-[color-mix(in_oklch,var(--toy-accent)_72%,black)]">
-                      .card
-                    </span>{' '}
-                    {'{'}
-                  </p>
-                  <p className="pl-3">display: grid;</p>
-                  <p className="pl-3">gap: 1rem;</p>
-                  <p className="pl-3">padding: 1.5rem;</p>
-                  <p className="pl-3">border-radius: .75rem;</p>
-                  <p>{'}'}</p>
+              <div className="grid min-h-56 grid-cols-[7rem_1fr]">
+                <div className="space-y-3 border-r bg-muted/35 p-4">
+                  <span className="block h-3 w-16 rounded-full bg-[color-mix(in_oklch,var(--toy-accent)_42%,white)]" />
+                  <span className="block h-3 w-20 rounded-full bg-foreground/15" />
+                  <span className="block h-3 w-14 rounded-full bg-foreground/15" />
+                  <span className="block h-3 w-18 rounded-full bg-foreground/15" />
                 </div>
                 <div className="grid content-center gap-4 p-5">
                   <div className="rounded-xl border bg-background p-4 shadow-sm">
