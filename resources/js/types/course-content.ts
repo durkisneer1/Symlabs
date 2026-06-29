@@ -18,10 +18,17 @@ export type CourseSectionBlock = {
   type: 'section';
   id?: string;
   title: string;
+  subheadings?: CourseSubheading[];
   markdown?: string;
   body?: string[];
   example?: string;
   examples?: CourseCodeExample[];
+};
+
+export type CourseSubheading = {
+  id: string;
+  title: string;
+  depth: 1 | 2;
 };
 
 export type CourseImageBlock = {

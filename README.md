@@ -116,7 +116,7 @@ php artisan migrate:fresh
 
 ## Running the App
 
-If using Herd, the app will be available at http://symlabs.test.
+If using Herd, the app will be available at http://symlabs.test after executing `pnpm dev`.
 
 Otherwise, start the local dev stack in a terminal:
 

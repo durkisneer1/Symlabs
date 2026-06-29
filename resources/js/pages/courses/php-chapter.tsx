@@ -15,7 +15,7 @@ type Props = {
 export default function PhpChapter({ chapterSlug }: Props) {
   const { currentTeam, currentTeamAssignments } = usePage().props;
   const chapter = findPhpChapter(chapterSlug) ?? phpCourse.chapters[0];
-  const navItems = chapter.content.map((block) => navItemFor(block));
+  const navItems = chapter.content.flatMap((block) => navItemsFor(block));
   const chapterProgress = buildChapterProgress({
     assignments: currentTeamAssignments,
     chapterSlug: chapter.slug,
@@ -70,13 +70,27 @@ export default function PhpChapter({ chapterSlug }: Props) {
   );
 }
 
-function navItemFor(block: CourseContentBlock) {
-  return {
+function navItemsFor(block: CourseContentBlock) {
+  const item = {
     id: blockId(block),
     title: blockTitle(block),
     depth: block.type === 'activity' ? 1 : 0,
     kind: block.type,
   };
+
+  if (block.type !== 'section') {
+    return [item];
+  }
+
+  return [
+    item,
+    ...(block.subheadings ?? []).map((subheading) => ({
+      id: subheading.id,
+      title: subheading.title,
+      depth: subheading.depth,
+      kind: 'section' as const,
+    })),
+  ];
 }
 
 function blockId(block: CourseContentBlock) {

@@ -23,7 +23,9 @@ definitions in `resources/js/data/html-activities.ts`.
 ````md
 ## Section Title
 
-Write the lesson prose here. Inline code like `href` is supported.
+Write the lesson prose here. Inline code like `href` is supported. Use
+`{term|definition}` for inline definitions such as
+`{HTTP|Hypertext Transfer Protocol}`.
 
 ```html
 <p>Example markup</p>

@@ -4,6 +4,7 @@ import type {
   CourseChapter,
   CourseContentBlock,
   CourseImageBlock,
+  CourseSubheading,
 } from '@/types/course-content';
 
 type CourseImageDefinition = Omit<CourseImageBlock, 'type' | 'id'>;
@@ -115,6 +116,7 @@ function parseContent(
       type: 'section',
       id: uniqueId(section.title, usedIds),
       title: section.title,
+      subheadings: collectSubheadings(sectionMarkdown, usedIds),
       markdown: sectionMarkdown,
     });
     section = null;
@@ -202,6 +204,40 @@ function uniqueId(value: string, usedIds: Map<string, number>) {
 
 function stripQuotes(value: string) {
   return value.replace(/^['"]|['"]$/g, '');
+}
+
+function collectSubheadings(markdown: string, usedIds: Map<string, number>) {
+  const subheadings: CourseSubheading[] = [];
+  let inCodeFence = false;
+
+  for (const line of markdown.replace(/\r\n/g, '\n').split('\n')) {
+    if (line.match(/^```/)) {
+      inCodeFence = !inCodeFence;
+      continue;
+    }
+
+    const headingMatch = inCodeFence ? null : line.match(/^(#{3,4})\s+(.+)$/);
+
+    if (!headingMatch) {
+      continue;
+    }
+
+    subheadings.push({
+      id: uniqueId(stripMarkdownText(headingMatch[2]), usedIds),
+      title: stripMarkdownText(headingMatch[2]),
+      depth: headingMatch[1].length === 3 ? 1 : 2,
+    });
+  }
+
+  return subheadings;
+}
+
+function stripMarkdownText(value: string) {
+  return value
+    .replace(/\{([^|{}\n]+)\|([^{}\n]+)\}/g, '$1')
+    .replace(/[`*_~]/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .trim();
 }
 
 function trimBlankLines(lines: string[]) {

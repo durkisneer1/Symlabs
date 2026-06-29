@@ -31,7 +31,7 @@ export default function HtmlChapter({ chapterSlug }: Props) {
   );
   const previousChapter = htmlCourse.chapters[chapterIndex - 1] ?? null;
   const nextChapter = htmlCourse.chapters[chapterIndex + 1] ?? null;
-  const navItems = chapter.content.map((block) => navItemFor(block));
+  const navItems = chapter.content.flatMap((block) => navItemsFor(block));
   const completableActivities = useMemo(
     () =>
       (chapter.content as CourseContentBlock[])
@@ -209,13 +209,27 @@ export default function HtmlChapter({ chapterSlug }: Props) {
   );
 }
 
-function navItemFor(block: CourseContentBlock) {
-  return {
+function navItemsFor(block: CourseContentBlock) {
+  const item = {
     id: blockId(block),
     title: blockTitle(block),
     depth: block.type === 'activity' || block.type === 'image' ? 1 : 0,
     kind: block.type,
   };
+
+  if (block.type !== 'section') {
+    return [item];
+  }
+
+  return [
+    item,
+    ...(block.subheadings ?? []).map((subheading) => ({
+      id: subheading.id,
+      title: subheading.title,
+      depth: subheading.depth,
+      kind: 'section' as const,
+    })),
+  ];
 }
 
 function blockId(block: CourseContentBlock) {
