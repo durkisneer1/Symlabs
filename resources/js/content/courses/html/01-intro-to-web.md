@@ -42,12 +42,11 @@ The internet has a seemingly endless amount of destinations to visit, each with 
 There is a mechanism set in place for locating and retrieving these resources, called a **Uniform Resource Locator** (URL).
 
 You've seen URLs before, like at the top of your browser pages or sharing webpage links with friends.
-For example, this page here has the link: _https://symlabs.net/courses/html/intro-to-web_.
+For example, this page you're currently on has the URL: _https://symlabs.net/courses/html/intro-to-web_.
 
 So, then what's the "Uniform" part of URL mean?
 As mentioned in [History of the Internet](#history-of-the-internet), there were many ways to get somewhere on the internet, and Tim Burners-Lee wasn't having it.
-Upon the creation of the web came the URL along with it.
-A standard and consistent format for linking documents within the World Wide Web.
+Upon the creation of the web came the URL along with it; a standard and consistent format for linking documents within the World Wide Web.
 
 A URL is formatted as follows:
 
@@ -56,3 +55,10 @@ A URL is formatted as follows:
 ## Secure HTTP
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+## What is HTML?
+
+HTML stands for HyperText Markup Language, because it is a _markup_ programming _language_ that is composed of _text_ and *hyper*link references.
+This language is the skeleton of every single web page created since 1991 and is widely considered a necessary language to learn in the modern software development scene.
+Even if you don't want web dev to be your career, the markup structure can useful in other formats like XML, LaTeX, and SVG.
+Some game dev software like Tiled export in markup structure; TMX and TSX.

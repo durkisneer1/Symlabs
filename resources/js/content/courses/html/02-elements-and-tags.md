@@ -6,53 +6,26 @@ summary: The core vocabulary of HTML; tags, elements, attributes, and nesting.
 duration: TBA
 ---
 
-## HTML Describes Meaning
+## The HTML Structure
 
-HTML is the language browsers use to understand the structure and meaning of a web page.
+### The DOM
 
-It does not decide the visual design by itself. A paragraph, heading, link, and image all communicate what a piece of content is, then CSS can decide how that content looks.
+## Elements vs. Tags
 
-## Tags Create Elements
+### Element
 
-A tag is the markup written between angle brackets. Most elements use an opening tag, content, and a closing tag.
+### Tag
 
-The full element includes the tags and everything between them.
+## Nesting Elements
 
-```html
-<p>This is a paragraph element.</p>
-```
+## Element Relationships
 
-<Image id="element-anatomy" />
+### Grandparent
 
-<Activity id="make-markup-change-the-box" />
+### Parent
 
-## Attributes Add Detail
+### Child
 
-Attributes live inside an opening tag. They provide extra information about an element.
+### Grandchild
 
-For example, a link needs an href attribute so the browser knows where the link should go.
-
-```html
-<a href="/courses/html">Study HTML</a>
-```
-
-## Nesting Builds Structure
-
-HTML elements can contain other elements. This is called nesting.
-
-Good nesting makes the page easier for browsers, assistive technology, search engines, and future developers to understand.
-
-```html
-<article>
-  <h2>Course Update</h2>
-  <p>Chapter one is ready.</p>
-</article>
-```
-
-<Activity id="tiny-local-project" />
-
-<Activity id="tiny-layout-challenge" />
-
-<Activity id="qc-tags" />
-
-<Activity id="chapter-rehash" />
+### Sibling
