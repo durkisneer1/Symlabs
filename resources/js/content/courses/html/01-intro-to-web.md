@@ -15,7 +15,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ## How Web Data Travels
 
-When you visit a website, your browser does not shout "I WANT THE PAGE" into the sky and hope the clouds are feeling generous.
+When you visit a website, your browser does not shout "I WANT THE PAGE" into the internet and hope they actually get it.
 It sends a carefully formatted request, that request gets chopped into smaller pieces, those pieces travel across the internet, and the response comes back with enough instructions for your browser to rebuild the page.
 It's less like teleportation and more like mailing a LEGO set with numbered bags.
 
@@ -25,9 +25,9 @@ The first thing your browser needs to figure out is what it is actually asking f
 That job belongs to {HTTP|Hypertext Transfer Protocol}, the set of rules browsers and servers use to request and send web resources.
 When the resource is a _hypertext_ document, like {HTML|HyperText Markup Language}, it can include hyperlinks to other resources the user can easily access.
 
-Because this request may include client data traveling to-and-from servers, it REALLY needs to be secure.
+Because this request may include client data traveling between browsers and servers, it REALLY needs to be secure.
 This is the reason for {HTTPS|Hypertext Transfer Protocol Secure}, the modern approach where HTTP data is encrypted using a cryptographic protocol called {TLS|Transport Layer Security}.
-Only the client and source endpoint know how to decrypt HTTPS data, which keeps nosy middlemen from casually reading the mail.
+Only the client and server know how to decrypt HTTPS data, which keeps nosy middlemen from casually reading the mail.
 
 ### TCP vs UDP
 
@@ -37,14 +37,14 @@ TCP establishes a connection, tracks data, resends missing/corrupt data, and pre
 Think of ordering every page of a book; if page 12 is missing, you wait for page 12 before continuing.
 
 Not every app wants to wait for page 12.
-How come your Netflix movie might buffer, but your live multiplayer videogame still tries to show you the newest player position immediately?
-That's where {UDP|User Datagram Protocol} shows up with a skateboard and a concerning lack of clipboard.
+Like... how is it fair that your Netflix movie might buffer, but your live multiplayer video game still manages to show you the newest player position immediately?
+That's where {UDP|User Datagram Protocol} comes into play.
 
-As for UDP, think of a live sports radio announcer.
+For UDP, think of a live sports radio announcer.
 If one sentence cuts out, you don't ask them to repeat it because the next play is already happening.
-Data is sent unordered and not even ensured for delivery.
+Data is sent unordered and not even guaranteed to arrive.
 However, you often get _newer data quicker_!
-That's how videogames "cheat" fast connection; they care more about the freshest useful update than perfectly replaying old data.
+That's how video games "cheat" fast connection; they care more about the freshest useful update than perfectly replaying old data.
 
 ### IP Addresses
 
@@ -53,7 +53,7 @@ The internet must follow a specified set of rules to route data to and from devi
 This set of rules is referred to as {IP|Internet Protocol}.
 It defines the address format, provides forwarding instructions, and helps packets find their next stop.
 
-Every device with a network interface has at least one IP address, which analogically serves as the mailing address of the internet's postal service.
+Every device with a network interface has at least one IP address, which works like a mailing address for the internet's postal service.
 IP addresses can be private, temporary, or shared across devices through {NAT|Network Address Translation}, like a router or firewall.
 
 ### IPv4 and IPv6
@@ -69,14 +69,12 @@ To put that in perspective, the largest 128-bit integer is **79 octillion times 
 
 Finally, packets need something physical to travel across.
 Wi-Fi, Ethernet, cellular networks, and fiber optic cables are different ways to move the actual signals from one device to another.
-A single webpage request might start over Wi-Fi, leave your house through a cable, travel across fiber, hop between routers, and eventually reach a server that has absolutely no idea you are wearing pajama pants.
+A single webpage request might start over Wi-Fi, leave your house through a cable, travel across fiber, hop between routers, and eventually reach a server that could be in your same city or across the Pacific Ocean.
 
-The funny part is that each piece only worries about its own job.
-HTTP cares about the request.
-TCP or UDP cares about the delivery behavior.
-IP cares about where the packets should go.
+In the end, each piece only worries about its own job, HTTP cares about the request, TCP or UDP cares about the delivery behavior, and IP cares about where the packets should go.
 Network hardware cares about turning all of that into signals that can actually move.
-Put them together, and your browser gets to pretend the internet is one clean, magical thing.
+
+Put them together, and your browser gets to pretend the internet is one clean, magical entity.
 
 ## Domain Names
 
