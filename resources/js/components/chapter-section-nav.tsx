@@ -51,7 +51,7 @@ export default function ChapterSectionNav({
   };
 
   return (
-    <Card className="sticky top-4 bg-card shadow-[0_14px_34px_rgb(0_0_0/0.08)]">
+    <Card className="sticky top-20 bg-card shadow-[0_14px_34px_rgb(0_0_0/0.08)]">
       <CardHeader>
         <CardTitle>In This Chapter</CardTitle>
       </CardHeader>

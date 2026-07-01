@@ -35,7 +35,7 @@ export default function CourseContentBlockRenderer({
 
   if (block.type === 'activity') {
     return (
-      <section id={id} className="scroll-mt-6">
+      <section id={id} className="scroll-mt-24">
         <CourseActivityBlock
           activity={block.activity}
           onComplete={onActivityComplete}
@@ -51,7 +51,7 @@ export default function CourseContentBlockRenderer({
         : block.src;
 
     return (
-      <figure id={id} className="scroll-mt-6">
+      <figure id={id} className="scroll-mt-24">
         <img
           src={imageSrc}
           alt={block.alt}
@@ -68,7 +68,7 @@ export default function CourseContentBlockRenderer({
   }
 
   return (
-    <section id={id} className="scroll-mt-6 space-y-3">
+    <section id={id} className="scroll-mt-24 space-y-3">
       <h2 className="text-xl font-semibold tracking-tight">{block.title}</h2>
       {block.markdown ? (
         <ReactMarkdown
@@ -134,7 +134,7 @@ function markdownComponents(
     h3: ({ children }) => (
       <h3
         id={subheadings[subheadingIndex++]?.id}
-        className="scroll-mt-6 pt-2 text-lg font-semibold tracking-tight"
+        className="scroll-mt-24 pt-2 text-lg font-semibold tracking-tight"
       >
         {renderDefinitionSyntax(children)}
       </h3>
@@ -142,7 +142,7 @@ function markdownComponents(
     h4: ({ children }) => (
       <h4
         id={subheadings[subheadingIndex++]?.id}
-        className="scroll-mt-6 pt-2 font-semibold tracking-tight"
+        className="scroll-mt-24 pt-2 font-semibold tracking-tight"
       >
         {renderDefinitionSyntax(children)}
       </h4>
