@@ -1,6 +1,10 @@
+import { useEffect } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
-import ChapterSectionNav, { sectionId } from '@/components/chapter-section-nav';
+import ChapterSectionNav, {
+  scrollToChapterAnchor,
+  sectionId,
+} from '@/components/chapter-section-nav';
 import CourseContentBlockRenderer from '@/components/course-content-block';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,6 +29,18 @@ export default function PhpChapter({ chapterSlug }: Props) {
       Boolean(currentTeam) &&
       currentTeam?.semesterActive !== false,
   });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      scrollToChapterAnchor();
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [chapter.slug]);
 
   return (
     <>

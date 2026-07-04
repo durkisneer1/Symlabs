@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
+import { sectionId } from '@/components/chapter-section-nav';
 import CodeBlock from '@/components/code-block';
 import CourseActivityBlock from '@/components/course-activity';
 import InlineCodeText from '@/components/inline-code-text';
@@ -68,8 +69,10 @@ export default function CourseContentBlockRenderer({
   }
 
   return (
-    <section id={id} className="scroll-mt-24 space-y-3">
-      <h2 className="text-xl font-semibold tracking-tight">{block.title}</h2>
+    <section id={id} className="scroll-mt-24 space-y-4">
+      <h2 className="border-l-4 border-[var(--page-accent,var(--accent-cyan))] pl-3 text-2xl font-semibold">
+        {block.title}
+      </h2>
       {block.markdown ? (
         <ReactMarkdown
           components={markdownComponents(
@@ -81,7 +84,7 @@ export default function CourseContentBlockRenderer({
         </ReactMarkdown>
       ) : null}
       {block.body?.map((paragraph) => (
-        <p key={paragraph} className="leading-7 text-muted-foreground">
+        <p key={paragraph} className="leading-7 text-foreground/80">
           <InlineCodeText text={paragraph} />
         </p>
       ))}
@@ -103,8 +106,6 @@ function markdownComponents(
   defaultCodeLanguage: 'css' | 'html' | 'php',
   subheadings: CourseSubheading[] = [],
 ): Components {
-  let subheadingIndex = 0;
-
   return {
     a: ({ children, href, rel, target, title }) => (
       <a
@@ -133,22 +134,22 @@ function markdownComponents(
     },
     h3: ({ children }) => (
       <h3
-        id={subheadings[subheadingIndex++]?.id}
-        className="scroll-mt-24 pt-2 text-lg font-semibold tracking-tight"
+        id={subheadingIdFor(children, 1, subheadings)}
+        className="scroll-mt-24 pt-4 text-base font-semibold text-foreground"
       >
         {renderDefinitionSyntax(children)}
       </h3>
     ),
     h4: ({ children }) => (
       <h4
-        id={subheadings[subheadingIndex++]?.id}
-        className="scroll-mt-24 pt-2 font-semibold tracking-tight"
+        id={subheadingIdFor(children, 2, subheadings)}
+        className="scroll-mt-24 pt-3 text-sm font-semibold text-foreground"
       >
         {renderDefinitionSyntax(children)}
       </h4>
     ),
     li: ({ children }) => (
-      <li className="pl-1 leading-7 text-muted-foreground">
+      <li className="pl-1 leading-7 text-foreground/80">
         {renderDefinitionSyntax(children)}
       </li>
     ),
@@ -156,7 +157,7 @@ function markdownComponents(
       <ol className="ml-5 list-decimal space-y-1">{children}</ol>
     ),
     p: ({ children }) => (
-      <p className="leading-7 text-muted-foreground">
+      <p className="leading-7 text-foreground/80">
         {renderDefinitionSyntax(children)}
       </p>
     ),
@@ -165,6 +166,38 @@ function markdownComponents(
       <ul className="ml-5 list-disc space-y-1">{children}</ul>
     ),
   };
+}
+
+function subheadingIdFor(
+  children: ReactNode,
+  depth: number,
+  subheadings: CourseSubheading[],
+) {
+  const title = plainText(children);
+  const subheading = subheadings.find(
+    (candidate) => candidate.depth === depth && candidate.title === title,
+  );
+
+  return subheading?.id ?? sectionId(title);
+}
+
+function plainText(children: ReactNode): string {
+  return Children.toArray(children)
+    .map((child) => {
+      if (typeof child === 'string' || typeof child === 'number') {
+        return String(child);
+      }
+
+      if (!isValidElement(child)) {
+        return '';
+      }
+
+      const element = child as ReactElement<{ children?: ReactNode }>;
+
+      return plainText(element.props.children);
+    })
+    .join('')
+    .trim();
 }
 
 function renderDefinitionSyntax(children: ReactNode): ReactNode {

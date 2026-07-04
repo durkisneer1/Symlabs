@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import ChapterSectionNav, { sectionId } from '@/components/chapter-section-nav';
+import ChapterSectionNav, {
+  scrollToChapterAnchor,
+  sectionId,
+} from '@/components/chapter-section-nav';
 import CourseContentBlockRenderer from '@/components/course-content-block';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -125,6 +128,18 @@ export default function HtmlChapter({ chapterSlug }: Props) {
 
     window.localStorage.setItem('symlabs:last-html-chapter', chapter.slug);
     document.cookie = `symlabs_last_html_chapter=${chapter.slug}; path=/; max-age=31536000; samesite=lax`;
+  }, [chapter.slug]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      scrollToChapterAnchor();
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, [chapter.slug]);
 
   return (

@@ -65,6 +65,22 @@ export default function ChapterSectionNav({
               <a
                 key={item.id}
                 href={`#${item.id}`}
+                onClick={(event) => {
+                  if (
+                    event.defaultPrevented ||
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.altKey ||
+                    event.ctrlKey ||
+                    event.shiftKey
+                  ) {
+                    return;
+                  }
+
+                  event.preventDefault();
+                  window.history.pushState(null, '', `#${item.id}`);
+                  scrollToChapterAnchor(`#${item.id}`);
+                }}
                 className="group flex items-center justify-between gap-2 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
                 style={{ paddingLeft: `${(item.depth ?? 0) * 16}px` }}
               >
@@ -112,4 +128,21 @@ export function sectionId(value: string) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+}
+
+export function scrollToChapterAnchor(hash = window.location.hash) {
+  const id = decodeURIComponent(hash.replace(/^#/, ''));
+
+  if (!id) {
+    return false;
+  }
+
+  const target = document.getElementById(id);
+
+  if (!target) {
+    return false;
+  }
+
+  target.scrollIntoView({ block: 'start' });
+  return true;
 }
