@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ListTree } from 'lucide-react';
 import ChapterSectionNav, {
   scrollToChapterAnchor,
   sectionId,
@@ -14,6 +14,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
 import { Separator } from '@/components/ui/separator';
 import { findHtmlChapter, htmlCourse } from '@/data/html-course';
 import type { Assignment } from '@/types';
@@ -53,6 +61,7 @@ export default function HtmlChapter({ chapterSlug }: Props) {
         ? new Set(completableActivities)
         : new Set(),
   );
+  const [chapterNavOpen, setChapterNavOpen] = useState(false);
   const submittedCompletion = useRef(
     assignedChapterReading?.status === 'completed',
   );
@@ -146,7 +155,7 @@ export default function HtmlChapter({ chapterSlug }: Props) {
     <>
       <Head title={`${chapter.title} | HTML`} />
 
-      <main className="html-metro-page toy-orange mx-auto grid w-full max-w-3xl gap-8 px-0 py-8 sm:px-4 lg:max-w-6xl lg:grid-cols-[minmax(0,1fr)_280px] lg:py-10">
+      <main className="html-metro-page toy-orange mx-auto grid w-full max-w-3xl gap-8 px-0 py-8 sm:px-4 lg:py-10">
         <article className="min-w-0 space-y-8">
           <div className="space-y-4">
             <Button asChild variant="ghost" size="sm">
@@ -215,11 +224,33 @@ export default function HtmlChapter({ chapterSlug }: Props) {
             ) : null}
           </nav>
         </article>
-
-        <aside className="hidden lg:block">
-          <ChapterSectionNav items={navItems} progress={chapterProgress} />
-        </aside>
       </main>
+
+      <Drawer open={chapterNavOpen} onOpenChange={setChapterNavOpen}>
+        <DrawerTrigger asChild>
+          <Button
+            className="fixed top-28 right-3 z-40 shadow-lg"
+            size="sm"
+            variant="outline"
+          >
+            <ListTree className="size-4" aria-hidden="true" />
+            Contents
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent className="toy-orange">
+          <DrawerHeader className="sr-only">
+            <DrawerTitle>Chapter contents</DrawerTitle>
+            <DrawerDescription>
+              Links to sections, images, and activities in this chapter.
+            </DrawerDescription>
+          </DrawerHeader>
+          <ChapterSectionNav
+            items={navItems}
+            onNavigate={() => setChapterNavOpen(false)}
+            progress={chapterProgress}
+          />
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }
@@ -228,7 +259,7 @@ function navItemsFor(block: CourseContentBlock) {
   const item = {
     id: blockId(block),
     title: blockTitle(block),
-    depth: block.type === 'activity' || block.type === 'image' ? 1 : 0,
+    depth: blockDepth(block),
     kind: block.type,
   };
 
@@ -245,6 +276,14 @@ function navItemsFor(block: CourseContentBlock) {
       kind: 'section' as const,
     })),
   ];
+}
+
+function blockDepth(block: CourseContentBlock) {
+  if (block.type === 'activity') {
+    return block.activity.type === 'recap' ? 0 : 1;
+  }
+
+  return block.type === 'image' ? 1 : 0;
 }
 
 function blockId(block: CourseContentBlock) {

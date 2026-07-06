@@ -68,7 +68,10 @@ function parseFrontmatter(source: string) {
 
   return {
     frontmatter: requireFrontmatter(frontmatter),
-    markdown: lines.slice(closingIndex + 1).join('\n').trim(),
+    markdown: lines
+      .slice(closingIndex + 1)
+      .join('\n')
+      .trim(),
   };
 }
 
@@ -101,6 +104,7 @@ function parseContent(
   const usedIds = new Map<string, number>();
   let section: SectionDraft | null = null;
   let inCodeFence = false;
+  let quickCheckLines: string[] | null = null;
 
   const flushSection = () => {
     const sectionMarkdown = trimBlankLines(section?.markdownLines ?? []).join(
@@ -122,7 +126,37 @@ function parseContent(
     section = null;
   };
 
+  const pushQuickCheck = (source: string) => {
+    const quickCheckMatch = source.match(/^<QuickCheck\s+([\s\S]+?)\s*\/>$/);
+
+    if (!quickCheckMatch) {
+      throw new Error('QuickCheck must be a self-closing element.');
+    }
+
+    const activity = quickCheckFromAttributes(
+      parsePlaceholderAttributes(quickCheckMatch[1]),
+    );
+
+    blocks.push({
+      type: 'activity',
+      id: uniqueId(activity.title, usedIds),
+      activity,
+    });
+  };
+
   for (const line of markdown.replace(/\r\n/g, '\n').split('\n')) {
+    if (quickCheckLines) {
+      quickCheckLines.push(line);
+
+      if (line.match(/\/>\s*$/)) {
+        flushSection();
+        pushQuickCheck(quickCheckLines.join('\n'));
+        quickCheckLines = null;
+      }
+
+      continue;
+    }
+
     if (line.match(/^```/)) {
       section ??= { title: 'Example', markdownLines: [] };
       section.markdownLines.push(line);
@@ -159,6 +193,21 @@ function parseContent(
       continue;
     }
 
+    const quickCheckMatch = inCodeFence
+      ? null
+      : line.match(/^<QuickCheck\s+([\s\S]+?)\s*\/>$/);
+
+    if (quickCheckMatch) {
+      flushSection();
+      pushQuickCheck(line);
+      continue;
+    }
+
+    if (!inCodeFence && line.match(/^<QuickCheck\b/)) {
+      quickCheckLines = [line];
+      continue;
+    }
+
     const imageMatch = inCodeFence
       ? null
       : line.match(/^<Image\s+id=["']([^"']+)["']\s*\/>$/);
@@ -188,6 +237,10 @@ function parseContent(
     throw new Error('Course chapter markdown has an unclosed code fence.');
   }
 
+  if (quickCheckLines) {
+    throw new Error('Course chapter markdown has an unclosed QuickCheck.');
+  }
+
   flushSection();
 
   return blocks;
@@ -204,6 +257,63 @@ function uniqueId(value: string, usedIds: Map<string, number>) {
 
 function stripQuotes(value: string) {
   return value.replace(/^['"]|['"]$/g, '');
+}
+
+function parsePlaceholderAttributes(source: string) {
+  const attributes: Record<string, string> = {};
+
+  for (const match of source.matchAll(/([a-zA-Z][\w-]*)=(["'])([\s\S]*?)\2/g)) {
+    attributes[match[1]] = match[3];
+  }
+
+  return attributes;
+}
+
+function quickCheckFromAttributes(attributes: Record<string, string>) {
+  const title = quickCheckTitle(
+    requireAttribute(attributes, 'title', 'QuickCheck'),
+  );
+  const prompt = requireAttribute(attributes, 'prompt', 'QuickCheck');
+  const explanation = requireAttribute(attributes, 'explanation', 'QuickCheck');
+  const choices = requireAttribute(attributes, 'choices', 'QuickCheck')
+    .split('|')
+    .map((choice) => choice.trim())
+    .filter(Boolean);
+
+  if (choices.length < 2) {
+    throw new Error(
+      `QuickCheck "${title}" must include at least two pipe-separated choices.`,
+    );
+  }
+
+  return {
+    type: 'quick-check' as const,
+    title,
+    prompt,
+    choices,
+    answer: choices[0],
+    explanation,
+  };
+}
+
+function quickCheckTitle(title: string) {
+  const label = title.replace(/^Quick Check:\s*/i, '').trim();
+
+  return `Quick Check: ${label}`;
+}
+
+function requireAttribute(
+  attributes: Record<string, string>,
+  name: string,
+  element: string,
+) {
+  const value = attributes[name]?.trim();
+
+  if (!value) {
+    throw new Error(`${element} is missing "${name}".`);
+  }
+
+  return value;
 }
 
 function collectSubheadings(markdown: string, usedIds: Map<string, number>) {

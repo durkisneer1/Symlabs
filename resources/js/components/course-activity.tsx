@@ -31,6 +31,21 @@ export default function CourseActivityBlock({
   activity: CourseActivity;
   onComplete?: () => void;
 }) {
+  if (activity.type === 'recap') {
+    return (
+      <div className="space-y-6 pt-4">
+        <div className="flex items-center gap-3" aria-hidden="true">
+          <div className="h-px flex-1 bg-border" />
+          <div className="h-1.5 w-1.5 rounded-full bg-[var(--page-accent,var(--accent-cyan))]" />
+          <div className="h-px flex-1 bg-border" />
+        </div>
+        <div className="activity-card">
+          <Recap activity={activity} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="activity-card">
       {activity.type === 'quick-check' ? (
@@ -44,7 +59,6 @@ export default function CourseActivityBlock({
       {activity.type === 'html-playground' ? (
         <HtmlPlayground activity={activity} onComplete={onComplete} />
       ) : null}
-      {activity.type === 'recap' ? <Recap activity={activity} /> : null}
     </div>
   );
 }
@@ -57,6 +71,12 @@ function QuickCheck({
   onComplete?: () => void;
 }) {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [shuffledChoices, setShuffledChoices] = useState(activity.choices);
+
+  useEffect(() => {
+    setShuffledChoices(shuffleChoices(activity.choices));
+    setSelectedAnswer(null);
+  }, [activity.choices, activity.prompt]);
 
   return (
     <Card>
@@ -68,7 +88,7 @@ function QuickCheck({
       </CardHeader>
       <CardContent className="space-y-3">
         <div className="grid gap-2 sm:grid-cols-2">
-          {activity.choices.map((choice) => {
+          {shuffledChoices.map((choice) => {
             const isSelected = selectedAnswer === choice;
             const isCorrect = choice === activity.answer;
 
@@ -77,7 +97,7 @@ function QuickCheck({
                 key={choice}
                 type="button"
                 variant={isSelected ? 'secondary' : 'outline'}
-                className="justify-start"
+                className="h-full min-h-11 justify-start py-2 text-left leading-snug whitespace-normal"
                 onClick={() => {
                   setSelectedAnswer(choice);
                   if (isCorrect) {
@@ -104,6 +124,20 @@ function QuickCheck({
       </CardContent>
     </Card>
   );
+}
+
+function shuffleChoices(choices: string[]) {
+  const shuffled = [...choices];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    const currentChoice = shuffled[index];
+
+    shuffled[index] = shuffled[randomIndex];
+    shuffled[randomIndex] = currentChoice;
+  }
+
+  return shuffled;
 }
 
 function FileTree({ activity }: { activity: FileTreeActivity }) {

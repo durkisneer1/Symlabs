@@ -3,19 +3,31 @@ number: 1
 slug: intro-to-web
 title: Introduction to Web Dev
 summary: A quick tour of the web, URLs, domains, and how browsers reach pages.
-duration: TBA
+duration: 10 mins
 ---
 
 ## History of the Internet
 
-- Tim Burners-Lee
-- Pre-{URL|Uniform Resource Locator} Addresses ({UUCP|Unix-to-Unix Copy}, CompuServe, Gopher)
+Before the web looked like the neat browser tabs we use today, the internet was more like a collection of separate neighborhoods.
+Different systems had different ways to find information, and they did not always speak the same language.
+Some people reached files through {UUCP|Unix-to-Unix Copy}, browsed menus with Gopher, or used online services like CompuServe.
+These were useful, but they each felt like buildings with their own front door, map, and set of instructions.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+In 1989, **Tim Berners-Lee** proposed a friendlier way to connect documents together while working at CERN.
+At the time, CERN had scientists from all over the world working on different computers, projects, and documents.
+The original idea was not "let's invent social media and online shopping," but more like, "what if researchers could share and connect information without needing to know exactly where every document lived?"
+That practical little idea eventually grew into the World Wide Web, a system of linked documents and resources accessed through the internet.
+
+<QuickCheck
+  title="Internet History"
+  prompt="What was Tim Berners-Lee originally trying to make easier?"
+  choices="Sharing and connecting documents between researchers|Designing video game graphics|Making every computer use the same password|Replacing scientists with search engines"
+  explanation="At CERN, the early web idea was about helping researchers connect information across different computers, projects, and documents."
+/>
 
 ## How Web Data Travels
 
-When you visit a website, your browser does not shout "I WANT THE PAGE" into the internet and hope they actually get it.
+When you visit a website, of course your browser doesn't just pray to the ancient internet gods for a page and hope it actually gets one.
 It sends a carefully formatted request, that request gets chopped into smaller pieces, those pieces travel across the internet, and the response comes back with enough instructions for your browser to rebuild the page.
 It's less like teleportation and more like mailing a LEGO set with numbered bags.
 
@@ -32,7 +44,7 @@ Only the client and server know how to decrypt HTTPS data, which keeps nosy midd
 ### TCP vs UDP
 
 After the browser knows what it wants to ask for, the next question is how carefully the data should be delivered.
-For most webpages, the answer is {TCP|Transmission Control Protocol}, which acts like a very fussy librarian.
+For most webpages, the answer is {TCP|Transmission Control Protocol}, which acts like a very strict librarian.
 TCP establishes a connection, tracks data, resends missing/corrupt data, and presents data to the receiver _in order_.
 Think of ordering every page of a book; if page 12 is missing, you wait for page 12 before continuing.
 
@@ -76,17 +88,52 @@ Network hardware cares about turning all of that into signals that can actually 
 
 Put them together, and your browser gets to pretend the internet is one clean, magical entity.
 
+<QuickCheck
+  title="Web Data"
+  prompt="What does IP help with when data travels across the internet?"
+  choices="Finding where packets should go next|Choosing the color of a website|Writing HTML automatically|Making every request private by itself"
+  explanation="IP stands for Internet Protocol. It helps data packets move toward the right destination, kind of like addressing and routing mail."
+/>
+
 ## Domain Names
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+A domain name is the human-friendly name of a website, like `symlabs.net`, `wikipedia.org`, or `youtube.com`.
+Computers are very comfortable using IP addresses, but humans are usually not thrilled about memorizing strings of numbers just to visit a page.
+Domain names exist so we can use readable names instead.
+
+Think of a domain name like the name of a store.
+The actual building still has a physical address, but most people would rather say "the bakery on Main Street" than recite its exact coordinates.
+On the web, the domain name gives people something easy to remember, type, share, and recognize.
 
 ### Top-Level Domains
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+A {TLD|Top-Level Domain} is the ending of a domain name, for example:
 
-### The Domain Name System (DNS)
+- `.net` in `symlabs.net`
+- `.org` in `wikipedia.org`
+- `.com` in `google.com`
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+Some TLDs started with specific meanings.
+For example, `.com` was commonly used for commercial sites, `.org` for organizations, and `.edu` for educational institutions.
+There are also country-code TLDs like `.uk`, `.ca`, and `.jp`.
+Today, many TLDs are more flexible than their original categories, but they still help organize domain names and give visitors a small hint about the site.
+
+### The Domain Name System
+
+The {DNS|Domain Name System} is the system that connects domain names to the addresses computers actually use.
+When you type a domain name into your browser, DNS helps find the matching IP address for the server that hosts the website.
+It is often compared to a phonebook, but for the internet: you provide a name, and DNS helps look up where that name points.
+
+In advanced cases, DNS can also help connect a domain to other services.
+For example, a site owner might use DNS records to prove they own a domain in Google Search Console, point the domain toward a web host, set up professional email, or connect search tools like Algolia.
+You do not need to memorize all of those record types yet, but it helps to know that DNS is one of the main places where a domain gets connected to the rest of a website's tools.
+
+<QuickCheck
+  title="Domains"
+  prompt="Why do domain names exist?"
+  choices="They give humans readable names instead of only IP addresses|They remove the need for servers|They are the same thing as passwords|They make websites load without the internet"
+  explanation="Computers can work with IP addresses, but domain names are easier for people to remember, type, share, and recognize."
+/>
 
 ## URLs
 
@@ -97,16 +144,32 @@ You've seen URLs before, like at the top of your browser pages or sharing webpag
 For example, this page you're currently on has the URL: _https://symlabs.net/courses/html/intro-to-web_.
 
 So, then what's the "Uniform" part of URL mean?
-As mentioned in [History of the Internet](#history-of-the-internet), there were many ways to get somewhere on the internet, and Tim Burners-Lee wasn't having it.
+As mentioned in [History of the Internet](#history-of-the-internet), there were many ways to get somewhere on the internet, and Tim Berners-Lee wasn't having it.
 Upon the creation of the web came the URL along with it; a standard and consistent format for linking documents within the World Wide Web.
 
 A URL is formatted as follows:
 
 <Image id="url-anatomy" />
 
+<QuickCheck
+  title="URLs"
+  prompt="What is a URL used for?"
+  choices="Locating and retrieving a specific resource|Turning Wi-Fi into fiber optic cable|Encrypting every file on your computer|Naming a programming language"
+  explanation="A URL is a Uniform Resource Locator. It gives the browser a structured address for something it can request, like a webpage or image."
+/>
+
 ## What is HTML?
 
 {HTML|HyperText Markup Language} is a _markup_ programming _language_ that is composed of _text_ and *hyper*link references.
 This language is the skeleton of every single web page created since 1991 and is widely considered a necessary language to learn in the modern software development scene.
-Even if you don't want web dev to be your career, the markup structure can useful in other formats like {XML|Extensible Markup Language}, LaTeX, and {SVG|Scalable Vector Graphics}.
-Some game dev software like Tiled export in markup structure; {TMX|Tiled Map XML} and {TSX|Tiled Tileset XML}.
+Even if you don't want web dev to be your career, the markup structure can be useful in other formats like {XML|Extensible Markup Language}, LaTeX, and {SVG|Scalable Vector Graphics}.
+Some game dev software like Tiled export in markup structure: {TMX|Tiled Map XML} and {TSX|Tiled Tileset XML}.
+
+<QuickCheck
+  title="HTML"
+  prompt="What is HTML mainly used for?"
+  choices="Structuring the content of webpages|Sending physical cables across the ocean|Registering domain names|Replacing every image with plain text"
+  explanation="HTML is the markup language browsers use to understand the structure and content of a webpage."
+/>
+
+<Activity id="intro-to-web-recap" />

@@ -19,6 +19,9 @@ duration: 30 min
 Use `##` headings for sections. Paragraphs become lesson text, fenced code
 blocks become examples, and activity/media placeholders bind to typed
 definitions in `resources/js/data/html-activities.ts`.
+Small quick checks can be written directly in the chapter with `<QuickCheck />`;
+put the correct answer first in `choices`, and it will be shuffled when shown.
+`Quick Check:` is automatically added to the title.
 
 ````md
 ## Section Title
@@ -31,7 +34,14 @@ Write the lesson prose here. Inline code like `href` is supported. Use
 <p>Example markup</p>
 ```
 
-<Activity id="qc-tags" />
+<QuickCheck
+  title="Tags"
+  prompt="In `<p>Hello</p>`, what is `Hello`?"
+  choices="Text content|A tag|An attribute|A file path"
+  explanation="The `<p>` and `</p>` pieces are tags. The word between them is the text content of the paragraph element."
+/>
+
+<Activity id="chapter-recap" />
 
 <Image id="element-anatomy" />
 ````

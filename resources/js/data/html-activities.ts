@@ -2,82 +2,29 @@ import type { CourseActivity } from '@/types/course-activities';
 import type { CourseImageBlock } from '@/types/course-content';
 
 export const htmlActivities = {
-  'make-markup-change-the-box': {
-    type: 'html-playground',
-    title: 'Make Markup Change The Box',
-    prompt:
-      'Edit the line so the preview has a paragraph with emphasized text inside it.',
-    starter: '<p>Hello HTML</p>',
-    answerIncludes: ['<p>', '<em>', '</em>'],
-    success:
-      'Nice. The browser parsed your markup and changed the preview structure.',
-  },
-  'tiny-local-project': {
-    type: 'file-tree',
-    title: 'A Tiny Local Project',
-    description:
-      'Even a simple HTML project has a shape. The browser opens the HTML file, and the HTML can point to nearby assets.',
-    root: {
-      name: 'my-first-site',
-      kind: 'folder',
-      children: [
-        {
-          name: 'index.html',
-          kind: 'file',
-          note: 'the page the browser opens first',
-        },
-        {
-          name: 'images',
-          kind: 'folder',
-          children: [
-            {
-              name: 'logo.png',
-              kind: 'file',
-              note: 'referenced by an <img> tag',
-            },
-          ],
-        },
-      ],
-    },
-  },
-  'tiny-layout-challenge': {
-    type: 'css-playground',
-    title: 'Tiny Layout Challenge',
-    prompt:
-      'Write one declaration to center the three bubbles horizontally inside the preview box.',
-    starter: 'justify-content: ;',
-    allowedProperties: ['justify-content', 'align-items', 'gap'],
-    target: 'justify-content:center',
-    success:
-      'That is the Flexbox Froggy idea in miniature: code changes the layout immediately.',
-  },
-  'qc-tags': {
-    type: 'quick-check',
-    title: 'Quick Check',
-    prompt: 'In `<p>Hello</p>`, what is `Hello`?',
-    choices: ['A tag', 'Text content', 'An attribute', 'A file path'],
-    answer: 'Text content',
-    explanation:
-      'The `<p>` and `</p>` pieces are tags. The word between them is the text content of the paragraph element.',
-  },
-  'chapter-rehash': {
+  'intro-to-web-recap': {
     type: 'recap',
-    title: 'Chapter Rehash',
+    title: 'Intro To Web Recap',
     items: [
       {
-        question: 'What is a tag?',
+        question: 'Why was the URL such a useful idea?',
         answer:
-          'A tag is the markup between angle brackets, like `<p>` or `</p>`.',
+          'It gave the web one consistent format for pointing to resources, even though older internet systems used different ways to find things.',
       },
       {
-        question: 'What is an element?',
+        question: 'What are HTTP, TCP or UDP, IP, and network hardware each doing?',
         answer:
-          'An element is the complete structure: opening tag, content, and usually a closing tag.',
+          'HTTP describes the request, TCP or UDP describes the delivery behavior, IP helps route packets, and network hardware moves the actual signals.',
       },
       {
-        question: 'What do attributes do?',
+        question: 'How are domain names, DNS, and IP addresses connected?',
         answer:
-          'Attributes add details inside the opening tag, like `href` on an `<a>` element.',
+          'A domain name is the readable name, DNS looks up where that name points, and an IP address is the kind of address computers use to contact the destination.',
+      },
+      {
+        question: 'What is HTML?',
+        answer:
+          'HTML is the markup language used to structure webpage content, including text and links to other resources.',
       },
     ],
   },
