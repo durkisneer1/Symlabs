@@ -18,6 +18,7 @@ import {
 import { useAppearance } from '@/hooks/use-appearance';
 import type {
   CourseContentBlock,
+  CourseImageBlock,
   CourseSubheading,
 } from '@/types/course-content';
 
@@ -78,6 +79,8 @@ export default function CourseContentBlockRenderer({
           components={markdownComponents(
             codeLanguage,
             block.type === 'section' ? block.subheadings : undefined,
+            block.type === 'section' ? block.images : undefined,
+            resolvedAppearance,
           )}
         >
           {block.markdown}
@@ -105,6 +108,8 @@ export default function CourseContentBlockRenderer({
 function markdownComponents(
   defaultCodeLanguage: 'css' | 'html' | 'php',
   subheadings: CourseSubheading[] = [],
+  images: Record<string, CourseImageBlock> = {},
+  appearance: 'dark' | 'light' = 'light',
 ): Components {
   return {
     a: ({ children, href, rel, target, title }) => (
@@ -153,6 +158,25 @@ function markdownComponents(
         {renderDefinitionSyntax(children)}
       </li>
     ),
+    img: ({ alt, src }) => {
+      const imageId = String(src ?? '').match(
+        /^\/__course-image__\/([^/?#]+)$/,
+      )?.[1];
+      const image = imageId ? images[imageId] : null;
+
+      if (!image) {
+        return (
+          <img
+            src={src ?? ''}
+            alt={alt ?? ''}
+            className="max-h-115 w-full object-contain"
+            loading="lazy"
+          />
+        );
+      }
+
+      return <MarkdownImage image={image} appearance={appearance} />;
+    },
     ol: ({ children }) => (
       <ol className="ml-5 list-decimal space-y-1">{children}</ol>
     ),
@@ -166,6 +190,33 @@ function markdownComponents(
       <ul className="ml-5 list-disc space-y-1">{children}</ul>
     ),
   };
+}
+
+function MarkdownImage({
+  appearance,
+  image,
+}: {
+  appearance: 'dark' | 'light';
+  image: CourseImageBlock;
+}) {
+  const imageSrc =
+    appearance === 'dark' && image.darkSrc ? image.darkSrc : image.src;
+
+  return (
+    <span className="my-4 block">
+      <img
+        src={imageSrc}
+        alt={image.alt}
+        className="max-h-115 w-full object-contain"
+        loading="lazy"
+      />
+      {image.caption ? (
+        <span className="mt-3 block text-sm text-muted-foreground">
+          {image.caption}
+        </span>
+      ) : null}
+    </span>
+  );
 }
 
 function subheadingIdFor(

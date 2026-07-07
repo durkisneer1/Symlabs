@@ -18,6 +18,7 @@ type ParseChapterOptions = {
 type ChapterFrontmatter = Omit<CourseChapter, 'content'>;
 
 type SectionDraft = {
+  images: Record<string, CourseImageBlock>;
   title: string;
   markdownLines: string[];
 };
@@ -120,6 +121,8 @@ function parseContent(
       type: 'section',
       id: uniqueId(section.title, usedIds),
       title: section.title,
+      images:
+        Object.keys(section.images).length > 0 ? section.images : undefined,
       subheadings: collectSubheadings(sectionMarkdown, usedIds),
       markdown: sectionMarkdown,
     });
@@ -158,7 +161,7 @@ function parseContent(
     }
 
     if (line.match(/^```/)) {
-      section ??= { title: 'Example', markdownLines: [] };
+      section ??= { images: {}, title: 'Example', markdownLines: [] };
       section.markdownLines.push(line);
       inCodeFence = !inCodeFence;
       continue;
@@ -168,7 +171,11 @@ function parseContent(
 
     if (headingMatch) {
       flushSection();
-      section = { title: headingMatch[1].trim(), markdownLines: [] };
+      section = {
+        images: {},
+        title: headingMatch[1].trim(),
+        markdownLines: [],
+      };
       continue;
     }
 
@@ -213,7 +220,6 @@ function parseContent(
       : line.match(/^<Image\s+id=["']([^"']+)["']\s*\/>$/);
 
     if (imageMatch) {
-      flushSection();
       const imageId = imageMatch[1];
       const image = images[imageId];
 
@@ -221,6 +227,19 @@ function parseContent(
         throw new Error(`Unknown course image "${imageId}".`);
       }
 
+      if (section) {
+        section.images[imageId] = {
+          type: 'image',
+          id: imageId,
+          ...image,
+        };
+        section.markdownLines.push(
+          `![${image.alt}](/__course-image__/${imageId})`,
+        );
+        continue;
+      }
+
+      flushSection();
       blocks.push({
         type: 'image',
         id: uniqueId(image.title, usedIds),
@@ -229,7 +248,7 @@ function parseContent(
       continue;
     }
 
-    section ??= { title: 'Overview', markdownLines: [] };
+    section ??= { images: {}, title: 'Overview', markdownLines: [] };
     section.markdownLines.push(line);
   }
 
