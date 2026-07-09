@@ -256,6 +256,15 @@ export default function HtmlChapter({ chapterSlug }: Props) {
 }
 
 function navItemsFor(block: CourseContentBlock) {
+  if (block.type === 'section' && block.showTitle === false) {
+    return (block.subheadings ?? []).map((subheading) => ({
+      id: subheading.id,
+      title: subheading.title,
+      depth: subheading.depth,
+      kind: 'section' as const,
+    }));
+  }
+
   const item = {
     id: blockId(block),
     title: blockTitle(block),

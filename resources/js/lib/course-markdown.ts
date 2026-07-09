@@ -19,6 +19,7 @@ type ChapterFrontmatter = Omit<CourseChapter, 'content'>;
 
 type SectionDraft = {
   images: Record<string, CourseImageBlock>;
+  showTitle: boolean;
   title: string;
   markdownLines: string[];
 };
@@ -104,8 +105,27 @@ function parseContent(
   const blocks: CourseContentBlock[] = [];
   const usedIds = new Map<string, number>();
   let section: SectionDraft | null = null;
+  let currentSectionTitle: string | null = null;
   let inCodeFence = false;
   let quickCheckLines: string[] | null = null;
+
+  const ensureSection = (fallbackTitle: string) => {
+    const nextSection = (section ??= currentSectionTitle
+      ? {
+          images: {},
+          showTitle: false,
+          title: currentSectionTitle,
+          markdownLines: [],
+        }
+      : {
+          images: {},
+          showTitle: true,
+          title: fallbackTitle,
+          markdownLines: [],
+        });
+
+    return nextSection;
+  };
 
   const flushSection = () => {
     const sectionMarkdown = trimBlankLines(section?.markdownLines ?? []).join(
@@ -123,6 +143,7 @@ function parseContent(
       title: section.title,
       images:
         Object.keys(section.images).length > 0 ? section.images : undefined,
+      showTitle: section.showTitle ? undefined : false,
       subheadings: collectSubheadings(sectionMarkdown, usedIds),
       markdown: sectionMarkdown,
     });
@@ -161,8 +182,7 @@ function parseContent(
     }
 
     if (line.match(/^```/)) {
-      section ??= { images: {}, title: 'Example', markdownLines: [] };
-      section.markdownLines.push(line);
+      ensureSection('Example').markdownLines.push(line);
       inCodeFence = !inCodeFence;
       continue;
     }
@@ -171,9 +191,11 @@ function parseContent(
 
     if (headingMatch) {
       flushSection();
+      currentSectionTitle = headingMatch[1].trim();
       section = {
         images: {},
-        title: headingMatch[1].trim(),
+        showTitle: true,
+        title: currentSectionTitle,
         markdownLines: [],
       };
       continue;
@@ -248,8 +270,7 @@ function parseContent(
       continue;
     }
 
-    section ??= { images: {}, title: 'Overview', markdownLines: [] };
-    section.markdownLines.push(line);
+    ensureSection('Overview').markdownLines.push(line);
   }
 
   if (inCodeFence) {

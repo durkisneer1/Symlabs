@@ -1,5 +1,5 @@
 ---
-number: 3
+number: 4
 slug: text-formatting-and-special-characters
 title: Text Formatting and Special Characters
 summary: Clean, meaningful text markup with emphasis, symbols, and reserved characters.

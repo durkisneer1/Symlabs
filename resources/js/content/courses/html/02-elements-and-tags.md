@@ -112,7 +112,7 @@ Some relationships that can be pointed out, that we haven't already, are:
 Probably the most common term in {frontend|The user-facing content of a website.} web dev is the {DOM|Document Object Model}.
 It might sound intimidating at first, but the good news is you just learned it!
 
-Within HTML documents, elements are **objects**, sometimes consisting of attributes (covered in chapter 4).
+Within HTML documents, elements are **objects**, sometimes consisting of attributes (covered later).
 The model is that nested/neighbored tree-like structure we've been talking about.
 
 <QuickCheck

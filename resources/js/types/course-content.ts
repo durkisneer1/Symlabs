@@ -18,6 +18,7 @@ export type CourseSectionBlock = {
   type: 'section';
   id?: string;
   title: string;
+  showTitle?: boolean;
   images?: Record<string, CourseImageBlock>;
   subheadings?: CourseSubheading[];
   markdown?: string;

@@ -47,4 +47,15 @@ Write the lesson prose here. Inline code like `href` is supported. Use
 ````
 
 Add new HTML activity IDs to `htmlActivities`, and add reusable HTML image IDs
-to `htmlImages`. CSS chapters use `cssActivities` and `cssImages`.
+to `htmlImages`. Use `darkSrc` when the image needs a dark-mode variant:
+
+```ts
+'blank-vscode-project': {
+  title: 'Blank VS Code Project',
+  src: '/images/courses/html/ch3/blank-vsc.png',
+  darkSrc: '/images/courses/html/ch3/blank-vsc-dark.png',
+  alt: 'A blank VS Code window with the project folder open.',
+}
+```
+
+CSS chapters use `cssActivities` and `cssImages`.

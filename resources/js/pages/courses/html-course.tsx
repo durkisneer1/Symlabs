@@ -11,7 +11,7 @@ const mapModules = [
   {
     title: 'Web Foundations',
     description: 'How pages are found, loaded, and written.',
-    slugs: ['intro-to-web', 'elements-and-tags'],
+    slugs: ['intro-to-web', 'elements-and-tags', 'your-first-html-doc'],
   },
   {
     title: 'Page Ingredients',

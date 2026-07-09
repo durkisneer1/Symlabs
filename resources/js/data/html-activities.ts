@@ -17,6 +17,24 @@ export const htmlActivities = {
     success:
       'Nice. You changed the nested element from italic formatting to bold formatting.',
   },
+  'first-local-html-project': {
+    type: 'file-tree',
+    title: 'First Local HTML Project',
+    description:
+      'A tiny local website can start with one project folder and one HTML file inside it.',
+    root: {
+      name: 'my-first-site',
+      kind: 'folder',
+      note: 'The project folder',
+      children: [
+        {
+          name: 'index.html',
+          kind: 'file',
+          note: 'The first page the browser opens',
+        },
+      ],
+    },
+  },
   'intro-to-web-recap': {
     type: 'recap',
     title: 'Intro To Web Recap',
@@ -79,6 +97,12 @@ export const htmlActivities = {
 } satisfies Record<string, CourseActivity>;
 
 export const htmlImages = {
+  'blank-vscode-project': {
+    title: 'Blank VS Code Project',
+    src: '/images/courses/html/ch3/blank-vsc.png',
+    darkSrc: '/images/courses/html/ch3/blank-vsc-dark.png',
+    alt: 'A blank VS Code window with the my-first-site project folder open.',
+  },
   'element-anatomy': {
     title: 'Element Anatomy',
     src: '/images/courses/html/element-anatomy.svg',

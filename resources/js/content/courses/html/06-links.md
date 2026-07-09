@@ -1,5 +1,5 @@
 ---
-number: 5
+number: 6
 slug: links
 title: Links
 summary: Page navigation, resource links, anchors, downloads, and link text that works.

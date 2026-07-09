@@ -57,7 +57,7 @@ export default function CourseContentBlockRenderer({
         <img
           src={imageSrc}
           alt={block.alt}
-          className="max-h-115 w-full object-contain"
+          className={courseImageClassName(imageSrc)}
           loading="lazy"
         />
         {block.caption ? (
@@ -71,9 +71,11 @@ export default function CourseContentBlockRenderer({
 
   return (
     <section id={id} className="scroll-mt-24 space-y-4">
-      <h2 className="border-l-4 border-[var(--page-accent,var(--accent-cyan))] pl-3 text-2xl font-semibold">
-        {block.title}
-      </h2>
+      {block.showTitle === false ? null : (
+        <h2 className="border-l-4 border-[var(--page-accent,var(--accent-cyan))] pl-3 text-2xl font-semibold">
+          {block.title}
+        </h2>
+      )}
       {block.markdown ? (
         <ReactMarkdown
           components={markdownComponents(
@@ -207,7 +209,7 @@ function MarkdownImage({
       <img
         src={imageSrc}
         alt={image.alt}
-        className="max-h-115 w-full object-contain"
+        className={courseImageClassName(imageSrc)}
         loading="lazy"
       />
       {image.caption ? (
@@ -217,6 +219,20 @@ function MarkdownImage({
       ) : null}
     </span>
   );
+}
+
+function courseImageClassName(src: string) {
+  const baseClassName = 'max-h-115 w-full object-contain';
+
+  if (isSvgImage(src)) {
+    return baseClassName;
+  }
+
+  return `${baseClassName} rounded-lg border border-border/70 bg-background shadow-md`;
+}
+
+function isSvgImage(src: string) {
+  return src.split(/[?#]/)[0].toLowerCase().endsWith('.svg');
 }
 
 function subheadingIdFor(
