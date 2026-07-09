@@ -2,7 +2,7 @@
 number: 2
 slug: elements-and-tags
 title: Elements and Tags
-summary: The core vocabulary of HTML; tags, elements, attributes, and nesting.
+summary: The core vocabulary of HTML; tags, elements, and nesting.
 duration: TBA
 ---
 

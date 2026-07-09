@@ -3,7 +3,7 @@ number: 1
 slug: intro-to-web
 title: Introduction to Web Dev
 summary: A quick tour of the web, URLs, domains, and how browsers reach pages.
-duration: 10 mins
+duration: TBA
 ---
 
 ## History of the Internet
@@ -27,13 +27,18 @@ That practical little idea eventually grew into the World Wide Web, a system of 
 
 ## How Web Data Travels
 
-When you visit a website, of course your browser doesn't just pray to the ancient internet gods for a page and hope it actually gets one.
+Let's follow one simple example: you type `https://symlabs.net/courses/html/intro-to-web` into your browser and press Enter.
+Your browser does not just pray to the ancient internet gods for a page and hope it actually gets one.
 It sends a carefully formatted request, that request gets chopped into smaller pieces, those pieces travel across the internet, and the response comes back with enough instructions for your browser to rebuild the page.
 It's less like teleportation and more like mailing a LEGO set with numbered bags.
 
-### HTTP/HTTPS
+You **do not** need to memorize every protocol name in this section.
+For now, the goal is to notice that loading a webpage is really a bunch of smaller jobs working together.
+
+### HTTP/HTTPS: Asking for the Page
 
 The first thing your browser needs to figure out is what it is actually asking for.
+In our example, it is asking for the intro web chapter from `symlabs.net`.
 That job belongs to {HTTP|Hypertext Transfer Protocol}, the set of rules browsers and servers use to request and send web resources.
 When the resource is a _hypertext_ document, like {HTML|HyperText Markup Language}, it can include hyperlinks to other resources the user can easily access.
 
@@ -41,15 +46,15 @@ Because this request may include client data traveling between browsers and serv
 This is the reason for {HTTPS|Hypertext Transfer Protocol Secure}, the modern approach where HTTP data is encrypted using a cryptographic protocol called {TLS|Transport Layer Security}.
 Only the client and server know how to decrypt HTTPS data, which keeps nosy middlemen from casually reading the mail.
 
-### TCP vs UDP
+### TCP vs UDP: Choosing a Delivery Style
 
 After the browser knows what it wants to ask for, the next question is how carefully the data should be delivered.
 For most webpages, the answer is {TCP|Transmission Control Protocol}, which acts like a very strict librarian.
 TCP establishes a connection, tracks data, resends missing/corrupt data, and presents data to the receiver _in order_.
 Think of ordering every page of a book; if page 12 is missing, you wait for page 12 before continuing.
 
-Not every app wants to wait for page 12.
-Like... how is it fair that your Netflix movie might buffer, but your live multiplayer video game still manages to show you the newest player position immediately?
+Though, not every situation calls for "waiting for page 12".
+How is it fair that your Netflix movie might buffer, but your live multiplayer video game still manages to show you the newest player position immediately?
 That's where {UDP|User Datagram Protocol} comes into play.
 
 For UDP, think of a live sports radio announcer.
@@ -58,17 +63,18 @@ Data is sent unordered and not even guaranteed to arrive.
 However, you often get _newer data quicker_!
 That's how video games "cheat" fast connection; they care more about the freshest useful update than perfectly replaying old data.
 
-### IP Addresses
+### IP Addresses: Finding the Destination
 
 Once the data has a delivery style, it still needs a destination.
 The internet must follow a specified set of rules to route data to and from devices across the planet.
 This set of rules is referred to as {IP|Internet Protocol}.
 It defines the address format, provides forwarding instructions, and helps packets find their next stop.
 
+In our example, your browser eventually needs to contact the machine that can serve `symlabs.net`.
 Every device with a network interface has at least one IP address, which works like a mailing address for the internet's postal service.
 IP addresses can be private, temporary, or shared across devices through {NAT|Network Address Translation}, like a router or firewall.
 
-### IPv4 and IPv6
+#### IPv4 and IPv6: Two Address Formats
 
 {IPv4|Internet Protocol version 4} is the oldest of the two, but still widely used.
 It is the most common home address format, utilizing a 32-bit address, and typically displayed as four numbers separated by periods, like `192.168.1.1` and `127.0.0.1`.
@@ -77,16 +83,18 @@ It is the most common home address format, utilizing a 32-bit address, and typic
 Instead of only 32 bits, this format uses 128 bits.
 To put that in perspective, the largest 128-bit integer is **79 octillion times larger** than the largest 32-bit integer!
 
-### Network Hardware
+### Network Hardware: Moving the Signals
 
 Finally, packets need something physical to travel across.
-Wi-Fi, Ethernet, cellular networks, and fiber optic cables are different ways to move the actual signals from one device to another.
-A single webpage request might start over Wi-Fi, leave your house through a cable, travel across fiber, hop between routers, and eventually reach a server that could be in your same city or across the Pacific Ocean.
+Wi-Fi, Ethernet, cellular networks, and fiber optic cables are some different ways to move the actual signals from one device to another.
+A single request for our intro web chapter might start over Wi-Fi, leave your house through a cable, travel across fiber, hop between routers, and eventually reach a server that could be in your same city or across the Pacific Ocean.
 
 In the end, each piece only worries about its own job, HTTP cares about the request, TCP or UDP cares about the delivery behavior, and IP cares about where the packets should go.
 Network hardware cares about turning all of that into signals that can actually move.
 
-Put them together, and your browser gets to pretend the internet is one clean, magical entity.
+Put them together, and your browser gets to pretend the internet is one clean, magical entity!
+
+Before we move on, I'd like to let you know that this "magical entity" you've just learned is called **TCP/IP**. It's a very much real framework for organizing the communication protocols used in the Internet and other computer networking.
 
 <QuickCheck
   title="Web Data"
