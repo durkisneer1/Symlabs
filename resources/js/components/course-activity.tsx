@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import type {
   CodeFlowActivity,
@@ -281,7 +280,9 @@ function CssPlayground({
     <Card>
       <CardHeader>
         <CardTitle>{activity.title}</CardTitle>
-        <CardDescription>{activity.prompt}</CardDescription>
+        <CardDescription>
+          <InlineCodeText text={activity.prompt} />
+        </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4 lg:grid-cols-2">
         <div className="space-y-2">
@@ -325,9 +326,14 @@ function HtmlPlayground({
 }) {
   const [markup, setMarkup] = useState(activity.starter);
   const safeMarkup = sanitizeMarkup(markup);
-  const solved = activity.answerIncludes.every((snippet) =>
-    markup.toLowerCase().includes(snippet.toLowerCase()),
-  );
+  const normalizedMarkup = markup.toLowerCase();
+  const solved =
+    activity.answerIncludes.every((snippet) =>
+      normalizedMarkup.includes(snippet.toLowerCase()),
+    ) &&
+    (activity.answerExcludes ?? []).every(
+      (snippet) => !normalizedMarkup.includes(snippet.toLowerCase()),
+    );
 
   useEffect(() => {
     if (solved) {
@@ -339,12 +345,14 @@ function HtmlPlayground({
     <Card>
       <CardHeader>
         <CardTitle>{activity.title}</CardTitle>
-        <CardDescription>{activity.prompt}</CardDescription>
+        <CardDescription>
+          <InlineCodeText text={activity.prompt} />
+        </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4 lg:grid-cols-2">
         <div className="space-y-2">
-          <Input
-            className="font-mono"
+          <Textarea
+            className="min-h-36 font-mono"
             value={markup}
             onChange={(event) => setMarkup(event.target.value)}
           />
@@ -421,7 +429,17 @@ function toCamelCase(value: string) {
 }
 
 function sanitizeMarkup(markup: string) {
-  const allowedTags = ['p', 'strong', 'em', 'mark', 'button', 'a', 'h2'];
+  const allowedTags = [
+    'p',
+    'strong',
+    'em',
+    'b',
+    'i',
+    'mark',
+    'button',
+    'a',
+    'h2',
+  ];
   const withoutScripts = markup.replace(/<script[\s\S]*?<\/script>/gi, '');
 
   return withoutScripts.replace(/<\/?([a-z0-9-]+)([^>]*)>/gi, (match, tag) => {

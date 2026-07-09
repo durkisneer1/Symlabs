@@ -2,6 +2,21 @@ import type { CourseActivity } from '@/types/course-activities';
 import type { CourseImageBlock } from '@/types/course-content';
 
 export const htmlActivities = {
+  'make-the-nested-text-bold': {
+    type: 'html-playground',
+    title: 'Make The Nested Text Bold',
+    prompt:
+      'Change the italic element into a bold element by replacing both `i` tags with `b` tags.',
+    starter: `<p>
+  The tiny robot whispered
+  <i>beep boop</i>
+  before rolling away.
+</p>`,
+    answerIncludes: ['<b>', '</b>'],
+    answerExcludes: ['<i>', '</i>'],
+    success:
+      'Nice. You changed the nested element from italic formatting to bold formatting.',
+  },
   'intro-to-web-recap': {
     type: 'recap',
     title: 'Intro To Web Recap',
@@ -12,7 +27,8 @@ export const htmlActivities = {
           'It gave the web one consistent format for pointing to resources, even though older internet systems used different ways to find things.',
       },
       {
-        question: 'What are HTTP, TCP or UDP, IP, and network hardware each doing?',
+        question:
+          'What are HTTP, TCP or UDP, IP, and network hardware each doing?',
         answer:
           'HTTP describes the request, TCP or UDP describes the delivery behavior, IP helps route packets, and network hardware moves the actual signals.',
       },
@@ -25,6 +41,38 @@ export const htmlActivities = {
         question: 'What is HTML?',
         answer:
           'HTML is the markup language used to structure webpage content, including text and links to other resources.',
+      },
+    ],
+  },
+  'elements-and-tags-recap': {
+    type: 'recap',
+    title: 'Elements And Tags Recap',
+    items: [
+      {
+        question: 'What is a tag?',
+        answer:
+          'A tag is an individual piece of markup inside angle brackets, like `<p>` or `</p>`.',
+      },
+      {
+        question: 'What is an element?',
+        answer:
+          'An element is the complete structure, usually made from an opening tag, content, and a closing tag.',
+      },
+      {
+        question:
+          'What does it mean for one element to be nested inside another?',
+        answer:
+          'It means one element lives inside another element, making it a child of the outer parent element.',
+      },
+      {
+        question: 'What are sibling elements?',
+        answer:
+          'Sibling elements sit next to each other at the same level in the HTML structure.',
+      },
+      {
+        question: 'What is the DOM?',
+        answer:
+          'The DOM is the Document Object Model: a tree-like model of the elements in an HTML document.',
       },
     ],
   },

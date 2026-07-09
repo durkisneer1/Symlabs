@@ -61,6 +61,7 @@ export type HtmlPlaygroundActivity = {
   prompt: string;
   starter: string;
   answerIncludes: string[];
+  answerExcludes?: string[];
   success: string;
 };
 
